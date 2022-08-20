@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC03D52128B0F85900BF718E /* powerlifting.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = BC03D51E28B0F85900BF718E /* powerlifting.jpeg */; };
+		BC03D52328B0F85900BF718E /* bodybuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC03D52028B0F85900BF718E /* bodybuilding.png */; };
 		BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */; };
+		BC12B30328B1030C00F29612 /* powerbuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC12B30228B1030C00F29612 /* powerbuilding.png */; };
 		BCA5B9F928AFB17E00F04AFB /* DetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */; };
 		BCA5B9FB28AFB7AC00F04AFB /* VCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA5B9FA28AFB7AC00F04AFB /* VCModel.swift */; };
 		BCCDAC9528AB7DAC004C41BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */; };
@@ -49,7 +52,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BC03D51E28B0F85900BF718E /* powerlifting.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = powerlifting.jpeg; sourceTree = "<group>"; };
+		BC03D52028B0F85900BF718E /* bodybuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bodybuilding.png; sourceTree = "<group>"; };
 		BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		BC12B30228B1030C00F29612 /* powerbuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerbuilding.png; sourceTree = "<group>"; };
 		BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailViewController.storyboard; sourceTree = "<group>"; };
 		BCA5B9FA28AFB7AC00F04AFB /* VCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCModel.swift; sourceTree = "<group>"; };
 		BCCDAC9128AB7DAC004C41BD /* IntroduceBodyBuilding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntroduceBodyBuilding.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,6 +139,9 @@
 				BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */,
 				BCCDAC9D28AB7DAD004C41BD /* Assets.xcassets */,
 				BCCDAC9F28AB7DAD004C41BD /* LaunchScreen.storyboard */,
+				BC12B30228B1030C00F29612 /* powerbuilding.png */,
+				BC03D51E28B0F85900BF718E /* powerlifting.jpeg */,
+				BC03D52028B0F85900BF718E /* bodybuilding.png */,
 				BCCDACA228AB7DAD004C41BD /* Info.plist */,
 				BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */,
 			);
@@ -234,6 +243,9 @@
 				BCA5B9F928AFB17E00F04AFB /* DetailViewController.storyboard in Resources */,
 				BCCDAC9C28AB7DAC004C41BD /* Main.storyboard in Resources */,
 				BCCDACAF28AB8233004C41BD /* GoogleService-Info.plist in Resources */,
+				BC03D52128B0F85900BF718E /* powerlifting.jpeg in Resources */,
+				BC03D52328B0F85900BF718E /* bodybuilding.png in Resources */,
+				BC12B30328B1030C00F29612 /* powerbuilding.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

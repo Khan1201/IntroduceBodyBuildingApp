@@ -12,7 +12,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var urlView: UILabel!
+    @IBOutlet weak var urlLabel: UILabel!
    
     
    var titleName: String?
@@ -26,6 +26,9 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         titleLabel.text = titleName ?? "sorry"
+        imageView.image = UIImage(named: imageName!)
+        descriptionLabel.text = descrip ?? "sorry"
+        urlLabel.text = url ?? "sorry"
 
         
         // Do any additional setup after loading the view.

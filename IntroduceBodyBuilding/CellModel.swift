@@ -15,5 +15,4 @@ struct CellModel: Codable {
     var recommend: String
     var division: String
     var image: String
-    var viewName: String
 }

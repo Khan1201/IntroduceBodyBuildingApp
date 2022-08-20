@@ -26,34 +26,46 @@ class ViewController: UIViewController{
 
         
         cellData.vcModel.append(
-            VCModel(title: "aaa", image: "bbbb", description: "cccc", url: "dddd")
+            VCModel(title: "nSuns 5/3/1 Complete", image: "bodybuilding", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program. It progresses on a weekly basis, making it well suited for late stage novice and early intermediate lifters. It is known for its challenging amount of volume. Those who stick with it tend to find great results from the additional work capacity.", url: "https://liftvault.com/programs/powerlifting/n-suns-lifting-spreadsheets/")
+        )
+        cellData.vcModel.append(
+            VCModel(title: "1111", image: "bbbb", description: "cccc", url: "dddd")
+        )
+        cellData.vcModel.append(
+            VCModel(title: "2222", image: "bbbb", description: "cccc", url: "dddd")
+        )
+        cellData.vcModel.append(
+            VCModel(title: "3333", image: "bbbb", description: "cccc", url: "dddd")
+        )
+        cellData.vcModel.append(
+            VCModel(title: "4444", image: "bbbb", description: "cccc", url: "dddd")
         )
         
         
         cellData.cellModel.append(
-        [CellModel(title: "H.I.T(High Intensity Training)", author: "Yachoo", description: "Need to increase Strength and Hypertrophy Need to increase Strength and Hypertrophy", recommend: "★★★★☆", division: "4분할", image: "person", viewName: "DetailViewController")]
+        [CellModel(title: "nSuns 5/3/1 Complete", author: "Jim Wendler", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program", recommend: "★★★★☆", division: "PowerLifting", image: "bodybuilding")]
         )
 
         cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane", viewName: "DetailViewController")]
+        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
         )
         cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane", viewName: "DetailViewController")]
+        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
         )
         cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane", viewName: "DetailViewController")]
+        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
         )
         cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane", viewName: "DetailViewController")]
+        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
         )
         cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane", viewName: "DetailViewController")]
+        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
         )
         cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane", viewName: "DetailViewController")]
+        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
         )
         cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane", viewName: "DetailViewController")]
+        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
         )
         
 
@@ -138,8 +150,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         cell.descriptionLabel.text = cellData.cellModel[indexPath.section][indexPath.row].description
         cell.recommendLabel.text = cellData.cellModel[indexPath.section][indexPath.row].recommend
         cell.divisionLabel.text = cellData.cellModel[indexPath.section][indexPath.row].division
-        
-        cell.healthImageView.image = UIImage(systemName:                                    cellData.cellModel[indexPath.section][indexPath.row].image)
+        cell.healthImageView.image = UIImage(named: cellData.cellModel[indexPath.section][indexPath.row].image)
         
         
         return cell
@@ -151,9 +162,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         // storyboard 인스턴스화 -> 데이터 전송 -> 뷰 전환
             if let moveVC = UIStoryboard(name: "DetailViewController", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController{
                 moveVC.titleName = cellData.vcModel[indexPath.section].title
+                moveVC.imageName = cellData.vcModel[indexPath.section].image
+                moveVC.descrip = cellData.vcModel[indexPath.section].description
+                moveVC.url = cellData.vcModel[indexPath.section].url
                 self.navigationController?.pushViewController(moveVC, animated: true)
             }
    

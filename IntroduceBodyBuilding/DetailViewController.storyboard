@@ -17,27 +17,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="See-Wt-6rG">
-                                <rect key="frame" x="61" y="143" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="See-Wt-6rG">
+                                <rect key="frame" x="82" y="123" width="250" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="See-Wt-6rG" secondAttribute="height" multiplier="1:1" id="6jt-ma-od1"/>
+                                    <constraint firstAttribute="width" constant="250" id="97P-YJ-7mF"/>
+                                    <constraint firstAttribute="height" constant="250" id="fgb-np-Zwf"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOE-Wv-tWi">
-                                <rect key="frame" x="61" y="66" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOE-Wv-tWi">
+                                <rect key="frame" x="182.5" y="74" width="49" height="29"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUh-jQ-Ez1">
-                                <rect key="frame" x="61" y="319" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUh-jQ-Ez1">
+                                <rect key="frame" x="40" y="403" width="334" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gmb-lV-NoU">
-                                <rect key="frame" x="61" y="438" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Url" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gmb-lV-NoU">
+                                <rect key="frame" x="40" y="463.5" width="334" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -45,12 +46,24 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="bOE-Wv-tWi" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="9Nr-SJ-29f"/>
+                            <constraint firstItem="JUh-jQ-Ez1" firstAttribute="top" secondItem="See-Wt-6rG" secondAttribute="bottom" constant="30" id="Neb-Pv-Erv"/>
+                            <constraint firstItem="gmb-lV-NoU" firstAttribute="top" secondItem="JUh-jQ-Ez1" secondAttribute="bottom" constant="40" id="NoS-jT-9vP"/>
+                            <constraint firstItem="gmb-lV-NoU" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="OL6-bx-bcU"/>
+                            <constraint firstItem="See-Wt-6rG" firstAttribute="top" secondItem="bOE-Wv-tWi" secondAttribute="bottom" constant="20" id="aMS-68-fiX"/>
+                            <constraint firstItem="See-Wt-6rG" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="i7z-7k-QLe"/>
+                            <constraint firstItem="gmb-lV-NoU" firstAttribute="leading" secondItem="JUh-jQ-Ez1" secondAttribute="leading" id="jI0-i3-oqe"/>
+                            <constraint firstItem="JUh-jQ-Ez1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="40" id="sak-S2-Nba"/>
+                            <constraint firstItem="JUh-jQ-Ez1" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="tTm-Wn-yyo"/>
+                            <constraint firstItem="bOE-Wv-tWi" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="30" id="zkt-RJ-YMj"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="descriptionLabel" destination="JUh-jQ-Ez1" id="49I-Se-ToF"/>
                         <outlet property="imageView" destination="See-Wt-6rG" id="Dvr-Hi-UOs"/>
                         <outlet property="titleLabel" destination="bOE-Wv-tWi" id="qMF-2M-j69"/>
-                        <outlet property="urlView" destination="gmb-lV-NoU" id="KaK-wl-t9L"/>
+                        <outlet property="urlLabel" destination="gmb-lV-NoU" id="fI9-tE-5tE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
