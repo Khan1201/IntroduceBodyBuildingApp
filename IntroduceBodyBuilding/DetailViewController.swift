@@ -6,32 +6,70 @@
 //
 
 import UIKit
+import SafariServices
 
 
 class DetailViewController: UIViewController {
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var urlLabel: UILabel!
+    
+    var titleName: String?
+    var imageName: String?
+    var descrip: String?
+    var url: String?
+    
+    @IBOutlet weak var titleLabel: UILabel!{
+        didSet{
+            titleLabel.text = titleName ?? "sorry"
+        }
+    }
+    @IBOutlet weak var imageView: UIImageView!{
+        didSet{
+            imageView.image = UIImage(named: imageName ?? "")
+        }
+    }
+    @IBOutlet weak var descriptionLabel: UILabel!{
+        didSet{
+            
+            descriptionLabel.text = descrip ?? "sorry"
+            
+            let attrString = NSMutableAttributedString(string: descriptionLabel.text!)
+            let paragraphStyle = NSMutableParagraphStyle()
+            
+            descriptionLabel.lineBreakMode = .byWordWrapping
+            descriptionLabel.numberOfLines = 0
+            paragraphStyle.lineSpacing = 10
+            attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+            descriptionLabel.attributedText = attrString
+        }
+    }
+    
+    @IBOutlet weak var urlButton: UIButton!{
+        didSet{
+            urlButton.setTitle("See More...", for: .normal)
+        }
+    }
+    
+    
+    
    
     
-   var titleName: String?
-   var imageName: String?
-   var descrip: String?
-   var url: String?
+   
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        titleLabel.text = titleName ?? "sorry"
-        imageView.image = UIImage(named: imageName!)
-        descriptionLabel.text = descrip ?? "sorry"
-        urlLabel.text = url ?? "sorry"
+        
 
         
         // Do any additional setup after loading the view.
+    }
+    @IBAction func urlButtonAction(_ sender: UIButton) {
+        let setUrl = NSURL(string: url!)
+        let moveUrl: SFSafariViewController = SFSafariViewController(url: setUrl! as URL)
+        self.present(moveUrl, animated: true)
+        
+        
     }
 
 

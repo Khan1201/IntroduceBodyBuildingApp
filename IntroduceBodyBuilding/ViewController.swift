@@ -26,7 +26,7 @@ class ViewController: UIViewController{
 
         
         cellData.vcModel.append(
-            VCModel(title: "nSuns 5/3/1 Complete", image: "bodybuilding", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program. It progresses on a weekly basis, making it well suited for late stage novice and early intermediate lifters. It is known for its challenging amount of volume. Those who stick with it tend to find great results from the additional work capacity.", url: "https://liftvault.com/programs/powerlifting/n-suns-lifting-spreadsheets/")
+            VCModel(title: "nSuns 5/3/1 Complete", image: "bodybuilding", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program. It progresses on a weekly basis, making it well suited for late stage novice and early intermediate lifters. It is known for its challenging amount of volume. Those who stick with it tend to find great results from the additional work capacity", url: "https://liftvault.com/programs/powerlifting/n-suns-lifting-spreadsheets/")
         )
         cellData.vcModel.append(
             VCModel(title: "1111", image: "bbbb", description: "cccc", url: "dddd")
@@ -166,7 +166,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         // storyboard 인스턴스화 -> 데이터 전송 -> 뷰 전환
             if let moveVC = UIStoryboard(name: "DetailViewController", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController{
-                moveVC.titleName = cellData.vcModel[indexPath.section].title
+                moveVC.titleName = (cellData.vcModel[indexPath.section].title) 
                 moveVC.imageName = cellData.vcModel[indexPath.section].image
                 moveVC.descrip = cellData.vcModel[indexPath.section].description
                 moveVC.url = cellData.vcModel[indexPath.section].url
