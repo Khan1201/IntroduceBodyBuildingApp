@@ -33,12 +33,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="yFt-Ul-cEN">
-                                <rect key="frame" x="0.0" y="98" width="414" height="51"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="cAJ-6S-r7Q">
-                                <rect key="frame" x="0.0" y="149" width="414" height="713"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="HealthCell" rowHeight="165" id="yKJ-9f-TX6" customClass="HealthCell" customModule="IntroduceBodyBuilding" customModuleProvider="target">
@@ -69,7 +65,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Da-Tu-asT">
-                                                    <rect key="frame" x="130" y="86.5" width="264" height="18"/>
+                                                    <rect key="frame" x="130" y="88.5" width="264" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -82,7 +78,7 @@
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOR-6t-Z9K">
                                                     <rect key="frame" x="130" y="54" width="274" height="19.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -99,7 +95,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="4Da-Tu-asT" secondAttribute="trailing" constant="20" id="RTt-I6-hz8"/>
                                                 <constraint firstItem="kS2-3u-A9V" firstAttribute="top" secondItem="XLF-g5-ZvV" secondAttribute="top" constant="25" id="YUZ-3E-Xgb"/>
                                                 <constraint firstItem="aEt-ja-Qun" firstAttribute="leading" secondItem="4Da-Tu-asT" secondAttribute="leading" constant="15" id="YwR-xE-VFV"/>
-                                                <constraint firstItem="4Da-Tu-asT" firstAttribute="top" secondItem="uOR-6t-Z9K" secondAttribute="bottom" constant="13" id="Z0V-Xn-4Np"/>
+                                                <constraint firstItem="4Da-Tu-asT" firstAttribute="top" secondItem="uOR-6t-Z9K" secondAttribute="bottom" constant="15" id="Z0V-Xn-4Np"/>
                                                 <constraint firstAttribute="bottom" secondItem="aEt-ja-Qun" secondAttribute="bottom" constant="10" id="acl-vt-WSr"/>
                                                 <constraint firstItem="LXh-Nh-Ivu" firstAttribute="top" secondItem="4Da-Tu-asT" secondAttribute="bottom" constant="30" id="cO9-HL-hO7"/>
                                                 <constraint firstItem="kS2-3u-A9V" firstAttribute="leading" secondItem="Q9P-Jd-6VE" secondAttribute="trailing" constant="20" id="fvR-hK-uex"/>
@@ -108,6 +104,7 @@
                                                 <constraint firstItem="aEt-ja-Qun" firstAttribute="top" secondItem="4Da-Tu-asT" secondAttribute="bottom" constant="30" id="v59-Ac-1zn"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                                         <connections>
                                             <outlet property="authorLabel" destination="uOR-6t-Z9K" id="AEf-Ma-XwY"/>
                                             <outlet property="descriptionLabel" destination="4Da-Tu-asT" id="waG-Lz-23c"/>
@@ -123,11 +120,8 @@
                         <viewLayoutGuide key="safeArea" id="O96-cn-1Qf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="yFt-Ul-cEN" firstAttribute="top" secondItem="O96-cn-1Qf" secondAttribute="top" constant="10" id="7oN-Di-Kuh"/>
-                            <constraint firstItem="yFt-Ul-cEN" firstAttribute="leading" secondItem="O96-cn-1Qf" secondAttribute="leading" id="C2A-9w-jYS"/>
-                            <constraint firstItem="yFt-Ul-cEN" firstAttribute="trailing" secondItem="O96-cn-1Qf" secondAttribute="trailing" id="Ryy-Qx-KrA"/>
-                            <constraint firstItem="cAJ-6S-r7Q" firstAttribute="top" secondItem="yFt-Ul-cEN" secondAttribute="bottom" id="YRe-gK-FSD"/>
                             <constraint firstItem="cAJ-6S-r7Q" firstAttribute="leading" secondItem="O96-cn-1Qf" secondAttribute="leading" id="aqt-4M-GpZ"/>
+                            <constraint firstItem="cAJ-6S-r7Q" firstAttribute="top" secondItem="O96-cn-1Qf" secondAttribute="top" id="byH-VE-ZuN"/>
                             <constraint firstItem="cAJ-6S-r7Q" firstAttribute="trailing" secondItem="O96-cn-1Qf" secondAttribute="trailing" id="f6z-Fw-mOD"/>
                             <constraint firstItem="cAJ-6S-r7Q" firstAttribute="bottom" secondItem="O96-cn-1Qf" secondAttribute="bottom" id="gtF-8g-lcm"/>
                         </constraints>
@@ -135,7 +129,6 @@
                     <navigationItem key="navigationItem" id="5ME-af-7bm"/>
                     <connections>
                         <outlet property="healthTableView" destination="cAJ-6S-r7Q" id="VlY-te-ceG"/>
-                        <outlet property="searchBar" destination="yFt-Ul-cEN" id="6IW-fK-pQi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gea-JT-NND" sceneMemberID="firstResponder"/>
@@ -146,6 +139,9 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

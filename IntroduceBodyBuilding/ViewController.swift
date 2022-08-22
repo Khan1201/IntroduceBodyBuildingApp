@@ -11,13 +11,18 @@ import FirebaseCore
 import Firebase
 
 class ViewController: UIViewController{
+   
+    
+  
+    
 
     @IBOutlet weak var healthTableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
     
     struct cellData{ // 셀 데이터 및 뷰 컨트롤러 데이터 저장 구조체
         static var cellModel = [[CellModel]]()
         static var vcModel = [VCModel]()
+        static var filteredModel = [[CellModel]]()
+
     }
    
 
@@ -70,6 +75,28 @@ class ViewController: UIViewController{
         
 
     }
+    
+    func makeSearchBar(){
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.obscuresBackgroundDuringPresentation = false //false -> 검색창 활성화 시 주변 화면 흐림 X
+        searchController.searchResultsUpdater = self //SearchBar에 데이터 입력 시 실시간으로 결과 반영
+        
+        
+        self.navigationItem.title = "Health Program"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.hidesSearchBarWhenScrolling = true //스크롤 내릴 시 검색창 숨김
+        self.navigationItem.searchController = searchController
+        
+    }
+    
+    var isFiltering: Bool {
+        let searchController = self.navigationItem.searchController
+        let isActive = searchController?.isActive ?? false
+        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false //서치바에 텍스트가 존재 시 true
+        return isActive && isSearchBarHasText
+    }
+    
+    
     // (firebase 데이터 로딩, 오류가 발생하여 임시데이터로 작업 후 나중에 서버 데이터 연결 예정)
 ////    func makeData2(){
 //
@@ -118,13 +145,10 @@ class ViewController: UIViewController{
         super.viewDidLoad()
   
         makeData()
-        
-        
-        self.title = "프로그램 소개"
+        makeSearchBar()
+            
         healthTableView.delegate = self
         healthTableView.dataSource = self
-        searchBar.delegate = self
-
     }
     
 
@@ -132,25 +156,47 @@ class ViewController: UIViewController{
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cellData.cellModel[section].count
+        
+        if isFiltering { //검색 활성화 -> 검색 데이터 적용, 검색 비활성화 -> 기존 데이터 사용
+            return cellData.filteredModel[section].count
+        }
+        else{
+            return cellData.cellModel[section].count
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return cellData.cellModel.count
+        if isFiltering {
+            return cellData.filteredModel.count
+        }
+        else{
+            return cellData.cellModel.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = healthTableView.dequeueReusableCell(withIdentifier: "HealthCell", for: indexPath)
                     as! HealthCell
         
-        
         cell.layer.cornerRadius = cell.bounds.height / 6
-        cell.titleLabel.text = cellData.cellModel[indexPath.section][indexPath.row].title
-        cell.authorLabel.text = cellData.cellModel[indexPath.section][indexPath.row].author
-        cell.descriptionLabel.text = cellData.cellModel[indexPath.section][indexPath.row].description
-        cell.recommendLabel.text = cellData.cellModel[indexPath.section][indexPath.row].recommend
-        cell.divisionLabel.text = cellData.cellModel[indexPath.section][indexPath.row].division
-        cell.healthImageView.image = UIImage(named: cellData.cellModel[indexPath.section][indexPath.row].image)
+        
+        if isFiltering { //검색 활성화 -> 검색 데이터 적용, 검색 비활성화 -> 기존 데이터 사용
+            cell.titleLabel.text = cellData.filteredModel[indexPath.section][indexPath.row].title
+            cell.authorLabel.text = cellData.filteredModel[indexPath.section][indexPath.row].author
+            cell.descriptionLabel.text = cellData.filteredModel[indexPath.section][indexPath.row].description
+            cell.recommendLabel.text = cellData.filteredModel[indexPath.section][indexPath.row].recommend
+            cell.divisionLabel.text = cellData.filteredModel[indexPath.section][indexPath.row].division
+            cell.healthImageView.image = UIImage(named: cellData.filteredModel[indexPath.section][indexPath.row].image)
+        }
+        else{
+            cell.titleLabel.text = cellData.cellModel[indexPath.section][indexPath.row].title
+            cell.authorLabel.text = cellData.cellModel[indexPath.section][indexPath.row].author
+            cell.descriptionLabel.text = cellData.cellModel[indexPath.section][indexPath.row].description
+            cell.recommendLabel.text = cellData.cellModel[indexPath.section][indexPath.row].recommend
+            cell.divisionLabel.text = cellData.cellModel[indexPath.section][indexPath.row].division
+            cell.healthImageView.image = UIImage(named: cellData.cellModel[indexPath.section][indexPath.row].image)
+        }
+ 
         
         
         return cell
@@ -166,7 +212,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         // storyboard 인스턴스화 -> 데이터 전송 -> 뷰 전환
             if let moveVC = UIStoryboard(name: "DetailViewController", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController{
-                moveVC.titleName = (cellData.vcModel[indexPath.section].title) 
+                moveVC.titleName = cellData.vcModel[indexPath.section].title
                 moveVC.imageName = cellData.vcModel[indexPath.section].image
                 moveVC.descrip = cellData.vcModel[indexPath.section].description
                 moveVC.url = cellData.vcModel[indexPath.section].url
@@ -177,9 +223,28 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-}
-
-extension ViewController: UISearchBarDelegate{
+    
     
 }
+
+extension ViewController: UISearchResultsUpdating{
+    func updateSearchResults(for searchController: UISearchController) { //SearchBar에 입력 시 실시간으로 결과 반영
+        guard let text = searchController.searchBar.text else {return}
+        cellData.filteredModel  = cellData.cellModel.filter{ $0.contains { CellModel in //기존의 데이터 모델과 같은 형태의 filteredModel 선언, .filter를 통해 필터링된 데이터 저장 -> 테이블 뷰 리로드
+            if CellModel.title.contains(text) || CellModel.author.contains(text) || CellModel.description.contains(text) {
+                return true
+            }
+            else{
+                return false
+            }
+        }
+        }
+        healthTableView.reloadData()
+    }
+    
+    
+    
+}
+
+
 
