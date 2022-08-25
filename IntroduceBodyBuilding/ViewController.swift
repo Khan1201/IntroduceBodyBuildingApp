@@ -17,64 +17,27 @@ class ViewController: UIViewController{
     
 
     @IBOutlet weak var healthTableView: UITableView!
-    
+        
     struct cellData{ // 셀 데이터 및 뷰 컨트롤러 데이터 저장 구조체
         static var cellModel = [[CellModel]]()
-        static var vcModel = [VCModel]()
+        static var vcModel = [[VCModel]]()
         static var filteredModel = [[CellModel]]()
 
     }
    
 
     
-    func makeData(){ //내부데이터 생성
-
-        
-        cellData.vcModel.append(
-            VCModel(title: "nSuns 5/3/1 Complete", image: "bodybuilding", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program. It progresses on a weekly basis, making it well suited for late stage novice and early intermediate lifters. It is known for its challenging amount of volume. Those who stick with it tend to find great results from the additional work capacity", url: "https://liftvault.com/programs/powerlifting/n-suns-lifting-spreadsheets/")
-        )
-        cellData.vcModel.append(
-            VCModel(title: "1111", image: "bbbb", description: "cccc", url: "dddd")
-        )
-        cellData.vcModel.append(
-            VCModel(title: "2222", image: "bbbb", description: "cccc", url: "dddd")
-        )
-        cellData.vcModel.append(
-            VCModel(title: "3333", image: "bbbb", description: "cccc", url: "dddd")
-        )
-        cellData.vcModel.append(
-            VCModel(title: "4444", image: "bbbb", description: "cccc", url: "dddd")
-        )
-        
-        
-        cellData.cellModel.append(
-        [CellModel(title: "nSuns 5/3/1 Complete", author: "Jim Wendler", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program", recommend: "★★★★☆", division: "PowerLifting", image: "bodybuilding")]
-        )
-
-        cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
-        )
-        cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
-        )
-        cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
-        )
-        cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
-        )
-        cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
-        )
-        cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
-        )
-        cellData.cellModel.append(
-        [CellModel(title: "StrongLift 5x5", author: "Bigmike", description: "Need to increase Strength and Hypertrophy", recommend: "★★★★★", division: "4분할", image: "paperplane")]
-        )
-        
-
-    }
+//    func makeData(){ //내부데이터 생성
+//
+//
+//        cellData.vcModel.append(
+//            [VCModel(title: "nSuns 5/3/1 Complete", image: "powerlifting", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program. It progresses on a weekly basis, making it well suited for late stage novice and early intermediate lifters. It is known for its challenging amount of volume. Those who stick with it tend to find great results from the additional work capacity", url: "https://liftvault.com/programs/powerlifting/n-suns-lifting-spreadsheets/")]
+//
+//        cellData.cellModel.append(
+//        [CellModel(title: "nSuns 5/3/1 Complete", author: "nSuns", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program", recommend: "★★★★☆", division: "PowerLifting", image: "powerlifting")]
+//        )
+//
+//    }
     
     func makeSearchBar(){
         let searchController = UISearchController(searchResultsController: nil)
@@ -97,53 +60,57 @@ class ViewController: UIViewController{
     }
     
     
-    // (firebase 데이터 로딩, 오류가 발생하여 임시데이터로 작업 후 나중에 서버 데이터 연결 예정)
-////    func makeData2(){
-//
-//            let db = Firestore.firestore()
-//
-//            let docRef = db.collection("Program").document("dittk1")
-//            docRef.getDocument { (document, error) in
-//                if let document = document, document.exists {
-//                    let dataDescription = document.data()
-//                    guard let data = try? JSONSerialization.data(withJSONObject: Array(arrayLiteral: dataDescription), options: []) else{return} //Json 데이터로 변환
-//                    let decode = try? JSONDecoder().decode([CellModel].self, from: data)
-//                    print(decode ?? "sorry")
-//                    cellData.cellModel.append(decode!) //document 1개당 cellModel.append
-//                    print(cellData.cellModel[2])
-//                    print(data)
-//                } else {
-//                    print("Document does not exist")
-//                }
-//            }
-//    }
-    
-//    func makeData3(){
-//        var count = 0
-//        let db = Firestore.firestore()
-//        db.collection("Program").getDocuments() { (querySnapshot, err) in
-//            if let err = err {
-//                print("Error getting documents: \(err)")
-//            } else {
-//                for document in querySnapshot!.documents {
-//
-//                    guard let data = try? JSONSerialization.data(withJSONObject: Array(arrayLiteral: document.data()), options: []) else{return} //Json 데이터로 변환
-//                    let decode = try? JSONDecoder().decode([CellModel].self, from: data)
-//                    cellData.cellModel.append(decode!) //document 1개당 cellModel.append
-//                    print(cellData.cellModel.count)
-//                    print(cellData.cellModel[count])
-//                    count += 1
-//
-//                }
-//            }
-//        }
-//    }
+    func makeData(){
+        let db = Firestore.firestore()
+        db.collection("Program").getDocuments() { (querySnapshot, err) in //메인페이지 데이터 로딩
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+
+                    var count = 0
+                    guard let data = try? JSONSerialization.data(withJSONObject: Array(arrayLiteral: document.data()), options: []) else{return} //Json 데이터로 변환
+                    let decode = try? JSONDecoder().decode([CellModel].self, from: data)
+                    print(decode)
+                    cellData.cellModel.append(decode!) //document 1개당 cellModel.append
+                    print(cellData.cellModel.count)
+                    print(cellData.cellModel[count])
+                    count += 1
+
+                }
+                self.healthTableView.reloadData()
+            }
+        }
+        
+        db.collection("Detail").getDocuments() { (querySnapshot, err) in //상세페이지 데이터 로딩
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+
+                    var count = 0
+                    guard let data = try? JSONSerialization.data(withJSONObject: Array(arrayLiteral: document.data()), options: []) else{return} //Json 데이터로 변환
+                    let decode = try? JSONDecoder().decode([VCModel].self, from: data)
+                    print(decode)
+                    cellData.vcModel.append(decode!) //document 1개당 cellModel.append
+                    print(cellData.vcModel.count)
+                    print(cellData.vcModel[count])
+                    count += 1
+
+                }
+                
+            }
+        }
+        
+        
+    }
     
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
   
+//        makeData()
         makeData()
         makeSearchBar()
             
@@ -212,10 +179,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         // storyboard 인스턴스화 -> 데이터 전송 -> 뷰 전환
             if let moveVC = UIStoryboard(name: "DetailViewController", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController{
-                moveVC.titleName = cellData.vcModel[indexPath.section].title
-                moveVC.imageName = cellData.vcModel[indexPath.section].image
-                moveVC.descrip = cellData.vcModel[indexPath.section].description
-                moveVC.url = cellData.vcModel[indexPath.section].url
+                moveVC.titleName = cellData.vcModel[indexPath.section][indexPath.row].title
+                moveVC.imageName = cellData.vcModel[indexPath.section][indexPath.row].image
+                moveVC.descrip = cellData.vcModel[indexPath.section][indexPath.row].description
+                moveVC.url = cellData.vcModel[indexPath.section][indexPath.row].url
                 self.navigationController?.pushViewController(moveVC, animated: true)
             }
    

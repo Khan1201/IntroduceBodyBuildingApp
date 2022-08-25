@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BC03D52128B0F85900BF718E /* powerlifting.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = BC03D51E28B0F85900BF718E /* powerlifting.jpeg */; };
+		BC03D52128B0F85900BF718E /* powerlifting.png in Resources */ = {isa = PBXBuildFile; fileRef = BC03D51E28B0F85900BF718E /* powerlifting.png */; };
 		BC03D52328B0F85900BF718E /* bodybuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC03D52028B0F85900BF718E /* bodybuilding.png */; };
 		BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */; };
 		BC12B30328B1030C00F29612 /* powerbuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC12B30228B1030C00F29612 /* powerbuilding.png */; };
@@ -52,7 +52,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BC03D51E28B0F85900BF718E /* powerlifting.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = powerlifting.jpeg; sourceTree = "<group>"; };
+		BC03D51E28B0F85900BF718E /* powerlifting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerlifting.png; sourceTree = "<group>"; };
 		BC03D52028B0F85900BF718E /* bodybuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bodybuilding.png; sourceTree = "<group>"; };
 		BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BC12B30228B1030C00F29612 /* powerbuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerbuilding.png; sourceTree = "<group>"; };
@@ -140,7 +140,7 @@
 				BCCDAC9D28AB7DAD004C41BD /* Assets.xcassets */,
 				BCCDAC9F28AB7DAD004C41BD /* LaunchScreen.storyboard */,
 				BC12B30228B1030C00F29612 /* powerbuilding.png */,
-				BC03D51E28B0F85900BF718E /* powerlifting.jpeg */,
+				BC03D51E28B0F85900BF718E /* powerlifting.png */,
 				BC03D52028B0F85900BF718E /* bodybuilding.png */,
 				BCCDACA228AB7DAD004C41BD /* Info.plist */,
 				BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */,
@@ -243,7 +243,7 @@
 				BCA5B9F928AFB17E00F04AFB /* DetailViewController.storyboard in Resources */,
 				BCCDAC9C28AB7DAC004C41BD /* Main.storyboard in Resources */,
 				BCCDACAF28AB8233004C41BD /* GoogleService-Info.plist in Resources */,
-				BC03D52128B0F85900BF718E /* powerlifting.jpeg in Resources */,
+				BC03D52128B0F85900BF718E /* powerlifting.png in Resources */,
 				BC03D52328B0F85900BF718E /* bodybuilding.png in Resources */,
 				BC12B30328B1030C00F29612 /* powerbuilding.png in Resources */,
 			);
