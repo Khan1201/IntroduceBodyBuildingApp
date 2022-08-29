@@ -11,6 +11,9 @@
 		BC03D52328B0F85900BF718E /* bodybuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC03D52028B0F85900BF718E /* bodybuilding.png */; };
 		BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */; };
 		BC12B30328B1030C00F29612 /* powerbuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC12B30228B1030C00F29612 /* powerbuilding.png */; };
+		BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */; };
+		BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */; };
+		BC855C0228B7B75F005C4870 /* MyProgramViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */; };
 		BCA5B9F928AFB17E00F04AFB /* DetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */; };
 		BCA5B9FB28AFB7AC00F04AFB /* VCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA5B9FA28AFB7AC00F04AFB /* VCModel.swift */; };
 		BCCDAC9528AB7DAC004C41BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */; };
@@ -56,6 +59,9 @@
 		BC03D52028B0F85900BF718E /* bodybuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bodybuilding.png; sourceTree = "<group>"; };
 		BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BC12B30228B1030C00F29612 /* powerbuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerbuilding.png; sourceTree = "<group>"; };
+		BC855BF928B79F63005C4870 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
+		BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewController.swift; sourceTree = "<group>"; };
+		BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyProgramViewController.storyboard; sourceTree = "<group>"; };
 		BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailViewController.storyboard; sourceTree = "<group>"; };
 		BCA5B9FA28AFB7AC00F04AFB /* VCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCModel.swift; sourceTree = "<group>"; };
 		BCCDAC9128AB7DAC004C41BD /* IntroduceBodyBuilding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntroduceBodyBuilding.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,14 +136,17 @@
 			children = (
 				BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */,
 				BCCDAC9628AB7DAC004C41BD /* SceneDelegate.swift */,
+				BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */,
+				BCCDAC9828AB7DAC004C41BD /* ViewController.swift */,
 				BCCDACAA28AB7E35004C41BD /* HealthCell.swift */,
 				BCCDACAB28AB7E35004C41BD /* CellModel.swift */,
 				BCA5B9FA28AFB7AC00F04AFB /* VCModel.swift */,
-				BCCDAC9828AB7DAC004C41BD /* ViewController.swift */,
 				BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */,
 				BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */,
-				BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */,
+				BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */,
+				BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */,
 				BCCDAC9D28AB7DAD004C41BD /* Assets.xcassets */,
+				BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */,
 				BCCDAC9F28AB7DAD004C41BD /* LaunchScreen.storyboard */,
 				BC12B30228B1030C00F29612 /* powerbuilding.png */,
 				BC03D51E28B0F85900BF718E /* powerlifting.png */,
@@ -239,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCCDACA128AB7DAD004C41BD /* LaunchScreen.storyboard in Resources */,
+				BC855C0228B7B75F005C4870 /* MyProgramViewController.storyboard in Resources */,
 				BCCDAC9E28AB7DAD004C41BD /* Assets.xcassets in Resources */,
 				BCA5B9F928AFB17E00F04AFB /* DetailViewController.storyboard in Resources */,
 				BCCDAC9C28AB7DAC004C41BD /* Main.storyboard in Resources */,
@@ -256,9 +266,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */,
 				BCCDAC9928AB7DAC004C41BD /* ViewController.swift in Sources */,
 				BCCDACAC28AB7E35004C41BD /* HealthCell.swift in Sources */,
 				BCCDAC9528AB7DAC004C41BD /* AppDelegate.swift in Sources */,
+				BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */,
 				BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */,
 				BCCDACAD28AB7E35004C41BD /* CellModel.swift in Sources */,
 				BCCDAC9728AB7DAC004C41BD /* SceneDelegate.swift in Sources */,
@@ -631,6 +643,19 @@
 			productName = "FirebaseStorageCombine-Community";
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BC855BF928B79F63005C4870 /* CoreData.xcdatamodel */,
+			);
+			currentVersion = BC855BF928B79F63005C4870 /* CoreData.xcdatamodel */;
+			path = CoreData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = BCCDAC8928AB7DAC004C41BD /* Project object */;
 }

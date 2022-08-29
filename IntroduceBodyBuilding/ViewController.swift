@@ -1,14 +1,9 @@
-//
-//  ViewController.swift
-//  BodyBuildingProgram
-//
-//  Created by 윤형석 on 2022/08/16.
-//
 
 import UIKit
 import FirebaseFirestore
 import FirebaseCore
 import Firebase
+import CoreData
 
 class ViewController: UIViewController{
    
@@ -22,10 +17,7 @@ class ViewController: UIViewController{
         static var cellModel = [[CellModel]]()
         static var vcModel = [[VCModel]]()
         static var filteredModel = [[CellModel]]()
-
     }
-   
-
     
 //    func makeData(){ //내부데이터 생성
 //
@@ -71,10 +63,7 @@ class ViewController: UIViewController{
                     var count = 0
                     guard let data = try? JSONSerialization.data(withJSONObject: Array(arrayLiteral: document.data()), options: []) else{return} //Json 데이터로 변환
                     let decode = try? JSONDecoder().decode([CellModel].self, from: data)
-                    print(decode)
                     cellData.cellModel.append(decode!) //document 1개당 cellModel.append
-                    print(cellData.cellModel.count)
-                    print(cellData.cellModel[count])
                     count += 1
 
                 }
@@ -91,19 +80,16 @@ class ViewController: UIViewController{
                     var count = 0
                     guard let data = try? JSONSerialization.data(withJSONObject: Array(arrayLiteral: document.data()), options: []) else{return} //Json 데이터로 변환
                     let decode = try? JSONDecoder().decode([VCModel].self, from: data)
-                    print(decode)
                     cellData.vcModel.append(decode!) //document 1개당 cellModel.append
-                    print(cellData.vcModel.count)
-                    print(cellData.vcModel[count])
                     count += 1
 
                 }
                 
             }
         }
-        
-        
     }
+    
+    
     
     
     override func viewDidLoad() {
@@ -113,7 +99,7 @@ class ViewController: UIViewController{
 //        makeData()
         makeData()
         makeSearchBar()
-            
+        
         healthTableView.delegate = self
         healthTableView.dataSource = self
     }
@@ -140,6 +126,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             return cellData.cellModel.count
         }
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = healthTableView.dequeueReusableCell(withIdentifier: "HealthCell", for: indexPath)
