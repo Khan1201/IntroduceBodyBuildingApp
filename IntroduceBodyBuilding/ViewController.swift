@@ -88,6 +88,32 @@ class ViewController: UIViewController{
             }
         }
     }
+    func configureTestButton() {
+        let testButton = UIButton()
+        
+        testButton.backgroundColor = .systemGray3
+        testButton.translatesAutoresizingMaskIntoConstraints = false
+        testButton.setImage(UIImage(named: "basket"), for: .normal)
+        testButton.imageView?.contentMode = .scaleToFill
+        
+        testButton.layer.masksToBounds = true
+        testButton.layer.cornerRadius = 20
+        testButton.alpha = 0.9
+        
+        testButton.addTarget(self, action: #selector(moveVC), for: .touchUpInside)
+        
+        view.addSubview(testButton)
+        
+        testButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 730).isActive = true
+        testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 300).isActive = true
+        testButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
+        testButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18).isActive = true
+    }
+    
+    @objc func moveVC() {
+        let storyboard = UIStoryboard(name: "MyProgramViewController", bundle: nil).instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
+        self.present(storyboard, animated: true)
+    }
     
     
     
@@ -102,6 +128,8 @@ class ViewController: UIViewController{
         
         healthTableView.delegate = self
         healthTableView.dataSource = self
+        
+        configureTestButton()
     }
     
 

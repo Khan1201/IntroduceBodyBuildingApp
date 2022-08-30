@@ -13,10 +13,14 @@
         <scene sceneID="hDw-Ee-leg">
             <objects>
                 <navigationController id="n4y-4X-WFj" sceneMemberID="viewController">
+                    <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uyI-EZ-nQi">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ib5-gh-kYk">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="cqL-Zn-ecw" kind="relationship" relationship="rootViewController" id="O4e-6O-J4R"/>
                     </connections>

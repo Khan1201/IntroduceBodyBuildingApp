@@ -12,6 +12,7 @@ class DetailViewController: UIViewController {
     var descrip: String?
     var url: String?
     
+    var buttonBool: Bool?
     var alertBool: Bool? // true -> basket add 다이얼로그, false -> basket duplicated(중복) 다이얼로그
     
     @IBOutlet weak var titleLabel: UILabel!{
@@ -47,7 +48,13 @@ class DetailViewController: UIViewController {
             urlButton.setTitle("See More...", for: .normal)
         }
     }
-    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var addButton: UIButton!{
+        didSet{
+            if buttonBool == false{
+                addButton.isEnabled = false
+            }
+        }
+    }
     
     // Alert Dialog 생성
     func makeAlertDialog(title: String, message: String, _ isAlert : Bool = true) throws  {
@@ -176,9 +183,7 @@ class DetailViewController: UIViewController {
     //            }
     //
     //        //해당 뷰 컨트롤러로 이동
-    //        let myProgramVC = UIStoryboard(name: "MyProgramViewController", bundle: nil).instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
-    //
-    //        self.present(myProgramVC, animated: true)
+
 }
 
 //}
