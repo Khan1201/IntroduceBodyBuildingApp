@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HealthCell: UITableViewCell {
+class MainTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!

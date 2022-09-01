@@ -15,15 +15,15 @@
 		BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */; };
 		BC855C0228B7B75F005C4870 /* MyProgramViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */; };
 		BCA5B9F928AFB17E00F04AFB /* DetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */; };
-		BCA5B9FB28AFB7AC00F04AFB /* VCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA5B9FA28AFB7AC00F04AFB /* VCModel.swift */; };
+		BCA5B9FB28AFB7AC00F04AFB /* DetailVCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */; };
 		BCCDAC9528AB7DAC004C41BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */; };
 		BCCDAC9728AB7DAC004C41BD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDAC9628AB7DAC004C41BD /* SceneDelegate.swift */; };
 		BCCDAC9928AB7DAC004C41BD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDAC9828AB7DAC004C41BD /* ViewController.swift */; };
 		BCCDAC9C28AB7DAC004C41BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */; };
 		BCCDAC9E28AB7DAD004C41BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCCDAC9D28AB7DAD004C41BD /* Assets.xcassets */; };
 		BCCDACA128AB7DAD004C41BD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCCDAC9F28AB7DAD004C41BD /* LaunchScreen.storyboard */; };
-		BCCDACAC28AB7E35004C41BD /* HealthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDACAA28AB7E35004C41BD /* HealthCell.swift */; };
-		BCCDACAD28AB7E35004C41BD /* CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDACAB28AB7E35004C41BD /* CellModel.swift */; };
+		BCCDACAC28AB7E35004C41BD /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDACAA28AB7E35004C41BD /* MainTableViewCell.swift */; };
+		BCCDACAD28AB7E35004C41BD /* MainTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDACAB28AB7E35004C41BD /* MainTableViewCellModel.swift */; };
 		BCCDACAF28AB8233004C41BD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */; };
 		BCCDACB228AB830B004C41BD /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BCCDACB128AB830B004C41BD /* FirebaseAnalytics */; };
 		BCCDACB428AB830B004C41BD /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = BCCDACB328AB830B004C41BD /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -63,7 +63,7 @@
 		BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewController.swift; sourceTree = "<group>"; };
 		BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyProgramViewController.storyboard; sourceTree = "<group>"; };
 		BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailViewController.storyboard; sourceTree = "<group>"; };
-		BCA5B9FA28AFB7AC00F04AFB /* VCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCModel.swift; sourceTree = "<group>"; };
+		BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVCModel.swift; sourceTree = "<group>"; };
 		BCCDAC9128AB7DAC004C41BD /* IntroduceBodyBuilding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntroduceBodyBuilding.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BCCDAC9628AB7DAC004C41BD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,8 +72,8 @@
 		BCCDAC9D28AB7DAD004C41BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCCDACA028AB7DAD004C41BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BCCDACA228AB7DAD004C41BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BCCDACAA28AB7E35004C41BD /* HealthCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthCell.swift; sourceTree = "<group>"; };
-		BCCDACAB28AB7E35004C41BD /* CellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellModel.swift; sourceTree = "<group>"; };
+		BCCDACAA28AB7E35004C41BD /* MainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
+		BCCDACAB28AB7E35004C41BD /* MainTableViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewCellModel.swift; sourceTree = "<group>"; };
 		BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -136,11 +136,11 @@
 			children = (
 				BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */,
 				BCCDAC9628AB7DAC004C41BD /* SceneDelegate.swift */,
-				BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */,
+				BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */,
+				BCCDACAB28AB7E35004C41BD /* MainTableViewCellModel.swift */,
+				BCCDACAA28AB7E35004C41BD /* MainTableViewCell.swift */,
 				BCCDAC9828AB7DAC004C41BD /* ViewController.swift */,
-				BCCDACAA28AB7E35004C41BD /* HealthCell.swift */,
-				BCCDACAB28AB7E35004C41BD /* CellModel.swift */,
-				BCA5B9FA28AFB7AC00F04AFB /* VCModel.swift */,
+				BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */,
 				BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */,
 				BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */,
 				BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */,
@@ -268,13 +268,13 @@
 			files = (
 				BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */,
 				BCCDAC9928AB7DAC004C41BD /* ViewController.swift in Sources */,
-				BCCDACAC28AB7E35004C41BD /* HealthCell.swift in Sources */,
+				BCCDACAC28AB7E35004C41BD /* MainTableViewCell.swift in Sources */,
 				BCCDAC9528AB7DAC004C41BD /* AppDelegate.swift in Sources */,
 				BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */,
 				BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */,
-				BCCDACAD28AB7E35004C41BD /* CellModel.swift in Sources */,
+				BCCDACAD28AB7E35004C41BD /* MainTableViewCellModel.swift in Sources */,
 				BCCDAC9728AB7DAC004C41BD /* SceneDelegate.swift in Sources */,
-				BCA5B9FB28AFB7AC00F04AFB /* VCModel.swift in Sources */,
+				BCA5B9FB28AFB7AC00F04AFB /* DetailVCModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

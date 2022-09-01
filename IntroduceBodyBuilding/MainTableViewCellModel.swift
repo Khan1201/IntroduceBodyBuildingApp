@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CellModel: Codable {
+struct MainTableViewCellModel: Codable {
     
     var title: String
     var author: String

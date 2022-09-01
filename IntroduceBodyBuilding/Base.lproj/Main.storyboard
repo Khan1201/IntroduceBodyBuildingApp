@@ -41,7 +41,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="HealthCell" rowHeight="165" id="yKJ-9f-TX6" customClass="HealthCell" customModule="IntroduceBodyBuilding" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MainTableViewCell" rowHeight="165" id="yKJ-9f-TX6" customClass="MainTableViewCell" customModule="IntroduceBodyBuilding" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="49.5" width="414" height="165"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yKJ-9f-TX6" id="XLF-g5-ZvV">
@@ -132,7 +132,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="5ME-af-7bm"/>
                     <connections>
-                        <outlet property="healthTableView" destination="cAJ-6S-r7Q" id="VlY-te-ceG"/>
+                        <outlet property="mainTableView" destination="cAJ-6S-r7Q" id="rL5-iW-LgZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gea-JT-NND" sceneMemberID="firstResponder"/>

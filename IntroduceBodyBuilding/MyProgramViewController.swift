@@ -3,9 +3,75 @@ import UIKit
 import CoreData
 import CoreAudio
 
+class BBCollectionViewCell: UICollectionViewCell {
+    
+    @IBOutlet weak var BBimageView: UIImageView!{
+        didSet{
+            MyProgramViewController().setviewImage(imageView: BBimageView, imageName: "bodybuilding")
+        }
+    }
+    
+    @IBOutlet weak var BBTitleLabel: UILabel!
+    
+}
+
+class PBCollectionViewCell: UICollectionViewCell {
+    
+    
+    @IBOutlet weak var PBimageView: UIImageView!{
+        didSet{
+            MyProgramViewController().setviewImage(imageView: PBimageView, imageName: "powerbuilding")
+        }
+    }
+    @IBOutlet weak var PBTitleLabel: UILabel!
+}
+
+class PLCollectionViewCell: UICollectionViewCell {
+    
+    
+    @IBOutlet weak var PLimageView: UIImageView!{
+        didSet{
+            MyProgramViewController().setviewImage(imageView: PLimageView, imageName: "powerlifting")
+        }
+    }
+    @IBOutlet weak var PLTitleLabel: UILabel!
+} // <- storyboard ui
+
+
 class MyProgramViewController: UIViewController {
     
+    var basketTitle: String?
+    var basketImageNmae: String?
+    var basketDescription: String?
+    var basketUrl: String?
+    
+    static let appdelegate = UIApplication.shared.delegate as! AppDelegate
+    static var basketModel = [MyProgram]()
+    
+    static var rowCount = 0
+    
+    static var bodybuildingModel : [MyProgram] = []
+    static var powerbuildingModel : [MyProgram] = []
+    static var powerLiftingModel : [MyProgram] = []
+    
+    @IBOutlet weak var BBCollectionView: UICollectionView!{
+        didSet{
+            BBCollectionView.reloadData()
+        }
+    }
+    @IBOutlet weak var PBCollectionView: UICollectionView!{
+        didSet{
+            PBCollectionView.reloadData()
+        }
+    }
+    @IBOutlet weak var PLCollectionView: UICollectionView!{
+        didSet{
+            PLCollectionView.reloadData()
+        }
+    }
+    
     class MakeBasketData {
+        
         func makeBasketData() { //coreData에서 데이터 read
             let fetchRequest: NSFetchRequest<MyProgram> = MyProgram.fetchRequest()
             let context = appdelegate.persistentContainer.viewContext
@@ -48,6 +114,17 @@ class MyProgramViewController: UIViewController {
         }
     }
     
+    class closeData: UIButton { //(selector에 파라미터 전달 위해 클래스 생성)
+        var title: String?
+        var view: UICollectionView?
+        
+        convenience init(title: String, view: UICollectionView){
+            self.init() //버튼 활성화 위해 필수 uibutton()
+            self.title = title
+            self.view = view
+        }
+    }
+    
     func moveDetailVC(model: [MyProgram],indexPath: IndexPath) {
         
         if let moveVC = UIStoryboard(name: "DetailViewController", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController{
@@ -60,20 +137,11 @@ class MyProgramViewController: UIViewController {
         }
     }
     
-    class closeData: UIButton { //(selector에 파라미터 전달 위해 클래스 생성)
-        var title: String?
-        var view: UICollectionView?
-
-        convenience init(title: String, view: UICollectionView){
-            self.init() //버튼 활성화 위해 필수 uibutton()
-            self.title = title
-            self.view = view
-        }
-    }
+    
     
     func makeCloseButton(cell: UICollectionViewCell, title: String, view: UICollectionView){ //셀에 삭제 버튼 추가 함수
         let closeButton = closeData(title: title, view: view)
-        closeButton.setImage(UIImage(systemName: "x.circle"), for: .normal)
+        closeButton.setImage(UIImage(systemName: "x.circle.fill"), for: .normal)
         closeButton.imageView?.tintColor = .systemRed
         closeButton.translatesAutoresizingMaskIntoConstraints = false //autolayout 사용 위해 false 필수
         
@@ -111,97 +179,33 @@ class MyProgramViewController: UIViewController {
         } catch {
             print("오류는 \(error)")
         }
-
+        
         view.reloadData()
     }
     
-    @IBOutlet weak var BBCollectionView: UICollectionView!{
-        didSet{
-            BBCollectionView.reloadData()
-        }
-    }
-    @IBOutlet weak var PBCollectionView: UICollectionView!{
-        didSet{
-            PBCollectionView.reloadData()
-        }
-    }
-    @IBOutlet weak var PLCollectionView: UICollectionView!{
-        didSet{
-            PLCollectionView.reloadData()
-        }
+    func setviewImage(imageView: UIImageView, imageName: String){
+        imageView.image = UIImage(named: imageName)
+        imageView.layer.cornerRadius = imageView.bounds.width / 10
     }
     
-    var basketTitle: String?
-    var basketImageNmae: String?
-    var basketDescription: String?
-    var basketUrl: String?
     
-    static let appdelegate = UIApplication.shared.delegate as! AppDelegate
-    static var basketModel = [MyProgram]()
-    
-    static var rowCount = 0
-    
-    static var bodybuildingModel : [MyProgram] = []
-    static var powerbuildingModel : [MyProgram] = []
-    static var powerLiftingModel : [MyProgram] = []
-    
+    func setDelegateDataSource(collectionView: UICollectionView){
+        collectionView.dataSource = self
+        collectionView.delegate = self
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         MakeBasketData().makeBasketData()
-        BBCollectionView.dataSource = self
-        BBCollectionView.delegate = self
         
-        PBCollectionView.dataSource = self
-        PBCollectionView.delegate = self
-        
-        PLCollectionView.dataSource = self
-        PLCollectionView.delegate = self
+        setDelegateDataSource(collectionView: BBCollectionView)
+        setDelegateDataSource(collectionView: PBCollectionView)
+        setDelegateDataSource(collectionView: PLCollectionView)
         
     }
     
 }
-
-class BBCollectionViewCell: UICollectionViewCell {
-    
-    @IBOutlet weak var BBimageView: UIImageView!{
-        didSet{
-            BBimageView.image = UIImage(named: "bodybuilding")
-            BBimageView.layer.cornerRadius = BBimageView.bounds.width / 10
-            
-        }
-    }
-    
-    @IBOutlet weak var BBTitleLabel: UILabel!
-    
-}
-
-class PBCollectionViewCell: UICollectionViewCell {
-    
-    
-    @IBOutlet weak var PBimageView: UIImageView!{
-        didSet{
-            PBimageView.image = UIImage(named: "powerbuilding")
-            PBimageView.layer.cornerRadius = PBimageView.bounds.width / 10
-        }
-    }
-    @IBOutlet weak var PBTitleLabel: UILabel!
-}
-
-class PLCollectionViewCell: UICollectionViewCell {
-    
-    
-    @IBOutlet weak var PLimageView: UIImageView!{
-        didSet{
-            PLimageView.image = UIImage(named: "powerlifting")
-            PLimageView.layer.cornerRadius = PLimageView.bounds.width / 10
-        }
-    }
-    @IBOutlet weak var PLTitleLabel: UILabel!
-}
-
-
 
 extension MyProgramViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -273,7 +277,7 @@ extension MyProgramViewController: UICollectionViewDelegate, UICollectionViewDat
         }
         else {
             moveDetailVC(model: MyProgramViewController.powerLiftingModel, indexPath: indexPath)
-
+            
         }
     }
 }

@@ -1,35 +1,36 @@
 
 import UIKit
 import FirebaseFirestore
-import FirebaseCore
-import Firebase
 import CoreData
 
 class ViewController: UIViewController{
-   
     
-  
+    @IBOutlet weak var mainTableView: UITableView!
     
-
-    @IBOutlet weak var healthTableView: UITableView!
-        
-    struct cellData{ // 셀 데이터 및 뷰 컨트롤러 데이터 저장 구조체
-        static var cellModel = [[CellModel]]()
-        static var vcModel = [[VCModel]]()
-        static var filteredModel = [[CellModel]]()
+    var isFiltering: Bool {
+        let searchController = self.navigationItem.searchController
+        let isActive = searchController?.isActive ?? false
+        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false //서치바에 텍스트가 존재 시 true
+        return isActive && isSearchBarHasText
     }
     
-//    func makeData(){ //내부데이터 생성
-//
-//
-//        cellData.vcModel.append(
-//            [VCModel(title: "nSuns 5/3/1 Complete", image: "powerlifting", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program. It progresses on a weekly basis, making it well suited for late stage novice and early intermediate lifters. It is known for its challenging amount of volume. Those who stick with it tend to find great results from the additional work capacity", url: "https://liftvault.com/programs/powerlifting/n-suns-lifting-spreadsheets/")]
-//
-//        cellData.cellModel.append(
-//        [CellModel(title: "nSuns 5/3/1 Complete", author: "nSuns", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program", recommend: "★★★★☆", division: "PowerLifting", image: "powerlifting")]
-//        )
-//
-//    }
+    struct cellData{ // 셀 데이터 및 뷰 컨트롤러 데이터 저장 구조체
+        static var cellModel = [[MainTableViewCellModel]]()
+        static var detailVCModel = [[DetailVCModel]]()
+        static var filteredModel = [[MainTableViewCellModel]]()
+    }
+    
+    //    func makeFireStoreData(){ //내부데이터 생성
+    //
+    //
+    //        cellData.detailVCModel.append(
+    //            [DetailVCModel(title: "nSuns 5/3/1 Complete", image: "powerlifting", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program. It progresses on a weekly basis, making it well suited for late stage novice and early intermediate lifters. It is known for its challenging amount of volume. Those who stick with it tend to find great results from the additional work capacity", url: "https://liftvault.com/programs/powerlifting/n-suns-lifting-spreadsheets/")]
+    //
+    //        cellData.cellModel.append(
+    //        [MainTableViewCellModel(title: "nSuns 5/3/1 Complete", author: "nSuns", description: "nSuns 5/3/1 is a linear progression powerlifting program that was inspired by Jim Wendler’s 5/3/1 strength program", recommend: "★★★★☆", division: "PowerLifting", image: "powerlifting")]
+    //        )
+    //
+    //    }
     
     func makeSearchBar(){
         let searchController = UISearchController(searchResultsController: nil)
@@ -44,95 +45,82 @@ class ViewController: UIViewController{
         
     }
     
-    var isFiltering: Bool {
-        let searchController = self.navigationItem.searchController
-        let isActive = searchController?.isActive ?? false
-        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false //서치바에 텍스트가 존재 시 true
-        return isActive && isSearchBarHasText
-    }
-    
-    
-    func makeData(){
+    func makeFireStoreData(){
         let db = Firestore.firestore()
-        db.collection("Program").getDocuments() { (querySnapshot, err) in //메인페이지 데이터 로딩
+        db.collection("Program").getDocuments() { (querySnapshot, err) in //메인페이지 데이터 Read
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-
+                    
                     var count = 0
                     guard let data = try? JSONSerialization.data(withJSONObject: Array(arrayLiteral: document.data()), options: []) else{return} //Json 데이터로 변환
-                    let decode = try? JSONDecoder().decode([CellModel].self, from: data)
+                    let decode = try? JSONDecoder().decode([MainTableViewCellModel].self, from: data)
                     cellData.cellModel.append(decode!) //document 1개당 cellModel.append
                     count += 1
-
+                    
                 }
-                self.healthTableView.reloadData()
+                self.mainTableView.reloadData()
             }
         }
         
-        db.collection("Detail").getDocuments() { (querySnapshot, err) in //상세페이지 데이터 로딩
+        db.collection("Detail").getDocuments() { (querySnapshot, err) in //상세페이지 데이터 Read
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-
+                    
                     var count = 0
                     guard let data = try? JSONSerialization.data(withJSONObject: Array(arrayLiteral: document.data()), options: []) else{return} //Json 데이터로 변환
-                    let decode = try? JSONDecoder().decode([VCModel].self, from: data)
-                    cellData.vcModel.append(decode!) //document 1개당 cellModel.append
+                    let decode = try? JSONDecoder().decode([DetailVCModel].self, from: data)
+                    cellData.detailVCModel.append(decode!) //document 1개당 cellModel.append
                     count += 1
-
+                    
                 }
                 
             }
         }
     }
-    func configureTestButton() {
-        let testButton = UIButton()
+    
+    func makeBasketButton() {
+        let basketButton = UIButton()
         
-        testButton.backgroundColor = .systemGray3
-        testButton.translatesAutoresizingMaskIntoConstraints = false
-        testButton.setImage(UIImage(named: "basket"), for: .normal)
-        testButton.imageView?.contentMode = .scaleToFill
+        basketButton.backgroundColor = .systemGray3
+        basketButton.translatesAutoresizingMaskIntoConstraints = false
+        basketButton.setImage(UIImage(named: "basket"), for: .normal)
+        basketButton.imageView?.contentMode = .scaleToFill
         
-        testButton.layer.masksToBounds = true
-        testButton.layer.cornerRadius = 20
-        testButton.alpha = 0.9
+        basketButton.layer.masksToBounds = true
+        basketButton.layer.cornerRadius = 20
+        basketButton.alpha = 0.9
         
-        testButton.addTarget(self, action: #selector(moveVC), for: .touchUpInside)
+        basketButton.addTarget(self, action: #selector(moveBasketVC), for: .touchUpInside)
         
-        view.addSubview(testButton)
+        view.addSubview(basketButton)
         
-        testButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 730).isActive = true
-        testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 300).isActive = true
-        testButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
-        testButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18).isActive = true
+        basketButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 730).isActive = true
+        basketButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 300).isActive = true
+        basketButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
+        basketButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18).isActive = true
     }
     
-    @objc func moveVC() {
+    @objc func moveBasketVC() {
         let storyboard = UIStoryboard(name: "MyProgramViewController", bundle: nil).instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
         self.present(storyboard, animated: true)
     }
     
-    
-    
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
-  
-//        makeData()
-        makeData()
+        
+        makeFireStoreData()
         makeSearchBar()
         
-        healthTableView.delegate = self
-        healthTableView.dataSource = self
+        mainTableView.delegate = self
+        mainTableView.dataSource = self
         
-        configureTestButton()
+        makeBasketButton()
     }
-    
-
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
@@ -147,6 +135,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        
         if isFiltering {
             return cellData.filteredModel.count
         }
@@ -157,8 +146,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = healthTableView.dequeueReusableCell(withIdentifier: "HealthCell", for: indexPath)
-                    as! HealthCell
+        
+        let cell = mainTableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath)
+        as! MainTableViewCell
         
         cell.layer.cornerRadius = cell.bounds.height / 6
         
@@ -178,8 +168,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.divisionLabel.text = cellData.cellModel[indexPath.section][indexPath.row].division
             cell.healthImageView.image = UIImage(named: cellData.cellModel[indexPath.section][indexPath.row].image)
         }
- 
-        
         
         return cell
     }
@@ -193,27 +181,21 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         // storyboard 인스턴스화 -> 데이터 전송 -> 뷰 전환
-            if let moveVC = UIStoryboard(name: "DetailViewController", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController{
-                moveVC.titleName = cellData.vcModel[indexPath.section][indexPath.row].title
-                moveVC.imageName = cellData.vcModel[indexPath.section][indexPath.row].image
-                moveVC.descrip = cellData.vcModel[indexPath.section][indexPath.row].description
-                moveVC.url = cellData.vcModel[indexPath.section][indexPath.row].url
-                self.navigationController?.pushViewController(moveVC, animated: true)
-            }
-   
-            
-        
+        if let moveVC = UIStoryboard(name: "DetailViewController", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController{
+            moveVC.titleName = cellData.detailVCModel[indexPath.section][indexPath.row].title
+            moveVC.imageName = cellData.detailVCModel[indexPath.section][indexPath.row].image
+            moveVC.descrip = cellData.detailVCModel[indexPath.section][indexPath.row].description
+            moveVC.url = cellData.detailVCModel[indexPath.section][indexPath.row].url
+            self.navigationController?.pushViewController(moveVC, animated: true)
+        }
     }
-    
-    
-    
 }
 
 extension ViewController: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) { //SearchBar에 입력 시 실시간으로 결과 반영
         guard let text = searchController.searchBar.text else {return}
-        cellData.filteredModel  = cellData.cellModel.filter{ $0.contains { CellModel in //기존의 데이터 모델과 같은 형태의 filteredModel 선언, .filter를 통해 필터링된 데이터 저장 -> 테이블 뷰 리로드
-            if CellModel.title.contains(text) || CellModel.author.contains(text) || CellModel.description.contains(text) {
+        cellData.filteredModel  = cellData.cellModel.filter{ $0.contains { MainTableViewCellModel in //기존의 데이터 모델과 같은 형태의 filteredModel 선언, .filter를 통해 필터링된 데이터 저장 -> 테이블 뷰 리로드
+            if MainTableViewCellModel.title.contains(text) || MainTableViewCellModel.author.contains(text) || MainTableViewCellModel.description.contains(text) {
                 return true
             }
             else{
@@ -221,11 +203,8 @@ extension ViewController: UISearchResultsUpdating{
             }
         }
         }
-        healthTableView.reloadData()
+        mainTableView.reloadData()
     }
-    
-    
-    
 }
 
 

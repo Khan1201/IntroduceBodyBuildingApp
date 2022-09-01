@@ -27,7 +27,6 @@ class DetailViewController: UIViewController {
     }
     @IBOutlet weak var descriptionLabel: UILabel!{
         didSet{
-            
             descriptionLabel.text = descrip ?? "sorry"
             
             let attrString = NSMutableAttributedString(string: descriptionLabel.text!)
@@ -38,7 +37,6 @@ class DetailViewController: UIViewController {
             paragraphStyle.lineSpacing = 10
             attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
             descriptionLabel.attributedText = attrString
-            
             
         }
     }
@@ -67,52 +65,40 @@ class DetailViewController: UIViewController {
         let alertSuccessBtn = UIAlertAction(title: "OK", style: .default) { (action) in
             print("[SUCCESS] Dialog Success Button Click!")
             
-            
             //해당 뷰 컨트롤러로 이동
-            let myProgramVC = UIStoryboard(name: "MyProgramViewController", bundle: nil).instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
+            let myProgramVC = UIStoryboard(name: "MyProgramViewController", bundle:  nil).instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
             self.present(myProgramVC, animated: true)
         }
         let alertDeleteBtn = UIAlertAction(title: "Cancel", style: .destructive) { (action) in
             print("[SUCCESS] Dialog Cancel Button Click!")
         }
         
-        // Dialog에 버튼 추가
-        if(isAlert && self.alertBool == true) {
+        if(isAlert && self.alertBool == true) { // Dialog에 버튼 추가
             alert.addAction(alertDeleteBtn)
             alert.addAction(alertSuccessBtn)
-            
         }
         else {
             alert.addAction(alertDeleteBtn)
         }
-        // 화면에 출력
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil) // 화면에 출력
     }
-    
-    
-    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
     }
     
     @IBAction func urlButtonAction(_ sender: UIButton) {
         let setUrl = NSURL(string: url!)
         let moveUrl: SFSafariViewController = SFSafariViewController(url: setUrl! as URL)
         self.present(moveUrl, animated: true)
-        
-        
     }
+    
     @IBAction func basketButtonAction(_ sender: UIButton) {
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // coreData context 선언
         
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "MyProgram", in: context) else {return} //coreData entity 정의
-        
         
         do{
             let ls = MyProgramViewController.MakeBasketData()
@@ -128,7 +114,6 @@ class DetailViewController: UIViewController {
                 
                 try context.save()
                 try makeAlertDialog(title: "Notice", message: "Added to basket.                               Move to basket page ?") //다이얼로그 생성
-                
             }
             
             else{
@@ -163,27 +148,4 @@ class DetailViewController: UIViewController {
             print(error)
         }
     }
-    
-    ////        delete
-    //        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest.init(entityName: "MyProgram")
-    //        fetchRequest.predicate = NSPredicate(format: "division = %@", "bodybuilding")
-    //
-    //        do {
-    //                let test = try context.fetch(fetchRequest)
-    //                print("테스트는 \(test)")
-    //                let objectToDelete = test[0] as! NSManagedObject
-    //                context.delete(objectToDelete)
-    //                do {
-    //                    try context.save()
-    //                } catch {
-    //                    print("오류는 \(error)")
-    //                }
-    //            } catch {
-    //                print("오류는 \(error)")
-    //            }
-    //
-    //        //해당 뷰 컨트롤러로 이동
-
 }
-
-//}

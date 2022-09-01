@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct VCModel : Codable{
+struct DetailVCModel : Codable{
     var title: String
     var image: String
     var description: String
