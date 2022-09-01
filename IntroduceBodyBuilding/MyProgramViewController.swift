@@ -132,7 +132,7 @@ class MyProgramViewController: UIViewController {
             moveVC.imageName = model[indexPath.row].image
             moveVC.descrip = model[indexPath.row].description_
             moveVC.url = model[indexPath.row].url
-            moveVC.buttonBool = false
+            moveVC.addButtonBool = false //장바구니 페이지에서 상세페이지로 이동 시, 장바구니 추가 버튼 비활성화 구분자
             self.present(moveVC, animated: true)
         }
     }
