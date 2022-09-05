@@ -4,20 +4,15 @@ import CoreData
 import CoreAudio
 
 class BBCollectionViewCell: UICollectionViewCell {
-    
     @IBOutlet weak var BBimageView: UIImageView!{
         didSet{
             MyProgramViewController().setviewImage(imageView: BBimageView, imageName: "bodybuilding")
         }
     }
-    
     @IBOutlet weak var BBTitleLabel: UILabel!
-    
 }
 
 class PBCollectionViewCell: UICollectionViewCell {
-    
-    
     @IBOutlet weak var PBimageView: UIImageView!{
         didSet{
             MyProgramViewController().setviewImage(imageView: PBimageView, imageName: "powerbuilding")
@@ -27,8 +22,6 @@ class PBCollectionViewCell: UICollectionViewCell {
 }
 
 class PLCollectionViewCell: UICollectionViewCell {
-    
-    
     @IBOutlet weak var PLimageView: UIImageView!{
         didSet{
             MyProgramViewController().setviewImage(imageView: PLimageView, imageName: "powerlifting")
@@ -45,14 +38,7 @@ class MyProgramViewController: UIViewController {
     var basketDescription: String?
     var basketUrl: String?
     
-    static let appdelegate = UIApplication.shared.delegate as! AppDelegate
-    static var basketModel = [MyProgram]()
-    
     static var rowCount = 0
-    
-    static var bodybuildingModel : [MyProgram] = []
-    static var powerbuildingModel : [MyProgram] = []
-    static var powerLiftingModel : [MyProgram] = []
     
     @IBOutlet weak var BBCollectionView: UICollectionView!{
         didSet{
@@ -70,7 +56,13 @@ class MyProgramViewController: UIViewController {
         }
     }
     
-    class MakeBasketData {
+    static var basketModel = [MyProgram]()
+
+    static var bodybuildingModel : [MyProgram] = []
+    static var powerbuildingModel : [MyProgram] = []
+    static var powerLiftingModel : [MyProgram] = []
+    
+    class MakeData {
         
         func makeBasketData() { //coreData에서 데이터 read
             let fetchRequest: NSFetchRequest<MyProgram> = MyProgram.fetchRequest()
@@ -139,23 +131,30 @@ class MyProgramViewController: UIViewController {
     
     
     
-    func makeCloseButton(cell: UICollectionViewCell, title: String, view: UICollectionView){ //셀에 삭제 버튼 추가 함수
-        let closeButton = closeData(title: title, view: view)
-        closeButton.setImage(UIImage(systemName: "x.circle.fill"), for: .normal)
-        closeButton.imageView?.tintColor = .systemRed
-        closeButton.translatesAutoresizingMaskIntoConstraints = false //autolayout 사용 위해 false 필수
+    func makeButton(cell: UICollectionViewCell, title: String, view: UICollectionView){ //셀에 삭제 버튼 추가 함수
         
-        closeButton.addTarget(self, action: #selector(ClickCloseButton(_:)), for: .touchUpInside)
+        func closeButton(){
+            let closeButton = closeData(title: title, view: view)
+            closeButton.setImage(UIImage(systemName: "x.circle.fill"), for: .normal)
+            closeButton.imageView?.tintColor = .systemRed
+            closeButton.translatesAutoresizingMaskIntoConstraints = false //autolayout 사용 위해 false 필수
+            
+            closeButton.addTarget(self, action: #selector(clickCloseButton(_:)), for: .touchUpInside)
+            
+            cell.addSubview(closeButton)
+            
+            closeButton.topAnchor.constraint(equalTo: cell.topAnchor, constant: 0).isActive = true
+            closeButton.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 140).isActive = true
+            closeButton.bottomAnchor.constraint(equalTo: cell.bottomAnchor, constant: -125).isActive = true
+            closeButton.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: 0).isActive = true
+        }
         
-        cell.addSubview(closeButton)
-        
-        closeButton.topAnchor.constraint(equalTo: cell.topAnchor, constant: 0).isActive = true
-        closeButton.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 140).isActive = true
-        closeButton.bottomAnchor.constraint(equalTo: cell.bottomAnchor, constant: -125).isActive = true
-        closeButton.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: 0).isActive = true
+        closeButton()
     }
     
-    @objc func ClickCloseButton(_ sender: Any) {
+    static let appdelegate = UIApplication.shared.delegate as! AppDelegate
+    
+    @objc func clickCloseButton(_ sender: Any) {
         
         let title = (sender as! closeData).title //sender -> Any 선언 후 데이터가 담긴 클래스로 타입 캐스팅 후 접근
         let view = (sender as! closeData).view!
@@ -197,7 +196,7 @@ class MyProgramViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        MakeBasketData().makeBasketData()
+        MakeData().makeBasketData()
         
         setDelegateDataSource(collectionView: BBCollectionView)
         setDelegateDataSource(collectionView: PBCollectionView)
@@ -212,19 +211,19 @@ extension MyProgramViewController: UICollectionViewDelegate, UICollectionViewDat
         
         if collectionView == BBCollectionView {
             
-            MyProgramViewController.bodybuildingModel = MakeBasketData().CheckDuplicated(division: "bodybuilding", divisionModel: &MyProgramViewController.bodybuildingModel)
+            MyProgramViewController.bodybuildingModel = MakeData().CheckDuplicated(division: "bodybuilding", divisionModel: &MyProgramViewController.bodybuildingModel)
             
             return MyProgramViewController.rowCount
         }
         else if collectionView == PBCollectionView {
             
-            MyProgramViewController.powerbuildingModel = MakeBasketData().CheckDuplicated(division: "powerbuilding", divisionModel: &MyProgramViewController.powerbuildingModel)
+            MyProgramViewController.powerbuildingModel = MakeData().CheckDuplicated(division: "powerbuilding", divisionModel: &MyProgramViewController.powerbuildingModel)
             
             return MyProgramViewController.rowCount
         }
         
         else {
-            MyProgramViewController.powerLiftingModel = MakeBasketData().CheckDuplicated(division: "powerlifting", divisionModel: &MyProgramViewController.powerLiftingModel)
+            MyProgramViewController.powerLiftingModel = MakeData().CheckDuplicated(division: "powerlifting", divisionModel: &MyProgramViewController.powerLiftingModel)
             
             return MyProgramViewController.rowCount
         }
@@ -238,7 +237,7 @@ extension MyProgramViewController: UICollectionViewDelegate, UICollectionViewDat
         if collectionView == BBCollectionView {
             let cell = BBCollectionView.dequeueReusableCell(withReuseIdentifier: "BBCollectionViewCell", for: indexPath) as! BBCollectionViewCell
             
-            makeCloseButton(cell: cell, title: MyProgramViewController.bodybuildingModel[indexPath.row].title!, view: collectionView)
+            makeButton(cell: cell, title: MyProgramViewController.bodybuildingModel[indexPath.row].title!, view: collectionView)
             cell.BBTitleLabel.text = MyProgramViewController.bodybuildingModel[indexPath.row].title
             
             return cell
@@ -247,7 +246,7 @@ extension MyProgramViewController: UICollectionViewDelegate, UICollectionViewDat
         else if collectionView == PBCollectionView {
             let cell = PBCollectionView.dequeueReusableCell(withReuseIdentifier: "PBCollectionViewCell", for: indexPath) as! PBCollectionViewCell
             
-            makeCloseButton(cell: cell, title: MyProgramViewController.powerbuildingModel[indexPath.row].title!, view: collectionView)
+            makeButton(cell: cell, title: MyProgramViewController.powerbuildingModel[indexPath.row].title!, view: collectionView)
             cell.PBTitleLabel.text = MyProgramViewController.powerbuildingModel[indexPath.row].title
             
             return cell
@@ -256,7 +255,7 @@ extension MyProgramViewController: UICollectionViewDelegate, UICollectionViewDat
         else {
             let cell = PLCollectionView.dequeueReusableCell(withReuseIdentifier: "PLCollectionViewCell", for: indexPath) as! PLCollectionViewCell
             
-            makeCloseButton(cell: cell, title: MyProgramViewController.powerLiftingModel[indexPath.row].title!, view: collectionView)
+            makeButton(cell: cell, title: MyProgramViewController.powerLiftingModel[indexPath.row].title!, view: collectionView)
             cell.PLTitleLabel.text = MyProgramViewController.powerLiftingModel[indexPath.row].title
             
             return cell
@@ -267,17 +266,14 @@ extension MyProgramViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView == BBCollectionView {
-            
             moveDetailVC(model: MyProgramViewController.bodybuildingModel, indexPath: indexPath)
         }
         
         else if collectionView == PBCollectionView {
-            
             moveDetailVC(model: MyProgramViewController.powerbuildingModel, indexPath: indexPath)
         }
         else {
             moveDetailVC(model: MyProgramViewController.powerLiftingModel, indexPath: indexPath)
-            
         }
     }
 }

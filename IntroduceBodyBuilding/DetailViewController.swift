@@ -66,7 +66,7 @@ class DetailViewController: UIViewController {
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "MyProgram",
                                                                  in: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext) else {return} //coreData entity 정의
         
-        MyProgramViewController.MakeBasketData().makeBasketData() //장바구니 전체 데이터 read
+        MyProgramViewController.MakeData().makeBasketData() //장바구니 전체 데이터 read
         
         if MyProgramViewController.basketModel.isEmpty { // 장바구니 데이터가 없을 시, coreData에 데이터 삽입
             insertData(object: NSManagedObject(entity: entityDescription,
