@@ -37,8 +37,10 @@ class MyProgramViewController: UIViewController {
     var basketImageNmae: String?
     var basketDescription: String?
     var basketUrl: String?
-    
-    static var rowCount = 0
+
+    struct sectionInRow{
+        static var rowCount = 0
+    }
     
     @IBOutlet weak var BBCollectionView: UICollectionView!{
         didSet{
@@ -77,7 +79,7 @@ class MyProgramViewController: UIViewController {
         
         func CheckDuplicated(division: String, divisionModel: inout [MyProgram]) -> [MyProgram] { //중복체크 로직, 중복되지 않은 배열을 return
             
-            MyProgramViewController.rowCount = 0 //해당되는 데이터 개수만큼 콜렉션 뷰 셀 개수 반환
+            sectionInRow.rowCount = 0 //해당되는 데이터 개수만큼 콜렉션 뷰 셀 개수 반환
             divisionModel = []
             
             for data in MyProgramViewController.basketModel{
@@ -85,7 +87,7 @@ class MyProgramViewController: UIViewController {
                     
                     if divisionModel.isEmpty { //첫 데이터 삽입
                         divisionModel.append(data)
-                        MyProgramViewController.rowCount += 1
+                        sectionInRow.rowCount += 1
                     }
                     else{
                         var titleCount = 0 //중복 체크 로직 (중복되지 않을시 카운트 +1)
@@ -96,7 +98,7 @@ class MyProgramViewController: UIViewController {
                         }
                         if titleCount == divisionModel.count{ //카운트가 해당 모델 개수와 같을 시 (중복이 없을때) 데이터 삽입
                             divisionModel.append(data)
-                            MyProgramViewController.rowCount += 1
+                            sectionInRow.rowCount += 1
                         }
                     }
                     
@@ -195,13 +197,10 @@ class MyProgramViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         MakeData().makeBasketData()
-        
         setDelegateDataSource(collectionView: BBCollectionView)
         setDelegateDataSource(collectionView: PBCollectionView)
         setDelegateDataSource(collectionView: PLCollectionView)
-        
     }
     
 }
@@ -213,19 +212,19 @@ extension MyProgramViewController: UICollectionViewDelegate, UICollectionViewDat
             
             MyProgramViewController.bodybuildingModel = MakeData().CheckDuplicated(division: "bodybuilding", divisionModel: &MyProgramViewController.bodybuildingModel)
             
-            return MyProgramViewController.rowCount
+            return sectionInRow.rowCount
         }
         else if collectionView == PBCollectionView {
             
             MyProgramViewController.powerbuildingModel = MakeData().CheckDuplicated(division: "powerbuilding", divisionModel: &MyProgramViewController.powerbuildingModel)
             
-            return MyProgramViewController.rowCount
+            return sectionInRow.rowCount
         }
         
         else {
             MyProgramViewController.powerLiftingModel = MakeData().CheckDuplicated(division: "powerlifting", divisionModel: &MyProgramViewController.powerLiftingModel)
             
-            return MyProgramViewController.rowCount
+            return sectionInRow.rowCount
         }
         
     }
