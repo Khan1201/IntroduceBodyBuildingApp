@@ -17,10 +17,7 @@ class ViewController: UIViewController{
         static var filteredModel = [MainVCModel]() //search filter
     }
     
-    func MainTVSet(){
-        mainTableView.separatorStyle = .none
-        mainTableView.showsVerticalScrollIndicator = false
-    }
+
     
     func makeFireStoreData(){
         readData(collection: "Program", model: cellData.mainVCModel) // Program -> 메인 셀 데이터
@@ -52,8 +49,9 @@ class ViewController: UIViewController{
         }
         
         func tableViewBinding(collection: String){
-            if collection == "Program" { // 메인 테이블 뷰 데이터 로딩 -> 메인 테이블 뷰 바인딩
+            if collection == "Program" { // Program -> 메인 테이블 뷰 데이터
                 self.bindTableView(isFilterd: false)
+                setupTableViewDelegate()
             }
         }
         
@@ -85,21 +83,6 @@ class ViewController: UIViewController{
         }
     }
     
-    func moveVC <T>(name: String, VC: T, indexPath: IndexPath?) {
-        if VC is DetailViewController{
-            let storyboard = UIStoryboard(name: name, bundle: nil).instantiateViewController(withIdentifier: name) as! DetailViewController
-            storyboard.titleName = cellData.detailVCModel[indexPath!.row].title
-            storyboard.imageName = cellData.detailVCModel[indexPath!.row].image
-            storyboard.descrip = cellData.detailVCModel[indexPath!.row].description
-            storyboard.url = cellData.detailVCModel[indexPath!.row].url
-            self.navigationController?.pushViewController(storyboard, animated: true)
-        }
-        else if VC is MyProgramViewController{
-            let storyboard = UIStoryboard(name: name, bundle: nil).instantiateViewController(withIdentifier: name) as! MyProgramViewController
-            self.present(storyboard, animated: true)
-        }
-    }
-    
     func makeButton() {
         basketButton()
         
@@ -110,7 +93,7 @@ class ViewController: UIViewController{
             
             func selectAction(){
                 basketButton.rx.tap.bind { _ in
-                    self.moveVC(name: "MyProgramViewController", VC: MyProgramViewController(), indexPath: nil)
+                    self.moveVC(VC: MyProgramViewController(), data: nil, indexPath: nil)
                 }.disposed(by: disposeBag) // 구독해제 (메모리 정리)
             }
             
@@ -133,18 +116,41 @@ class ViewController: UIViewController{
         }
         
     }
-    private func bindTableView(isFilterd: Bool) {
-        mainTableView.delegate = nil
-        mainTableView.dataSource = nil
+    
+    func moveVC <T>(VC: T, data: ControlEvent<MainVCModel>.Element?, indexPath: IndexPath?) {
         
+        if VC is DetailViewController{ // 상세 뷰 컨트롤러
+            let storyboard = UIStoryboard(name: "DetailViewController", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+            var indexModel: Int = 0 // 메인 뷰 - 상세 뷰 데이터 바인딩 위한 index
+            for (index, model) in cellData.mainVCModel.enumerated(){
+                if model.title == data!.title  {
+                    indexModel = index
+                }
+            }
+            self.mainTableView.deselectRow(at: indexPath!, animated: true)
+            
+            storyboard.titleName = cellData.detailVCModel[indexModel].title //위에서 구한 index로 상세 뷰 데이터 배열에서 해당 데이터 가져옴
+            storyboard.descrip = cellData.detailVCModel[indexModel].description
+            storyboard.imageName = cellData.detailVCModel[indexModel].image
+            storyboard.url = cellData.detailVCModel[indexModel].url
+            self.navigationController?.pushViewController(storyboard, animated: true)
+        }
+        
+        else if VC is MyProgramViewController{ //장바구니 뷰 컨트롤러
+            let storyboard = UIStoryboard(name: "MyProgramViewController", bundle: nil).instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
+            self.present(storyboard, animated: true)
+        }
+    }
+    
+    private func bindTableView(isFilterd: Bool) {
+
+        setupTableViewOption()
         let mainOb: Observable<[MainVCModel]> = Observable.of(cellData.mainVCModel) //메인 테이블 뷰
         let filteredOb: Observable<[MainVCModel]> = Observable.of(cellData.filteredModel) // 검색 활성화 시 출력되는 테이블 뷰
         
-        isFilterd ? bindingCell(observable: filteredOb) : bindingCell(observable: mainOb)
+        isFilterd ? bindingCell(observable: filteredOb) : bindingCell(observable: mainOb) //필터링(검색 활성화 시)
         
-        setupTableViewDelegate()
-        
-        func bindingCell(observable: Observable<[MainVCModel]>){
+        func bindingCell(observable: Observable<[MainVCModel]>){ // 메인 테이블 뷰에 cell 바인딩
             observable.bind(to: self.mainTableView.rx.items(cellIdentifier: "MainVCCell", cellType: MainVCCell.self)) { (index: Int, element: MainVCModel, cell: MainVCCell) in
                 
                 cell.titleLabel.text = element.title
@@ -156,30 +162,35 @@ class ViewController: UIViewController{
             }.disposed(by: self.disposeBag)
         }
         
-        func setupTableViewDelegate() {
-            mainTableView.rx.itemSelected
-                .bind(onNext: { indexPath in
-                    self.mainTableView.deselectRow(at: indexPath, animated: true)
-                    self.moveVC(name: "DetailViewController", VC: DetailViewController(), indexPath: indexPath)
-                }).disposed(by: disposeBag)
+        func setupTableViewOption(){
+            mainTableView.separatorStyle = .none
+            mainTableView.showsVerticalScrollIndicator = false
+            mainTableView.delegate = nil
+            mainTableView.dataSource = nil
         }
+    }
+        
+    func setupTableViewDelegate(){ //selected action
+        Observable.zip(mainTableView.rx.modelSelected(MainVCModel.self), mainTableView.rx.itemSelected)
+            .bind { (data, indexPath) in //data: 상세 뷰에 데이터 바인딩 위해, indexPath: deselectRow 위해
+                self.moveVC(VC: DetailViewController(), data: data, indexPath: indexPath)
+            }.disposed(by: disposeBag)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         makeFireStoreData()
         makeSearchBar()
-        MainTVSet()
         makeButton()
     }
 }
 
 extension ViewController: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) { //SearchBar에 입력 시 실시간으로 결과 반영
-        guard let text = searchController.searchBar.text else {return}
+        guard let text = searchController.searchBar.text?.uppercased() else {return}
         cellData.filteredModel  = cellData.mainVCModel.filter({ MainVCModel in
-            MainVCModel.title.contains(text) || MainVCModel.author.contains(text) ||
-            MainVCModel.description.contains(text) || MainVCModel.division.contains(text)
+            MainVCModel.title.uppercased().contains(text) || MainVCModel.author.uppercased().contains(text) ||
+            MainVCModel.description.uppercased().contains(text) || MainVCModel.division.uppercased().contains(text)
         })
         isFiltering ? bindTableView(isFilterd: true) : bindTableView(isFilterd: false)
     }
