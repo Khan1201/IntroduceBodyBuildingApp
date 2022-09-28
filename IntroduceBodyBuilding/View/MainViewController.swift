@@ -9,10 +9,11 @@ import RxDataSources
 class MainViewController: UIViewController{
     
     @IBOutlet weak var mainTableView: UITableView!
-
+    
     let disposeBag = DisposeBag()
     var mainViewModel = MainTableViewModel()
     var detailViewModel = DetailViewModel()
+    //    var detailViewModel = DetailViewModel()
     
     var isFiltering: Bool{ //검색 활성화 인식 로직
         let searchController = self.navigationItem.searchController
@@ -44,7 +45,7 @@ class MainViewController: UIViewController{
         let basketButton = UIButton()
         setButton()
         addCilckAction()
-
+        
         func setButton(){
             basketButton.backgroundColor = .systemGray3
             basketButton.translatesAutoresizingMaskIntoConstraints = false //autolayout 사용 위해 false 필수
@@ -99,23 +100,24 @@ class MainViewController: UIViewController{
         }
         
         func addCilckEvent(){ //click 이벤트
+            
             mainTableView.rx.itemSelected
-                .subscribe { [weak self] indexPath in //순환 참조 방지
+                .withLatestFrom(detailViewModel.detailViewObservable){ [weak self] indexPath, data in //순환 참조 방지
                     self?.mainTableView.deselectRow(at: indexPath, animated: true) //셀 선택시 선택 효과 고정 제거
                     
                     let detailVC = UIStoryboard(name: "DetailViewController", bundle: nil)
                         .instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
-                    detailVC.titleName = DetailViewModel.detailViewModel[indexPath.row].title
-                    detailVC.descrip = DetailViewModel.detailViewModel[indexPath.row].description
-                    detailVC.imageName = DetailViewModel.detailViewModel[indexPath.row].image
-                    detailVC.url = DetailViewModel.detailViewModel[indexPath.row].url
-                    //                detailVC.title = DetailViewModel.detailViewModel[indexPath.row].title
+                    detailVC.titleName = data[indexPath.row].title
+                    detailVC.descrip = data[indexPath.row].description
+                    detailVC.imageName = data[indexPath.row].image
+                    detailVC.url = data[indexPath.row].url
                     self?.navigationController?.pushViewController(detailVC, animated: true)
-                }.disposed(by: disposeBag)
+                }
+                .subscribe(onDisposed:  {
+                }).disposed(by: disposeBag)
         }
-
     }
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         makeSearchBar()

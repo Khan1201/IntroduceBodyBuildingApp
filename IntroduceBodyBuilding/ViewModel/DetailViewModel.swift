@@ -10,7 +10,8 @@ import Alamofire
 import RxSwift
 
 class DetailViewModel {
-    static var detailViewModel: [DetailVCModel.Fields] = []
+//    static var detailViewModel: [DetailVCModel.Fields] = []
+    var detailViewObservable: BehaviorSubject<[DetailVCModel.Fields]> = BehaviorSubject(value: [])
     
     init() {
         makeDetailVCData()
@@ -28,7 +29,8 @@ class DetailViewModel {
             switch response.result {
             case .success :
                 if let value = response.value?.documents {
-                    DetailViewModel.detailViewModel = value
+//                    DetailViewModel.detailViewModel = value
+                    self.detailViewObservable.onNext(value)
                 }
             case .failure(let error):
                 print("AF error: \(error)")
