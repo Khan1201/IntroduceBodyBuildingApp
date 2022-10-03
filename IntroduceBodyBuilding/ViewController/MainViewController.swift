@@ -13,7 +13,6 @@ class MainViewController: UIViewController{
     let disposeBag = DisposeBag()
     var mainViewModel = MainTableViewModel()
     var detailViewModel = DetailViewModel()
-    //    var detailViewModel = DetailViewModel()
     
     var isFiltering: Bool{ //검색 활성화 인식 로직
         let searchController = self.navigationItem.searchController
@@ -44,7 +43,7 @@ class MainViewController: UIViewController{
         
         let basketButton = UIButton()
         setButton()
-        addCilckAction()
+        addCilckEvent()
         
         func setButton(){
             basketButton.backgroundColor = .systemGray3
@@ -63,30 +62,30 @@ class MainViewController: UIViewController{
             basketButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18).isActive = true
         }
         
-        func addCilckAction(){
-            basketButton.rx.tap.bind { //버튼 액션
-                let basetVC = UIStoryboard(name: "MyProgramViewController", bundle: nil)
-                    .instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
-                self.present(basetVC, animated: true)
+        func addCilckEvent(){
+            _ = MyProgramViewModel() //선언과 동시에 coreData 생성 됨
+            basketButton.rx.tap.bind { [weak self] in //버튼 액션
+                if let self = self{
+                    let basetVC = UIStoryboard(name: "MyProgramViewController", bundle: nil)
+                        .instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
+                    self.present(basetVC, animated: true)
+                }
             }.disposed(by: disposeBag) // 구독해제 (메모리 정리)
         }
     }
     
-    
-    
     private func bindTableView(isFilterd: Bool) {
         
-        setupTableViewOption()
+        setTableViewOption()
         isFilterd ? bindingCell(data: mainViewModel.filteredObservable) : bindingCell(data: mainViewModel.tableViewObservable)
         addCilckEvent()
         
-        func setupTableViewOption(){ //테이블 뷰 초기설정
+        func setTableViewOption(){ //테이블 뷰 초기설정
             mainTableView.separatorStyle = .none
             mainTableView.showsVerticalScrollIndicator = false
             mainTableView.delegate = nil
             mainTableView.dataSource = nil
         }
-        
         func bindingCell(data: BehaviorSubject<[MainTVCellModel.Fields]>){ // 메인 테이블 뷰에 cell 바인딩
             data.bind(to: self.mainTableView.rx.items(cellIdentifier: "MainTableViewCell", cellType: MainTableViewCell.self)) { (index, element, cell) in
                 
@@ -100,17 +99,13 @@ class MainViewController: UIViewController{
         }
         
         func addCilckEvent(){ //click 이벤트
-            
             mainTableView.rx.itemSelected
                 .withLatestFrom(detailViewModel.detailViewObservable){ [weak self] indexPath, data in //순환 참조 방지
                     self?.mainTableView.deselectRow(at: indexPath, animated: true) //셀 선택시 선택 효과 고정 제거
                     
                     let detailVC = UIStoryboard(name: "DetailViewController", bundle: nil)
                         .instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
-                    detailVC.titleName = data[indexPath.row].title
-                    detailVC.descrip = data[indexPath.row].description
-                    detailVC.imageName = data[indexPath.row].image
-                    detailVC.url = data[indexPath.row].url
+                    detailVC.detailVCIndexObservable.onNext(data[indexPath.row])
                     self?.navigationController?.pushViewController(detailVC, animated: true)
                 }
                 .subscribe(onDisposed:  {
@@ -121,14 +116,48 @@ class MainViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         makeSearchBar()
-        makeBasketButton()
         bindTableView(isFilterd: false)
+        makeBasketButton()
     }
 }
 
 extension MainViewController: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) { //SearchBar에 입력 시 실시간으로 결과 반영
-        //        guard let text = searchController.searchBar.text?.uppercased() else {return}
+        guard let text = searchController.searchBar.text?.uppercased() else {return}
+        
+//        mainViewModel.tableViewObservable
+//            .filter({ datas in
+//                for data in datas{
+//                    data.title.uppercased().contains(text) || data.author.uppercased().contains(text) ||
+//                    data.description.uppercased().contains(text) || data.division.uppercased().contains(text)
+//                }
+//            })
+//            .subscribe { data in
+//                self.mainViewModel.filteredObservable
+//                    .onNext(data)
+//            }.disposed(by: disposeBag)
+        
+        mainViewModel.tableViewObservable
+            .map({ datas in
+                var tempArray: [MainTVCellModel.Fields] = []
+                for data in datas{
+                    if data.title.uppercased().contains(text) || data.author.uppercased().contains(text) ||
+                        data.description.uppercased().contains(text) || data.division.uppercased().contains(text) {
+                        tempArray.append(data)
+                    }
+                }
+                return tempArray
+            })
+            .subscribe { [weak self] data in
+                if let self = self{
+                    self.mainViewModel.filteredObservable
+                        .onNext(data)
+                    self.isFiltering ? self.bindTableView(isFilterd: true) : self.bindTableView(isFilterd: false)
+                    self.
+                }
+            }.disposed(by: disposeBag)
+        
+        
         //
         //        func filter
         //

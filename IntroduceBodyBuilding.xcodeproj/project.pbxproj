@@ -12,6 +12,8 @@
 		BC03D52328B0F85900BF718E /* bodybuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC03D52028B0F85900BF718E /* bodybuilding.png */; };
 		BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */; };
 		BC12B30328B1030C00F29612 /* powerbuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC12B30228B1030C00F29612 /* powerbuilding.png */; };
+		BC1BDDD028E55A3000238C60 /* MyProgramViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */; };
+		BC1BDDD228E5A02C00238C60 /* MyProgramViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BDDD128E5A02C00238C60 /* MyProgramViewCell.swift */; };
 		BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */; };
 		BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */; };
 		BC855C0228B7B75F005C4870 /* MyProgramViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */; };
@@ -37,6 +39,8 @@
 		BC03D52028B0F85900BF718E /* bodybuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bodybuilding.png; sourceTree = "<group>"; };
 		BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BC12B30228B1030C00F29612 /* powerbuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerbuilding.png; sourceTree = "<group>"; };
+		BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewModel.swift; sourceTree = "<group>"; };
+		BC1BDDD128E5A02C00238C60 /* MyProgramViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewCell.swift; sourceTree = "<group>"; };
 		BC855BF928B79F63005C4870 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewController.swift; sourceTree = "<group>"; };
 		BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyProgramViewController.storyboard; sourceTree = "<group>"; };
@@ -87,6 +91,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BC1BDDCC28E5599700238C60 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				BCCDAC9828AB7DAC004C41BD /* MainViewController.swift */,
+				BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */,
+				BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		BCCDAC8828AB7DAC004C41BD = {
 			isa = PBXGroup;
 			children = (
@@ -109,12 +123,11 @@
 			isa = PBXGroup;
 			children = (
 				BCE9D80328DC0C8000EA5A95 /* Model */,
-				BCE9D80228DC0C7B00EA5A95 /* View */,
+				BC1BDDCC28E5599700238C60 /* ViewController */,
 				BCE9D80128DC0C6D00EA5A95 /* ViewModel */,
+				BCE9D80228DC0C7B00EA5A95 /* View */,
 				BCCDAC9628AB7DAC004C41BD /* SceneDelegate.swift */,
 				BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */,
-				BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */,
-				BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */,
 				BCCDAC9D28AB7DAD004C41BD /* Assets.xcassets */,
 				BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */,
 				BCCDAC9F28AB7DAD004C41BD /* LaunchScreen.storyboard */,
@@ -132,6 +145,7 @@
 			children = (
 				BCE9D80428DC0D0E00EA5A95 /* MainTableViewModel.swift */,
 				BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */,
+				BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -139,11 +153,11 @@
 		BCE9D80228DC0C7B00EA5A95 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				BCCDAC9828AB7DAC004C41BD /* MainViewController.swift */,
 				BCCDACAA28AB7E35004C41BD /* MainTableViewCell.swift */,
+				BC1BDDD128E5A02C00238C60 /* MyProgramViewCell.swift */,
 				BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */,
-				BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */,
 				BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */,
+				BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -292,6 +306,8 @@
 				BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */,
 				BCCDACAD28AB7E35004C41BD /* MainTVCellModel.swift in Sources */,
 				BCCDAC9728AB7DAC004C41BD /* SceneDelegate.swift in Sources */,
+				BC1BDDD228E5A02C00238C60 /* MyProgramViewCell.swift in Sources */,
+				BC1BDDD028E55A3000238C60 /* MyProgramViewModel.swift in Sources */,
 				BCC4E05828E2C0680061EAA9 /* DetailViewModel.swift in Sources */,
 				BCA5B9FB28AFB7AC00F04AFB /* DetailVCModel.swift in Sources */,
 			);
