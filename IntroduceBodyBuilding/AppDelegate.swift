@@ -79,11 +79,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
-    
-    
-    
-   
-
 
 }
+
+
 

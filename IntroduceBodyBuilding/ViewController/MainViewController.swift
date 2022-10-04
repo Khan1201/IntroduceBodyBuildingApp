@@ -25,7 +25,6 @@ class MainViewController: UIViewController{
         let searchController = UISearchController(searchResultsController: nil)
         navigationSet(searchController: searchController)
         searchControllerSet(searchController: searchController)
-        
         func navigationSet(searchController: UISearchController){
             self.navigationItem.title = "Health Program"
             self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -74,11 +73,10 @@ class MainViewController: UIViewController{
         }
     }
     
-    private func bindTableView(isFilterd: Bool) {
+    private func bindTableView(isFilterd: Bool) { //테이블 뷰 셀 바인딩, 테이뷸 뷰 옵션 설정
         
         setTableViewOption()
         isFilterd ? bindingCell(data: mainViewModel.filteredObservable) : bindingCell(data: mainViewModel.tableViewObservable)
-        addCilckEvent()
         
         func setTableViewOption(){ //테이블 뷰 초기설정
             mainTableView.separatorStyle = .none
@@ -97,26 +95,33 @@ class MainViewController: UIViewController{
                 cell.healthImageView.image = UIImage(named: element.image )
             }.disposed(by: self.disposeBag)
         }
-        
-        func addCilckEvent(){ //click 이벤트
-            mainTableView.rx.itemSelected
-                .withLatestFrom(detailViewModel.detailViewObservable){ [weak self] indexPath, data in //순환 참조 방지
-                    self?.mainTableView.deselectRow(at: indexPath, animated: true) //셀 선택시 선택 효과 고정 제거
-                    
-                    let detailVC = UIStoryboard(name: "DetailViewController", bundle: nil)
-                        .instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
-                    detailVC.detailVCIndexObservable.onNext(data[indexPath.row])
-                    self?.navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    func addCellCilckEvent(){ // 셀 클릭 이벤트 (한번만 선언위해 바깥으로 빼놓음)
+        Observable.zip(mainTableView.rx.itemSelected, mainTableView.rx.modelSelected(MainTVCellModel.Fields.self))
+        //itemSelectd -> IndexPath 추출, modelSelected -> .title 추출
+            .withLatestFrom(detailViewModel.detailViewObservable){ [weak self] (zipData, detailVCDatas) in
+                //zipData -> (indexPath, modelData)
+                self?.mainTableView.deselectRow(at: zipData.0, animated: true) //셀 선택시 선택 효과 고정 제거
+                let detailVC = UIStoryboard(name: "DetailViewController", bundle: nil)
+                    .instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+                
+                for detailVCData in detailVCDatas{ //Array인 detailViewModel의 Data에 접근
+                    if zipData.1.title == detailVCData.title{
+                        detailVC.detailVCIndexObservable.onNext(detailVCData)
+                    }
                 }
-                .subscribe(onDisposed:  {
-                }).disposed(by: disposeBag)
-        }
+                self?.navigationController?.pushViewController(detailVC, animated: true)
+            }
+            .subscribe(onDisposed:  {
+            }).disposed(by: disposeBag)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         makeSearchBar()
         bindTableView(isFilterd: false)
+        addCellCilckEvent()
         makeBasketButton()
     }
 }
@@ -124,18 +129,6 @@ class MainViewController: UIViewController{
 extension MainViewController: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) { //SearchBar에 입력 시 실시간으로 결과 반영
         guard let text = searchController.searchBar.text?.uppercased() else {return}
-        
-//        mainViewModel.tableViewObservable
-//            .filter({ datas in
-//                for data in datas{
-//                    data.title.uppercased().contains(text) || data.author.uppercased().contains(text) ||
-//                    data.description.uppercased().contains(text) || data.division.uppercased().contains(text)
-//                }
-//            })
-//            .subscribe { data in
-//                self.mainViewModel.filteredObservable
-//                    .onNext(data)
-//            }.disposed(by: disposeBag)
         
         mainViewModel.tableViewObservable
             .map({ datas in
@@ -150,21 +143,9 @@ extension MainViewController: UISearchResultsUpdating{
             })
             .subscribe { [weak self] data in
                 if let self = self{
-                    self.mainViewModel.filteredObservable
-                        .onNext(data)
-                    self.isFiltering ? self.bindTableView(isFilterd: true) : self.bindTableView(isFilterd: false)
-                    self.
+                    self.mainViewModel.filteredObservable.onNext(data)
+                    self.bindTableView(isFilterd: self.isFiltering)
                 }
             }.disposed(by: disposeBag)
-        
-        
-        //
-        //        func filter
-        //
-        //        cellData.filteredModel  = cellData.mainVCModel.filter({ MainVCModel in
-        //            MainVCModel.title.uppercased().contains(text) || MainVCModel.author.uppercased().contains(text) ||
-        //            MainVCModel.description.uppercased().contains(text) || MainVCModel.division.uppercased().contains(text)
-        //        })
-        //        isFiltering ? bindTableView(isFilterd: true) : bindTableView(isFilterd: false)
     }
 }
