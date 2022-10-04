@@ -66,7 +66,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="종류" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LXh-Nh-Ivu">
-                                                            <rect key="frame" x="220" y="119" width="24.5" height="17"/>
+                                                            <rect key="frame" x="209" y="117.5" width="24.5" height="17"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                             <color key="textColor" systemColor="systemPinkColor"/>
                                                             <nil key="highlightedColor"/>
@@ -78,8 +78,8 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="추천도" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aEt-ja-Qun">
-                                                            <rect key="frame" x="150" y="117" width="45" height="20.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <rect key="frame" x="150" y="117" width="39" height="18"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" systemColor="systemPinkColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -106,7 +106,7 @@
                                                         <constraint firstItem="4Da-Tu-asT" firstAttribute="leading" secondItem="kS2-3u-A9V" secondAttribute="leading" id="kWL-4q-afM"/>
                                                         <constraint firstItem="LXh-Nh-Ivu" firstAttribute="centerY" secondItem="aEt-ja-Qun" secondAttribute="centerY" id="thR-Rp-1EO"/>
                                                         <constraint firstItem="aEt-ja-Qun" firstAttribute="top" secondItem="4Da-Tu-asT" secondAttribute="bottom" constant="15" id="u2N-61-TgG"/>
-                                                        <constraint firstItem="LXh-Nh-Ivu" firstAttribute="leading" secondItem="aEt-ja-Qun" secondAttribute="trailing" constant="25" id="wnJ-R9-5eI"/>
+                                                        <constraint firstItem="LXh-Nh-Ivu" firstAttribute="leading" secondItem="aEt-ja-Qun" secondAttribute="trailing" constant="20" id="wnJ-R9-5eI"/>
                                                         <constraint firstItem="aEt-ja-Qun" firstAttribute="leading" secondItem="4Da-Tu-asT" secondAttribute="leading" constant="10" id="zJC-y0-aah"/>
                                                     </constraints>
                                                 </view>

@@ -1,10 +1,10 @@
 
 import UIKit
-import FirebaseFirestore
 import CoreData
 import RxSwift
 import RxCocoa
-import RxDataSources
+import SnapKit
+import DropDown
 
 class MainViewController: UIViewController{
     
@@ -45,20 +45,28 @@ class MainViewController: UIViewController{
         addCilckEvent()
         
         func setButton(){
-            basketButton.backgroundColor = .systemGray3
-            basketButton.translatesAutoresizingMaskIntoConstraints = false //autolayout 사용 위해 false 필수
-            basketButton.setImage(UIImage(named: "basket"), for: .normal)
-            
+            basketButton.backgroundColor = .systemGray4
+            let config = UIImage.SymbolConfiguration( //sf symbol 이미지 사이즈 설정
+                pointSize: 40, weight: .bold, scale: .default)
+            basketButton.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
+            basketButton.tintColor = .black
             basketButton.layer.masksToBounds = true
-            basketButton.layer.cornerRadius = 20
-            basketButton.alpha = 0.9 //버튼 투명도
+            basketButton.layer.cornerRadius = 15
+            basketButton.alpha = 0.8 //버튼 투명도
             
             view.addSubview(basketButton) //뷰에 버튼 추가
+ 
             
-            basketButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 730).isActive = true //constraint 설정
-            basketButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 300).isActive = true
-            basketButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
-            basketButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18).isActive = true
+            basketButton.snp.makeConstraints { make in
+                make.width.height.equalTo(70)
+                make.bottom.equalToSuperview().offset(-40)
+                make.trailing.equalToSuperview().offset(-18)
+            }
+//            let dropDown = DropDown()
+//            dropDown.dataSource = ["gg","bb","cc"]
+            
+            
+            
         }
         
         func addCilckEvent(){

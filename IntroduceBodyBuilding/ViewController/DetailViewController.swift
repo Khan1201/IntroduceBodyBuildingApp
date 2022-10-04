@@ -35,7 +35,6 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var addButton: UIButton!{
         didSet{
             if addButtonBool == false{ //장바구니에서 접근할시 버튼
-                print("성공")
                 addButton.isEnabled = false
             }
         }

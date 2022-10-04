@@ -25,7 +25,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Yox-nL-taw">
-                                <rect key="frame" x="20" y="123.5" width="394" height="170"/>
+                                <rect key="frame" x="12" y="123.5" width="402" height="170"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="aCO-I9-RkN"/>
@@ -71,6 +71,7 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="182" height="168"/>
                                         <connections>
+                                            <outlet property="BBAllComponentEmbeddedView" destination="AiG-3u-iqk" id="nGP-Dt-URk"/>
                                             <outlet property="BBTitleLabel" destination="FVD-hg-d9q" id="OPS-tj-yXx"/>
                                             <outlet property="BBimageView" destination="E2r-hk-TCe" id="UxB-2C-c6H"/>
                                         </connections>
@@ -84,7 +85,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Z9G-j1-69x" userLabel="PBCollection View">
-                                <rect key="frame" x="20" y="359" width="394" height="170"/>
+                                <rect key="frame" x="12" y="359" width="402" height="170"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="PEH-LR-v0g"/>
@@ -130,6 +131,7 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="182" height="168"/>
                                         <connections>
+                                            <outlet property="PBAllComponentEmbeddedView" destination="d5f-dd-vbq" id="A3l-sm-1sZ"/>
                                             <outlet property="PBTitleLabel" destination="ndn-Q4-kQy" id="9ao-TQ-ZMk"/>
                                             <outlet property="PBimageView" destination="StA-gE-h1f" id="J4q-3R-8bY"/>
                                         </connections>
@@ -143,7 +145,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ah7-tN-nT0" userLabel="PLCollection View">
-                                <rect key="frame" x="20" y="594.5" width="394" height="170"/>
+                                <rect key="frame" x="12" y="594.5" width="402" height="170"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="TTc-zM-Kfs"/>
@@ -189,6 +191,7 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="182" height="168"/>
                                         <connections>
+                                            <outlet property="PLAllComponentEmbeddedView" destination="u2J-AF-d8n" id="2gZ-v5-XkT"/>
                                             <outlet property="PLTitleLabel" destination="H0B-8L-ap2" id="W07-UC-4mN"/>
                                             <outlet property="PLimageView" destination="LLQ-OV-kNb" id="WhJ-FI-vCy"/>
                                         </connections>
@@ -205,12 +208,12 @@
                             <constraint firstItem="Z9G-j1-69x" firstAttribute="top" secondItem="5WY-Il-qkf" secondAttribute="bottom" constant="10" id="LSp-sd-UnD"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Z9G-j1-69x" secondAttribute="trailing" id="QER-aU-Zkb"/>
                             <constraint firstItem="5WY-Il-qkf" firstAttribute="top" secondItem="Yox-nL-taw" secondAttribute="bottom" constant="30" id="Qni-IK-28b"/>
-                            <constraint firstItem="ah7-tN-nT0" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" constant="-10" id="SQV-bu-uBA"/>
+                            <constraint firstItem="ah7-tN-nT0" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" constant="-18" id="SQV-bu-uBA"/>
                             <constraint firstItem="PNv-p3-5HD" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" id="aWc-Rb-Wrw"/>
-                            <constraint firstItem="Z9G-j1-69x" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" constant="-10" id="abr-ko-Dx6"/>
+                            <constraint firstItem="Z9G-j1-69x" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" constant="-18" id="abr-ko-Dx6"/>
                             <constraint firstItem="Yox-nL-taw" firstAttribute="top" secondItem="w6B-is-oja" secondAttribute="bottom" constant="10" id="bXF-gX-Pew"/>
                             <constraint firstItem="w6B-is-oja" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="40" id="dkd-SL-7yj"/>
-                            <constraint firstItem="Yox-nL-taw" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" constant="-10" id="rx7-Ug-8Ld"/>
+                            <constraint firstItem="Yox-nL-taw" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" constant="-18" id="rx7-Ug-8Ld"/>
                             <constraint firstItem="5WY-Il-qkf" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" id="sDA-fU-Kc8"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Yox-nL-taw" secondAttribute="trailing" id="ujS-X1-eHz"/>
                             <constraint firstItem="w6B-is-oja" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="30" id="uyi-GT-URE"/>
