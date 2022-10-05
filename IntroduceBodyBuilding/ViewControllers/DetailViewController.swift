@@ -1,6 +1,5 @@
 
 import UIKit
-import SafariServices
 import CoreData
 import RxSwift
 import RxCocoa
@@ -27,9 +26,9 @@ class DetailViewController: UIViewController {
             descriptionLabel.attributedText = attrString
         }
     }
-    @IBOutlet weak var urlButton: UIButton!{
+    @IBOutlet weak var addRoutineButton: UIButton!{
         didSet{
-            urlButton.setTitle("See More...", for: .normal)
+            addRoutineButton.setTitle("See More...", for: .normal)
         }
     }
     @IBOutlet weak var addButton: UIButton!{
@@ -39,14 +38,8 @@ class DetailViewController: UIViewController {
             }
         }
     }
-    @IBAction func urlButtonAction(_ sender: UIButton) {
-        moveURL()
-        
-        func moveURL(){
-            let setUrl = NSURL(string: url!)
-            let safariVC: SFSafariViewController = SFSafariViewController(url: setUrl! as URL)
-            self.present(safariVC, animated: true)
-        }
+    @IBAction func addRoutineButtonAction(_ sender: UIButton) {
+
     }
     @IBAction func basketButtonAction(_ sender: UIButton) { //CoreData에 데이터 삽입
         do{
@@ -74,7 +67,6 @@ class DetailViewController: UIViewController {
                     myProgram.title = data.element?.title //
                     myProgram.image = data.element?.image
                     myProgram.description_ = data.element?.description
-                    myProgram.url = data.element?.url
                     myProgram.division = data.element?.image //bodybuilding, powerbuilding, powerlifting 의 구분자 역활
                 }.disposed(by: disposeBag)
             
@@ -111,7 +103,6 @@ class DetailViewController: UIViewController {
             self?.titleLabel.text = data.element?.title ?? "sorry"
             self?.descriptionLabel.text = data.element?.description ?? "sorry"
             self?.imageView.image = UIImage(named: data.element?.image ?? "sorry")
-            self?.url = data.element?.url
         }).disposed(by: disposeBag)
     }
     
@@ -136,7 +127,7 @@ class DetailViewController: UIViewController {
             func OKButton() -> UIAlertAction {
                 let alertSuccessBtn = UIAlertAction(title: "OK", style: .default) { _ in
                     let myProgramVC = UIStoryboard(name: "MyProgramViewController", bundle:  nil).instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
-                    self.present(myProgramVC, animated: true) //이동
+                    self.navigationController?.pushViewController(myProgramVC, animated: true)
                 }
                 return alertSuccessBtn
             }

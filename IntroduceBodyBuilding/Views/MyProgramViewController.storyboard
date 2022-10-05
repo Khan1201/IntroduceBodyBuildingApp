@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gap-CA-12G">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -19,13 +19,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BodyBuilding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6B-is-oja">
-                                <rect key="frame" x="30" y="88" width="131" height="25.5"/>
+                                <rect key="frame" x="30" y="100" width="131" height="25.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Yox-nL-taw">
-                                <rect key="frame" x="12" y="123.5" width="402" height="170"/>
+                                <rect key="frame" x="12" y="135.5" width="402" height="170"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="aCO-I9-RkN"/>
@@ -79,13 +79,13 @@
                                 </cells>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PowerBuilding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WY-Il-qkf">
-                                <rect key="frame" x="30" y="323.5" width="142" height="25.5"/>
+                                <rect key="frame" x="30" y="335.5" width="142" height="25.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Z9G-j1-69x" userLabel="PBCollection View">
-                                <rect key="frame" x="12" y="359" width="402" height="170"/>
+                                <rect key="frame" x="12" y="371" width="402" height="170"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="PEH-LR-v0g"/>
@@ -139,13 +139,13 @@
                                 </cells>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PowerLifting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNv-p3-5HD">
-                                <rect key="frame" x="30" y="559" width="125" height="25.5"/>
+                                <rect key="frame" x="30" y="571" width="125" height="25.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ah7-tN-nT0" userLabel="PLCollection View">
-                                <rect key="frame" x="12" y="594.5" width="402" height="170"/>
+                                <rect key="frame" x="12" y="606.5" width="402" height="170"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="TTc-zM-Kfs"/>
@@ -212,13 +212,14 @@
                             <constraint firstItem="PNv-p3-5HD" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" id="aWc-Rb-Wrw"/>
                             <constraint firstItem="Z9G-j1-69x" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" constant="-18" id="abr-ko-Dx6"/>
                             <constraint firstItem="Yox-nL-taw" firstAttribute="top" secondItem="w6B-is-oja" secondAttribute="bottom" constant="10" id="bXF-gX-Pew"/>
-                            <constraint firstItem="w6B-is-oja" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="40" id="dkd-SL-7yj"/>
+                            <constraint firstItem="w6B-is-oja" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="8" id="dkd-SL-7yj"/>
                             <constraint firstItem="Yox-nL-taw" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" constant="-18" id="rx7-Ug-8Ld"/>
                             <constraint firstItem="5WY-Il-qkf" firstAttribute="leading" secondItem="w6B-is-oja" secondAttribute="leading" id="sDA-fU-Kc8"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Yox-nL-taw" secondAttribute="trailing" id="ujS-X1-eHz"/>
                             <constraint firstItem="w6B-is-oja" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="30" id="uyi-GT-URE"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Ymf-EX-yNN"/>
                     <connections>
                         <outlet property="BBCollectionView" destination="Yox-nL-taw" id="eKu-FX-TkU"/>
                         <outlet property="PBCollectionView" destination="Z9G-j1-69x" id="FLK-pL-1RH"/>
@@ -226,6 +227,24 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="939.13043478260875" y="45.535714285714285"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="2rY-aC-Uoz">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gap-CA-12G" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Tvf-Y8-F35">
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="KcK-8R-JmR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BEW-2c-sbi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="28.985507246376812" y="45.535714285714285"/>
         </scene>

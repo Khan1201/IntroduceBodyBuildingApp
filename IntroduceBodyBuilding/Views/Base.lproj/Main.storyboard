@@ -66,7 +66,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="종류" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LXh-Nh-Ivu">
-                                                            <rect key="frame" x="209" y="117.5" width="24.5" height="17"/>
+                                                            <rect key="frame" x="206.5" y="117" width="24.5" height="17"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                             <color key="textColor" systemColor="systemPinkColor"/>
                                                             <nil key="highlightedColor"/>
@@ -78,12 +78,12 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="추천도" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aEt-ja-Qun">
-                                                            <rect key="frame" x="150" y="117" width="39" height="18"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                            <rect key="frame" x="150" y="117" width="36.5" height="17"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                             <color key="textColor" systemColor="systemPinkColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOR-6t-Z9K">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOR-6t-Z9K">
                                                             <rect key="frame" x="140" y="51" width="234" height="19.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                                             <nil key="textColor"/>
@@ -121,12 +121,12 @@
                                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                                         <connections>
                                             <outlet property="allComponentEmbeddedView" destination="b1y-He-9G6" id="ZBa-js-v4c"/>
-                                            <outlet property="authorLabel" destination="uOR-6t-Z9K" id="AEf-Ma-XwY"/>
                                             <outlet property="descriptionLabel" destination="4Da-Tu-asT" id="waG-Lz-23c"/>
                                             <outlet property="divisionLabel" destination="LXh-Nh-Ivu" id="LlY-q2-Wab"/>
                                             <outlet property="healthImageView" destination="Q9P-Jd-6VE" id="Ysw-I8-kVy"/>
                                             <outlet property="recommendLabel" destination="aEt-ja-Qun" id="bhe-hE-MoP"/>
                                             <outlet property="titleLabel" destination="kS2-3u-A9V" id="GMn-69-jyW"/>
+                                            <outlet property="weekLabel" destination="uOR-6t-Z9K" id="7lH-fW-LWa"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

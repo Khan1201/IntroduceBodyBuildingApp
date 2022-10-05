@@ -10,7 +10,15 @@ import UIKit
 class MainTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var weekLabel: UILabel!{
+        didSet{
+            //underline 생성
+            let attributedString = NSMutableAttributedString.init(string: weekLabel.text ?? "")
+            attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range:
+                NSRange.init(location: 0, length: attributedString.length));
+            weekLabel.attributedText = attributedString
+        }
+    }
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var recommendLabel: UILabel!
     @IBOutlet weak var divisionLabel: UILabel!

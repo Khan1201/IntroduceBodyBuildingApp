@@ -85,7 +85,7 @@ class MyProgramViewController: UIViewController {
             // 각 divisionView에 이벤트 추가
             targetView.rx.itemSelected
                 .withLatestFrom(sendObservable) { [weak self] indexPath, data in
-                    let convertObservable: BehaviorSubject<DetailVCModel.Fields> = BehaviorSubject(value: DetailVCModel.Fields(title: data[indexPath.row].title ?? "", image: data[indexPath.row].image ?? "", description: data[indexPath.row].description_ ?? "", url: data[indexPath.row].url ?? ""))
+                    let convertObservable: BehaviorSubject<DetailVCModel.Fields> = BehaviorSubject(value: DetailVCModel.Fields(title: data[indexPath.row].title ?? "", image: data[indexPath.row].image ?? "", description: data[indexPath.row].description_ ?? ""))
                     
                     let detailVC = UIStoryboard(name: "DetailViewController", bundle: nil)
                         .instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
@@ -104,6 +104,12 @@ class MyProgramViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindCollectionView()
+        self.navigationItem.title = "보관함"
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        navigationItem.backButtonTitle = "good"
+
     }
     
 }

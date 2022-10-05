@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTl-A1-hWY">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="814"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MtF-WL-h7P">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="529.5"/>
@@ -38,13 +38,13 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMd-ty-EMA">
-                                                <rect key="frame" x="58" y="409.5" width="30" height="33"/>
+                                                <rect key="frame" x="58" y="409.5" width="59" height="33"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="tintColor" systemColor="systemBlueColor"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Url"/>
+                                                <state key="normal" title="루틴등록"/>
                                                 <connections>
-                                                    <action selector="urlButtonAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="UHN-o8-12l"/>
+                                                    <action selector="addRoutineButtonAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="2Ko-ET-Zhd"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUh-jQ-Ez1">
@@ -54,11 +54,11 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jVB-it-EEh">
-                                                <rect key="frame" x="270" y="409.5" width="87" height="33"/>
+                                                <rect key="frame" x="264" y="409.5" width="93" height="33"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="tintColor" systemColor="systemBlueColor"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Add Basket"/>
+                                                <state key="normal" title="보관함에 추가"/>
                                                 <connections>
                                                     <action selector="basketButtonAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="OEx-QO-url"/>
                                                 </connections>
@@ -105,10 +105,10 @@
                     </view>
                     <connections>
                         <outlet property="addButton" destination="jVB-it-EEh" id="w71-Tl-YDX"/>
+                        <outlet property="addRoutineButton" destination="hMd-ty-EMA" id="l8r-Ng-Sjb"/>
                         <outlet property="descriptionLabel" destination="JUh-jQ-Ez1" id="49I-Se-ToF"/>
                         <outlet property="imageView" destination="See-Wt-6rG" id="Dvr-Hi-UOs"/>
                         <outlet property="titleLabel" destination="bOE-Wv-tWi" id="qMF-2M-j69"/>
-                        <outlet property="urlButton" destination="hMd-ty-EMA" id="GwB-Ts-BSi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
