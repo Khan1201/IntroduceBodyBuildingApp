@@ -8,13 +8,15 @@
 import Foundation
 
 struct DetailVCModel : Codable{
-   
+    
     var documents: [Fields] = []
     
     struct Fields: Codable{
         var title: String = ""
         var image: String = ""
         var description: String = ""
+        var day: [String] = []
+        var routineAtDay: [String] = []
     }
     
     struct StringValue: Codable { //firestore api 형식에 맞게 key name set
@@ -28,6 +30,17 @@ struct DetailVCModel : Codable{
             case value = "stringValue"
         }
     }
+    struct ArrayValue: Codable { //firestore api 형식에 맞게 key name set
+        let value: [String]
+        
+        init(value: [String]) {
+            self.value = value
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case value = "values"
+        }
+    }
     enum RootKey: String, CodingKey {  // nestedContainer로 접근하기 위해
         case documents
     }
@@ -35,9 +48,16 @@ struct DetailVCModel : Codable{
         case fields
     }
     enum FieldKeys: String, CodingKey{
-        case title, image, description
+        case title, image, description, day, routineAtDay
+    }    
+    enum ArrayKeys: String, CodingKey{
+        case arrayValue
+    }
+    enum valuesKeys: String, CodingKey{
+        case values
     }
 }
+// MARK: -  FireStore 형식에 맞춰 Decoding
 
 extension DetailVCModel{
     init(from decoder: Decoder) throws {
@@ -51,7 +71,25 @@ extension DetailVCModel{
             fields.image = try fieldKeys.decode(StringValue.self, forKey: .image).value
             fields.description = try fieldKeys.decode(StringValue.self, forKey: .description).value
             
+            try arrayBinding(in: &fields.day, key: .day)
+            try arrayBinding(in: &fields.routineAtDay, key: .routineAtDay)
+            
             documents.append(fields)
+
+            // MARK: - [String] 추출
+            
+            func arrayBinding(in field: inout[String], key: FieldKeys) throws{
+                let arrayKeys = try fieldKeys.nestedContainer(keyedBy: ArrayKeys.self, forKey: key)
+                let valuesKey = try arrayKeys.nestedContainer(keyedBy: valuesKeys.self, forKey: .arrayValue)
+                var arrayValue = try valuesKey.nestedUnkeyedContainer(forKey: .values)
+                
+                var array: [String] = []
+                while !arrayValue.isAtEnd {
+                    let tempString = try arrayValue.decode(StringValue.self).value
+                    array.append(tempString)
+                }
+                field = array
+            }
         }
     }
 }

@@ -21,15 +21,15 @@ class MainViewController: UIViewController{
         return isActive && isSearchBarHasText
     }
     
-    func makeSearchBar(){ //서치바 생성
-        let searchController = UISearchController(searchResultsController: nil)
+    func makeNavigationBar(){ //네비게이션 바 생성
+        let searchController = UISearchController(searchResultsController: nil) //네비게이션 바에 서치바 생성
         navigationSet(searchController: searchController)
         searchControllerSet(searchController: searchController)
         func navigationSet(searchController: UISearchController){
             self.navigationItem.title = "Health Program"
             self.navigationController?.navigationBar.prefersLargeTitles = true
             self.navigationItem.hidesSearchBarWhenScrolling = true //스크롤 내릴 시 검색창 숨김
-            self.navigationItem.searchController = searchController
+            self.navigationItem.searchController = searchController //서치바 활성화
             self.navigationItem.backButtonTitle = "Back"
 
         }
@@ -149,10 +149,11 @@ class MainViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeSearchBar()
+        makeNavigationBar()
         bindTableView(isFilterd: false)
         addCellCilckEvent()
         makePlusButton()
+        print("출력")
     }
 }
 

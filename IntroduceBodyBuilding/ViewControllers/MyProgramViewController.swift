@@ -105,11 +105,9 @@ class MyProgramViewController: UIViewController {
         super.viewDidLoad()
         bindCollectionView()
         self.navigationItem.title = "보관함"
-        self.navigationController?.navigationBar.prefersLargeTitles = false
+        self.navigationItem.largeTitleDisplayMode = .never
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
-        navigationItem.backButtonTitle = "good"
 
-    }
-    
+    }    
 }

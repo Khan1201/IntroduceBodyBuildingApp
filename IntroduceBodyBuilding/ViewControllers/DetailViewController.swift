@@ -3,17 +3,36 @@ import UIKit
 import CoreData
 import RxSwift
 import RxCocoa
+import QuickLook
 
 class DetailViewController: UIViewController {
     
     var addButtonBool: Bool?
     
+    private var tempURL: URL?
     let disposeBag = DisposeBag()
     let detailVCIndexObservable = BehaviorSubject<DetailVCModel.Fields>(value: DetailVCModel.Fields())
+    let tableViewObservable = BehaviorSubject<[(String ,String)]>(value: [("","")])
     var url: String?
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var routineTableView: UITableView!{
+        didSet{
+            routineTableView.rowHeight = 300
+            routineTableView.layer.masksToBounds = true
+            routineTableView.layer.cornerRadius = 15
+            routineTableView.separatorColor = .black
+        }
+    }
+    
+    @IBOutlet weak var allRoutineButton: UIButton!{
+        didSet{
+            allRoutineButton.layer.masksToBounds = true
+            allRoutineButton.layer.cornerRadius = 10
+        }
+    }
+    
     @IBOutlet weak var descriptionLabel: UILabel!{
         didSet{
             let attrString = NSMutableAttributedString(string: descriptionLabel.text!)
@@ -26,9 +45,12 @@ class DetailViewController: UIViewController {
             descriptionLabel.attributedText = attrString
         }
     }
+    
     @IBOutlet weak var addRoutineButton: UIButton!{
         didSet{
-            addRoutineButton.setTitle("See More...", for: .normal)
+            addRoutineButton.setTitle("루틴등록", for: .normal)
+            addRoutineButton.layer.masksToBounds = true
+            addRoutineButton.layer.cornerRadius = 15
         }
     }
     @IBOutlet weak var addButton: UIButton!{
@@ -36,8 +58,18 @@ class DetailViewController: UIViewController {
             if addButtonBool == false{ //장바구니에서 접근할시 버튼
                 addButton.isEnabled = false
             }
+            addButton.layer.masksToBounds = true
+            addButton.layer.cornerRadius = 15
         }
     }
+    
+    @IBAction func allRoutineButtonAction(_ sender: UIButton) {
+        let webVC = UIStoryboard(name: "WebViewController", bundle: nil)
+            .instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+        self.navigationController?.pushViewController(webVC, animated: true)
+    }
+    
+    
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
 
     }
@@ -102,8 +134,37 @@ class DetailViewController: UIViewController {
         detailVCIndexObservable.subscribe({[weak self] data in
             self?.titleLabel.text = data.element?.title ?? "sorry"
             self?.descriptionLabel.text = data.element?.description ?? "sorry"
+//            self?.descriptionLabel.text = data.element?.description.replacingOccurrences(of: "\\n", with: "\n")
             self?.imageView.image = UIImage(named: data.element?.image ?? "sorry")
+            
+            var tempArray:[(String, String)] = []
+            guard let days = data.element?.day else {return}
+            guard let routines = data.element?.routineAtDay else {return}
+            
+            for (dayIndex, day) in days.enumerated(){ //(day, routine)의 튜플 배열 반환 -> [(day, routine)]
+                for (routinIndex, routine) in routines.enumerated(){
+                    if dayIndex == routinIndex{
+                        let tuple = (day, routine)
+                        tempArray.append(tuple)
+                    }
+                }
+            }
+            
+            self?.tableViewObservable.onNext(tempArray)
         }).disposed(by: disposeBag)
+    }
+    
+    func bindTableView(){
+        
+        tableViewObservable
+            .bind(to: self.routineTableView.rx.items(cellIdentifier: "DetailTableViewCell", cellType: DetailTableViewCell.self)){ (index, element, cell) in
+                
+                cell.backgroundColor = .systemGray6
+                cell.dayLabel.text = "Day \(element.0)"
+                cell.routinLabel.text = element.1.replacingOccurrences(of: "\\n", with: "\n")
+                cell.numberImageView.image = UIImage(systemName: "\(element.0).square")
+                
+            }.disposed(by: disposeBag)
     }
     
     func divideAlert(duplicated: Bool) -> Void { //true -> basket duplicated(중복) 다이얼로그, false -> basket add 다이얼로그
@@ -141,7 +202,12 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewBinding()
+        bindTableView()
     }
+}
+
+extension DetailViewController: QLPreviewControllerDelegate{
+    
 }
 
 
