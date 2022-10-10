@@ -17,6 +17,7 @@ struct DetailVCModel : Codable{
         var description: String = ""
         var day: [String] = []
         var routineAtDay: [String] = []
+        var url: String = ""
     }
     
     struct StringValue: Codable { //firestore api 형식에 맞게 key name set
@@ -48,7 +49,7 @@ struct DetailVCModel : Codable{
         case fields
     }
     enum FieldKeys: String, CodingKey{
-        case title, image, description, day, routineAtDay
+        case title, image, description, day, routineAtDay, url
     }    
     enum ArrayKeys: String, CodingKey{
         case arrayValue
@@ -70,14 +71,14 @@ extension DetailVCModel{
             fields.title = try fieldKeys.decode(StringValue.self, forKey: .title).value // api에 명시된 key값에 맞춰 변환 후 가져옴
             fields.image = try fieldKeys.decode(StringValue.self, forKey: .image).value
             fields.description = try fieldKeys.decode(StringValue.self, forKey: .description).value
+            fields.url = try fieldKeys.decode(StringValue.self, forKey: .url).value
             
             try arrayBinding(in: &fields.day, key: .day)
             try arrayBinding(in: &fields.routineAtDay, key: .routineAtDay)
             
             documents.append(fields)
 
-            // MARK: - [String] 추출
-            
+            //day, routineAtDay 필드 [String] 추출
             func arrayBinding(in field: inout[String], key: FieldKeys) throws{
                 let arrayKeys = try fieldKeys.nestedContainer(keyedBy: ArrayKeys.self, forKey: key)
                 let valuesKey = try arrayKeys.nestedContainer(keyedBy: valuesKeys.self, forKey: .arrayValue)

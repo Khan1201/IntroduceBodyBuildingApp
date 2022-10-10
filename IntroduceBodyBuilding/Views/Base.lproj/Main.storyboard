@@ -32,7 +32,7 @@
         <!--Main View Controller-->
         <scene sceneID="uDL-V4-WY9">
             <objects>
-                <viewController storyboardIdentifier="MainViewController" id="cqL-Zn-ecw" customClass="MainViewController" customModule="IntroduceBodyBuilding" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Main" id="cqL-Zn-ecw" customClass="MainViewController" customModule="IntroduceBodyBuilding" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="V6h-Fc-00i">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

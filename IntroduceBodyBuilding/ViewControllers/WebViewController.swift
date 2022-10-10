@@ -12,68 +12,92 @@ import SnapKit
 class WebViewController: UIViewController{
     private var webView: WKWebView!
     
-    var routineTitle: String = "Brogains 10 Week Powerbuilding"
-    var url: String = "https://docs.google.com/spreadsheets/u/0/d/1PevAvpjNVwz-hsbyxK81Ud7ApG7Yhk3xa09eMTshoE4/preview?usp=embed_googleplus"
+    var routineTitle: String = ""
+    var url: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationSet()
+        openWebView()
+    }
+}
+//MARK: - 네비게이션 바 속성
+
+extension WebViewController {
+    private func navigationSet(){
         self.navigationItem.title = routineTitle
         self.navigationItem.largeTitleDisplayMode = .never
-
-        let preferences = WKPreferences()
-        preferences.javaScriptEnabled = true
-        preferences.javaScriptCanOpenWindowsAutomatically = true
-        
-        let contentController = WKUserContentController()
-        contentController.add(self, name: "bridge")
-        
-        let configuration = WKWebViewConfiguration()
-        configuration.preferences = preferences
-        configuration.userContentController = contentController
-        
-        webView = WKWebView(frame: self.view.bounds, configuration: configuration)
-        
-        guard let url = URL(string: url) else {return}
-        
-        webView.uiDelegate = self
-        webView.navigationDelegate = self
-        view.addSubview(webView)
-        setAutoLayout()
-        webView.load(URLRequest(url: url))
-        
-        webView.alpha = 0
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            self.webView.alpha = 1
-        }) { _ in
-            
-        }
     }
-    public func setAutoLayout() {
-        
-        webView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.left.right.bottom.equalToSuperview()
-        }
-    }
-    
-    
 }
+
+//MARK: - WebView 세팅 후 로드
+
+extension WebViewController {
+    private func openWebView(){
+        setWebView()
+        setAutoLayout()
+        loadWebView()
+        
+        func setWebView(){
+            let preferences = WKPreferences()
+            preferences.javaScriptEnabled = true
+            preferences.javaScriptCanOpenWindowsAutomatically = true
+            
+            let contentController = WKUserContentController()
+            contentController.add(self, name: "bridge")
+            
+            let configuration = WKWebViewConfiguration()
+            configuration.preferences = preferences
+            configuration.userContentController = contentController
+            
+            webView = WKWebView(frame: self.view.bounds, configuration: configuration)
+            webView.uiDelegate = self
+            webView.navigationDelegate = self
+            
+            webView.alpha = 0
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+                self.webView.alpha = 1
+            }) { _ in
+            }
+        }
+        
+        //WebView Start
+        func loadWebView(){
+            DispatchQueue.main.async {
+                guard let url = URL(string: self.url) else {return}
+                self.webView.load(URLRequest(url: url))
+            }
+        }
+        
+        //WebView AutoLayout Set
+        func setAutoLayout() {
+            view.addSubview(webView)
+            webView.snp.makeConstraints { make in
+                make.top.equalTo(view.safeAreaLayoutGuide)
+                make.left.right.bottom.equalToSuperview()
+            }
+        }
+    }
+}
+//MARK: - WKUIDelegate
+
 extension WebViewController: WKUIDelegate{
     public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
-        
+
     }
 }
+//MARK: - WKNavigationDelegate
+
 extension WebViewController: WKNavigationDelegate{
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        print("\(navigationAction.request.url?.absoluteString ?? "")" )
-        
         decisionHandler(.allow)
     }
     
 }
+//MARK: - WKScriptMessageHandler
+
 extension WebViewController: WKScriptMessageHandler{
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        
-        print(message.name)
     }
 }
 

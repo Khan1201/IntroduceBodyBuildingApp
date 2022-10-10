@@ -61,13 +61,13 @@ class MyProgramViewModel {
         observable.onNext(divisionModel)
     }
     
-    func deleteCoreData(to divisonModel: BehaviorSubject<[MyProgram]>, condition: String, division: String) {
+    func deleteCoreData(to divisonModel: BehaviorSubject<[MyProgram]>, deleteCondition: String, division: String) {
                 
         let context = appdelegate.persistentContainer.viewContext
         // coreData context 선언
         
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest.init(entityName: "MyProgram")
-        fetchRequest.predicate = NSPredicate(format: "title = %@", condition) //데이터 조건 검색
+        fetchRequest.predicate = NSPredicate(format: "title = %@", deleteCondition) //데이터 조건 검색
         
         do { //coreData 데이터 삭제
             let test = try context.fetch(fetchRequest)
