@@ -13,13 +13,12 @@ class RoutineViewController: UIViewController {
     
     @IBOutlet weak var routineTableView: UITableView!{
         didSet{
-            routineTableView.rowHeight = 130
+            routineTableView.rowHeight = 120
             routineTableView.layer.masksToBounds = true
             routineTableView.layer.cornerRadius = 15
             routineTableView.separatorColor = .black
         }
     }
-    
     var viewModel = RoutineViewModel()
     var disposeBag = DisposeBag()
     
@@ -46,11 +45,11 @@ class RoutineViewController: UIViewController {
         func insertData(in object: NSManagedObject) {
             let routine = object as! Routine
             //MyProgram entity 존재 시, unwrapping 후 coreData에 데이터 insert
-            routine.title = "nSuns 5/3/1 Complete"
-            routine.divisionImage = "PLIcon"
-            routine.divisionString = "PowerLifting"
+            routine.title = "Brogains 10 Week Powerbuilding"
+            routine.divisionImage = "PBIcon"
+            routine.divisionString = "PowerBuilding"
             routine.monday = true
-            routine.tuesday = true
+            routine.tuesday = false
             routine.wednesday = true
             routine.thursday = true
             routine.friday = true
@@ -67,7 +66,7 @@ class RoutineViewController: UIViewController {
     enum setDataError: Error{
         case EntityNotExist
     }
-
+    
     func bindTableView(data: BehaviorSubject<[Routine]>){
         
         data.bind(to: self.routineTableView.rx.items(cellIdentifier: "RoutineTableViewCell", cellType: RoutineTableViewCell.self)) { (index, element, cell) in
@@ -89,9 +88,11 @@ class RoutineViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        getData()
+        //        getData()
         bindTableView(data: viewModel.routineObservable)
         navigationSet()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: nil)
+        self.navigationItem.setRightBarButton(navigationItem.rightBarButtonItem, animated: true)
     }
     
 }

@@ -10,6 +10,21 @@ import UIKit
 
 class RoutineTableViewCell: UITableViewCell {
     
+    var darkModeBool: Bool?{
+        willSet{
+            
+        }
+    }
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var divisionLabel: UILabel!
+    @IBOutlet weak var divisionImageView: UIImageView!{
+        didSet{
+            divisionImageView.layer.masksToBounds = true
+            divisionImageView.layer.cornerRadius = 7
+        }
+    }
+    
     var mondayBool: Bool?{
         willSet{
             bindLabel(to: mondayLabel, newValue: newValue)
@@ -35,45 +50,16 @@ class RoutineTableViewCell: UITableViewCell {
             bindLabel(to: fridayLabel, newValue: newValue)
         }
     }
-    
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var divisionLabel: UILabel!
-    @IBOutlet weak var divisionImageView: UIImageView!
-    
-    @IBOutlet weak var mondayLabel: UILabel!{
-        didSet{
-            setLabel(to: mondayLabel)
-        }
-    }
-    
-    @IBOutlet weak var tuesdayLabel: UILabel!{
-        didSet{
-            setLabel(to: tuesdayLabel)
-        }
-    }
-    
-    @IBOutlet weak var wednesdayLabel: UILabel!{
-        didSet{
-            setLabel(to: wednesdayLabel)
-        }
-    }
-    
-    @IBOutlet weak var thursdayLabel: UILabel!{
-        didSet{
-            setLabel(to: thursdayLabel)
-        }
-    }
-    
-    @IBOutlet weak var fridayLabel: UILabel!{
-        didSet{
-            setLabel(to: fridayLabel)
-        }
-    }
+    @IBOutlet weak var mondayLabel: UILabel!
+    @IBOutlet weak var tuesdayLabel: UILabel!
+    @IBOutlet weak var wednesdayLabel: UILabel!
+    @IBOutlet weak var thursdayLabel: UILabel!
+    @IBOutlet weak var fridayLabel: UILabel!
     
     @IBOutlet weak var alarmSwitch: UISwitch!
     
 }
-//MARK: - Label 바인딩
+//MARK: - dayBool -> Label 바인딩, Label 테두리 set
 
 extension RoutineTableViewCell {
     func bindLabel(to label: UILabel, newValue: Bool?){
@@ -82,15 +68,8 @@ extension RoutineTableViewCell {
                 label.backgroundColor = .darkGray
                 label.textColor = .systemOrange
             }
+            label.layer.masksToBounds = true
+            label.layer.cornerRadius = 7
         }
-    }
-}
-
-//MARK: - Label 둥글게 set
-
-extension RoutineTableViewCell {
-    func setLabel(to label: UILabel){
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 7
     }
 }

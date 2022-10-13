@@ -21,7 +21,12 @@ class DetailViewController: UIViewController {
     //MARK: - @IBOutlet, @IBAction
     
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!{
+        didSet{
+            imageView.layer.masksToBounds = true
+            imageView.layer.cornerRadius = 10
+        }
+    }
     @IBOutlet weak var routineTableView: UITableView!{
         didSet{
             routineTableView.rowHeight = 300
@@ -67,14 +72,14 @@ class DetailViewController: UIViewController {
         }
     }
     @IBAction func allRoutineButtonAction(_ sender: UIButton) {
-        let webVC = UIStoryboard(name: "WebViewController", bundle: nil)
-            .instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+        guard let webVC = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
         webVC.routineTitle = titleLabel.text ?? "not exist"
         webVC.url = self.url ?? "not exist"
         self.navigationController?.pushViewController(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
-
+        
     }
     @IBAction func basketButtonAction(_ sender: UIButton) {
         approachCoreData() //CoreData에 접근
@@ -119,7 +124,7 @@ extension DetailViewController {
     private func bindTableViewInView(){
         tableViewObservable
             .bind(to: self.routineTableView.rx.items(cellIdentifier: "DetailTableViewCell", cellType: DetailTableViewCell.self)){ (index, element, cell) in
-            
+                
                 cell.backgroundColor = .systemGray6
                 cell.selectionStyle = .none
                 
@@ -154,7 +159,7 @@ extension DetailViewController {
             
             func OKButton() -> UIAlertAction { //OKButton Click -> 보관함 이동
                 let alertSuccessBtn = UIAlertAction(title: "OK", style: .default) { _ in
-                    let myProgramVC = UIStoryboard(name: "MyProgramViewController", bundle:  nil).instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
+                    guard let myProgramVC = UIStoryboard(name: "Main", bundle:  nil).instantiateViewController(withIdentifier: "MyProgramViewController") as? MyProgramViewController else {return}
                     self.navigationController?.pushViewController(myProgramVC, animated: true)
                 }
                 return alertSuccessBtn
@@ -179,7 +184,7 @@ extension DetailViewController {
         catch{
             print("coreData Error: \(error)")
         }
-
+        
         //CoreData 오브젝트 get
         func getObject() throws -> NSManagedObject{
             let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext

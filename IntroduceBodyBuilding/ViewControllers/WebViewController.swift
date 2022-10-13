@@ -83,7 +83,7 @@ extension WebViewController {
 
 extension WebViewController: WKUIDelegate{
     public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
-
+        
     }
 }
 //MARK: - WKNavigationDelegate

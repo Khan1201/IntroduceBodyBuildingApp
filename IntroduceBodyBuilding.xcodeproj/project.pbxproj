@@ -7,25 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BC03D52128B0F85900BF718E /* powerlifting.png in Resources */ = {isa = PBXBuildFile; fileRef = BC03D51E28B0F85900BF718E /* powerlifting.png */; };
-		BC03D52328B0F85900BF718E /* bodybuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC03D52028B0F85900BF718E /* bodybuilding.png */; };
 		BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */; };
 		BC123C2728F3269D003AE914 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC123C2628F3269D003AE914 /* WebViewController.swift */; };
-		BC123C2928F32723003AE914 /* WebViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC123C2828F32723003AE914 /* WebViewController.storyboard */; };
 		BC123C2B28F32786003AE914 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC123C2A28F32786003AE914 /* WebKit.framework */; };
-		BC12B30328B1030C00F29612 /* powerbuilding.png in Resources */ = {isa = PBXBuildFile; fileRef = BC12B30228B1030C00F29612 /* powerbuilding.png */; };
 		BC1BDDD028E55A3000238C60 /* MyProgramViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */; };
 		BC1BDDD228E5A02C00238C60 /* MyProgramViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BDDD128E5A02C00238C60 /* MyProgramViewCell.swift */; };
 		BC3B72AB28ED935E00C8F40E /* RoutineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B72AA28ED935E00C8F40E /* RoutineViewController.swift */; };
-		BC3B72AD28ED937200C8F40E /* RoutineViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC3B72AC28ED937200C8F40E /* RoutineViewController.storyboard */; };
 		BC3B72AF28ED995400C8F40E /* RoutineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B72AE28ED995400C8F40E /* RoutineTableViewCell.swift */; };
 		BC3B72B128ED9BF400C8F40E /* RoutineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B72B028ED9BF400C8F40E /* RoutineViewModel.swift */; };
 		BC68A58A28EC57A100D4C02F /* DropCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC68A58828EC57A100D4C02F /* DropCell.swift */; };
 		BC68A58B28EC57A100D4C02F /* DropCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC68A58928EC57A100D4C02F /* DropCell.xib */; };
+		BC6A22B528F80AB200D12797 /* RoutineAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */; };
 		BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */; };
 		BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */; };
-		BC855C0228B7B75F005C4870 /* MyProgramViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */; };
-		BCA5B9F928AFB17E00F04AFB /* DetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */; };
 		BCA5B9FB28AFB7AC00F04AFB /* DetailVCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */; };
 		BCC4E05828E2C0680061EAA9 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */; };
 		BCCDAC9528AB7DAC004C41BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */; };
@@ -37,7 +31,6 @@
 		BCCDACAC28AB7E35004C41BD /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDACAA28AB7E35004C41BD /* MainTableViewCell.swift */; };
 		BCCDACAD28AB7E35004C41BD /* MainTVCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDACAB28AB7E35004C41BD /* MainTVCellModel.swift */; };
 		BCCDACAF28AB8233004C41BD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */; };
-		BCD4BCF128EE98A700090352 /* Brogains Powerbuilding _ LiftVault.com - Volume.csv in Resources */ = {isa = PBXBuildFile; fileRef = BCD4BCF028EE98A700090352 /* Brogains Powerbuilding _ LiftVault.com - Volume.csv */; };
 		BCE0480B28EF26DB00F39CCC /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */; };
 		BCE9D80528DC0D0E00EA5A95 /* MainTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE9D80428DC0D0E00EA5A95 /* MainTableViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -45,25 +38,19 @@
 /* Begin PBXFileReference section */
 		0C1735A0AD6E2869DD479472 /* Pods-IntroduceBodyBuilding.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntroduceBodyBuilding.debug.xcconfig"; path = "Target Support Files/Pods-IntroduceBodyBuilding/Pods-IntroduceBodyBuilding.debug.xcconfig"; sourceTree = "<group>"; };
 		6453FDAAD6B5D3D933EF85CE /* Pods-IntroduceBodyBuilding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntroduceBodyBuilding.release.xcconfig"; path = "Target Support Files/Pods-IntroduceBodyBuilding/Pods-IntroduceBodyBuilding.release.xcconfig"; sourceTree = "<group>"; };
-		BC03D51E28B0F85900BF718E /* powerlifting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerlifting.png; sourceTree = "<group>"; };
-		BC03D52028B0F85900BF718E /* bodybuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bodybuilding.png; sourceTree = "<group>"; };
 		BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BC123C2628F3269D003AE914 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		BC123C2828F32723003AE914 /* WebViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WebViewController.storyboard; sourceTree = "<group>"; };
 		BC123C2A28F32786003AE914 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		BC12B30228B1030C00F29612 /* powerbuilding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerbuilding.png; sourceTree = "<group>"; };
 		BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewModel.swift; sourceTree = "<group>"; };
 		BC1BDDD128E5A02C00238C60 /* MyProgramViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewCell.swift; sourceTree = "<group>"; };
 		BC3B72AA28ED935E00C8F40E /* RoutineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineViewController.swift; sourceTree = "<group>"; };
-		BC3B72AC28ED937200C8F40E /* RoutineViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RoutineViewController.storyboard; sourceTree = "<group>"; };
 		BC3B72AE28ED995400C8F40E /* RoutineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineTableViewCell.swift; sourceTree = "<group>"; };
 		BC3B72B028ED9BF400C8F40E /* RoutineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineViewModel.swift; sourceTree = "<group>"; };
 		BC68A58828EC57A100D4C02F /* DropCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropCell.swift; sourceTree = "<group>"; };
 		BC68A58928EC57A100D4C02F /* DropCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DropCell.xib; sourceTree = "<group>"; };
+		BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineAddViewController.swift; sourceTree = "<group>"; };
 		BC855BF928B79F63005C4870 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewController.swift; sourceTree = "<group>"; };
-		BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyProgramViewController.storyboard; sourceTree = "<group>"; };
-		BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailViewController.storyboard; sourceTree = "<group>"; };
 		BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVCModel.swift; sourceTree = "<group>"; };
 		BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		BCCDAC9128AB7DAC004C41BD /* IntroduceBodyBuilding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntroduceBodyBuilding.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,7 +64,6 @@
 		BCCDACAA28AB7E35004C41BD /* MainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		BCCDACAB28AB7E35004C41BD /* MainTVCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTVCellModel.swift; sourceTree = "<group>"; };
 		BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		BCD4BCF028EE98A700090352 /* Brogains Powerbuilding _ LiftVault.com - Volume.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Brogains Powerbuilding _ LiftVault.com - Volume.csv"; sourceTree = "<group>"; };
 		BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		BCE9D80428DC0D0E00EA5A95 /* MainTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewModel.swift; sourceTree = "<group>"; };
 		C7A93F4028C84E0831FB752B /* Pods_IntroduceBodyBuilding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntroduceBodyBuilding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,12 +141,9 @@
 				BCCDAC9D28AB7DAD004C41BD /* Assets.xcassets */,
 				BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */,
 				BCCDAC9F28AB7DAD004C41BD /* LaunchScreen.storyboard */,
-				BC12B30228B1030C00F29612 /* powerbuilding.png */,
-				BC03D51E28B0F85900BF718E /* powerlifting.png */,
-				BC03D52028B0F85900BF718E /* bodybuilding.png */,
 				BCCDACA228AB7DAD004C41BD /* Info.plist */,
 				BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */,
-				BCD4BCF028EE98A700090352 /* Brogains Powerbuilding _ LiftVault.com - Volume.csv */,
+				BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */,
 			);
 			path = IntroduceBodyBuilding;
 			sourceTree = "<group>";
@@ -185,10 +168,6 @@
 				BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */,
 				BC68A58828EC57A100D4C02F /* DropCell.swift */,
 				BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */,
-				BCA5B9F828AFB17E00F04AFB /* DetailViewController.storyboard */,
-				BC855C0128B7B75F005C4870 /* MyProgramViewController.storyboard */,
-				BC3B72AC28ED937200C8F40E /* RoutineViewController.storyboard */,
-				BC123C2828F32723003AE914 /* WebViewController.storyboard */,
 				BC68A58928EC57A100D4C02F /* DropCell.xib */,
 			);
 			path = Views;
@@ -268,19 +247,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC3B72AD28ED937200C8F40E /* RoutineViewController.storyboard in Resources */,
 				BCCDACA128AB7DAD004C41BD /* LaunchScreen.storyboard in Resources */,
-				BC855C0228B7B75F005C4870 /* MyProgramViewController.storyboard in Resources */,
 				BC68A58B28EC57A100D4C02F /* DropCell.xib in Resources */,
 				BCCDAC9E28AB7DAD004C41BD /* Assets.xcassets in Resources */,
-				BCA5B9F928AFB17E00F04AFB /* DetailViewController.storyboard in Resources */,
 				BCCDAC9C28AB7DAC004C41BD /* Main.storyboard in Resources */,
-				BC123C2928F32723003AE914 /* WebViewController.storyboard in Resources */,
 				BCCDACAF28AB8233004C41BD /* GoogleService-Info.plist in Resources */,
-				BC03D52128B0F85900BF718E /* powerlifting.png in Resources */,
-				BCD4BCF128EE98A700090352 /* Brogains Powerbuilding _ LiftVault.com - Volume.csv in Resources */,
-				BC03D52328B0F85900BF718E /* bodybuilding.png in Resources */,
-				BC12B30328B1030C00F29612 /* powerbuilding.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,6 +323,7 @@
 				BC3B72AF28ED995400C8F40E /* RoutineTableViewCell.swift in Sources */,
 				BCA5B9FB28AFB7AC00F04AFB /* DetailVCModel.swift in Sources */,
 				BC3B72B128ED9BF400C8F40E /* RoutineViewModel.swift in Sources */,
+				BC6A22B528F80AB200D12797 /* RoutineAddViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

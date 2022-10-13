@@ -62,7 +62,7 @@ extension MainViewController: UISearchResultsUpdating{
 //MARK: - 검색 활성화 후 주변 클릭 시 키보드 내리기
 
 extension MainViewController {
-    func hideKeyboardWhenTappedAround() {
+   private func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MainViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         mainTableView.keyboardDismissMode = .onDrag
@@ -112,8 +112,7 @@ extension MainViewController {
             .withLatestFrom(detailViewModel.detailViewObservable){ [weak self] (zipData, detailVCDatas) in
                 //zipData -> (indexPath, modelData)
                 self?.mainTableView.deselectRow(at: zipData.0, animated: true) //셀 선택시 선택 효과 고정 제거
-                let detailVC = UIStoryboard(name: "DetailViewController", bundle: nil)
-                    .instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+                guard let detailVC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
                 
                 for detailVCData in detailVCDatas{ //Array인 detailViewModel의 Data에 접근
                     if zipData.1.title == detailVCData.title{
@@ -168,7 +167,9 @@ extension MainViewController {
                     dropDown.width = 140
                     dropDown.cellHeight = 70
                     dropDown.cornerRadius = 15
-                    dropDown.dataSource = ["루틴등록","보관함"]
+                    dropDown.backgroundColor = UIColor(named: "dropDownColor")!
+                    dropDown.textColor = .black
+                    dropDown.dataSource = ["루틴","보관함"]
                     dropDown.topOffset = CGPoint(x: -60, y:-(dropDown.anchorView?.plainView.bounds.height)!)
                 }
                 
@@ -191,13 +192,11 @@ extension MainViewController {
                     dropDown.selectionAction = { [weak self] (index, item) in
                         if index == 1{
                             _ = MyProgramViewModel() //선언과 동시에 coreData 생성 됨
-                            let basetVC = UIStoryboard(name: "MyProgramViewController", bundle: nil)
-                                .instantiateViewController(withIdentifier: "MyProgramViewController") as! MyProgramViewController
+                            guard let basetVC = self?.storyboard?.instantiateViewController(withIdentifier: "MyProgramViewController") else {return}
                             self?.navigationController?.pushViewController(basetVC, animated: true)
                         }
                         else{
-                            let routineVC = UIStoryboard(name: "RoutineViewController", bundle: nil)
-                                .instantiateViewController(withIdentifier: "RoutineViewController") as! RoutineViewController
+                            guard let routineVC = self?.storyboard?.instantiateViewController(withIdentifier: "RoutineViewController") else {return}
                             self?.navigationController?.pushViewController(routineVC, animated: true)
                         }
                     }

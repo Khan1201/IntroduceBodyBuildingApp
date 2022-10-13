@@ -22,7 +22,12 @@ class MainTableViewCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var recommendLabel: UILabel!
     @IBOutlet weak var divisionLabel: UILabel!
-    @IBOutlet weak var healthImageView: UIImageView!
+    @IBOutlet weak var healthImageView: UIImageView!{
+        didSet{
+            healthImageView.layer.masksToBounds = true
+            healthImageView.layer.cornerRadius = 10
+        }
+    }
     @IBOutlet weak var allComponentEmbeddedView: UIView!{
         didSet{
             allComponentEmbeddedView.layer.cornerRadius = 30

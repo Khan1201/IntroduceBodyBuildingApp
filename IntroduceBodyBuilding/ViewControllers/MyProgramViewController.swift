@@ -84,8 +84,8 @@ extension MyProgramViewController {
                 .withLatestFrom(sendObservable) { [weak self] indexPath, data in
                     let convertObservable: BehaviorSubject<DetailVCModel.Fields> = BehaviorSubject(value: DetailVCModel.Fields(title: data[indexPath.row].title ?? "", image: data[indexPath.row].image ?? "", description: data[indexPath.row].description_ ?? ""))
                     
-                    let detailVC = UIStoryboard(name: "DetailViewController", bundle: nil)
-                        .instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+                    guard let detailVC = UIStoryboard(name: "Main", bundle: nil)
+                        .instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
                     
                     convertObservable.subscribe { data in
                         detailVC.detailVCIndexObservable.onNext(data)
