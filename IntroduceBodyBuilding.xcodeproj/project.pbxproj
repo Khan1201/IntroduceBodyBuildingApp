@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57F3D7D5916001B7AA7B073D /* Pods_IntroduceBodyBuilding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A93F4028C84E0831FB752B /* Pods_IntroduceBodyBuilding.framework */; };
 		BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */; };
+		BC07ED5928F94C330064B82A /* RoutineVCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC07ED5828F94C330064B82A /* RoutineVCModel.swift */; };
+		BC07ED5B28F94DCE0064B82A /* RoutineAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC07ED5A28F94DCE0064B82A /* RoutineAddViewModel.swift */; };
 		BC123C2728F3269D003AE914 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC123C2628F3269D003AE914 /* WebViewController.swift */; };
 		BC123C2B28F32786003AE914 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC123C2A28F32786003AE914 /* WebKit.framework */; };
 		BC1BDDD028E55A3000238C60 /* MyProgramViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */; };
@@ -39,6 +42,8 @@
 		0C1735A0AD6E2869DD479472 /* Pods-IntroduceBodyBuilding.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntroduceBodyBuilding.debug.xcconfig"; path = "Target Support Files/Pods-IntroduceBodyBuilding/Pods-IntroduceBodyBuilding.debug.xcconfig"; sourceTree = "<group>"; };
 		6453FDAAD6B5D3D933EF85CE /* Pods-IntroduceBodyBuilding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntroduceBodyBuilding.release.xcconfig"; path = "Target Support Files/Pods-IntroduceBodyBuilding/Pods-IntroduceBodyBuilding.release.xcconfig"; sourceTree = "<group>"; };
 		BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		BC07ED5828F94C330064B82A /* RoutineVCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineVCModel.swift; sourceTree = "<group>"; };
+		BC07ED5A28F94DCE0064B82A /* RoutineAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineAddViewModel.swift; sourceTree = "<group>"; };
 		BC123C2628F3269D003AE914 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		BC123C2A28F32786003AE914 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewModel.swift; sourceTree = "<group>"; };
@@ -75,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC123C2B28F32786003AE914 /* WebKit.framework in Frameworks */,
+				57F3D7D5916001B7AA7B073D /* Pods_IntroduceBodyBuilding.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,9 +110,10 @@
 			children = (
 				BCCDAC9828AB7DAC004C41BD /* MainViewController.swift */,
 				BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */,
+				BC123C2628F3269D003AE914 /* WebViewController.swift */,
 				BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */,
 				BC3B72AA28ED935E00C8F40E /* RoutineViewController.swift */,
-				BC123C2628F3269D003AE914 /* WebViewController.swift */,
+				BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -143,7 +150,6 @@
 				BCCDAC9F28AB7DAD004C41BD /* LaunchScreen.storyboard */,
 				BCCDACA228AB7DAD004C41BD /* Info.plist */,
 				BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */,
-				BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */,
 			);
 			path = IntroduceBodyBuilding;
 			sourceTree = "<group>";
@@ -155,6 +161,7 @@
 				BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */,
 				BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */,
 				BC3B72B028ED9BF400C8F40E /* RoutineViewModel.swift */,
+				BC07ED5A28F94DCE0064B82A /* RoutineAddViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -178,6 +185,7 @@
 			children = (
 				BCCDACAB28AB7E35004C41BD /* MainTVCellModel.swift */,
 				BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */,
+				BC07ED5828F94C330064B82A /* RoutineVCModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -200,8 +208,6 @@
 			dependencies = (
 			);
 			name = IntroduceBodyBuilding;
-			packageProductDependencies = (
-			);
 			productName = IntroduceBodyBuilding;
 			productReference = BCCDAC9128AB7DAC004C41BD /* IntroduceBodyBuilding.app */;
 			productType = "com.apple.product-type.application";
@@ -304,6 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC07ED5928F94C330064B82A /* RoutineVCModel.swift in Sources */,
 				BC123C2728F3269D003AE914 /* WebViewController.swift in Sources */,
 				BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */,
 				BCE9D80528DC0D0E00EA5A95 /* MainTableViewModel.swift in Sources */,
@@ -318,6 +325,7 @@
 				BCCDAC9728AB7DAC004C41BD /* SceneDelegate.swift in Sources */,
 				BC1BDDD228E5A02C00238C60 /* MyProgramViewCell.swift in Sources */,
 				BC68A58A28EC57A100D4C02F /* DropCell.swift in Sources */,
+				BC07ED5B28F94DCE0064B82A /* RoutineAddViewModel.swift in Sources */,
 				BC1BDDD028E55A3000238C60 /* MyProgramViewModel.swift in Sources */,
 				BCC4E05828E2C0680061EAA9 /* DetailViewModel.swift in Sources */,
 				BC3B72AF28ED995400C8F40E /* RoutineTableViewCell.swift in Sources */,
@@ -488,6 +496,154 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CODE_SIGN_FLAGS = "";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"Differentiator\"",
+					"-framework",
+					"\"DropDown\"",
+					"-framework",
+					"\"FBLPromises\"",
+					"-framework",
+					"\"FirebaseCore\"",
+					"-framework",
+					"\"FirebaseCoreDiagnostics\"",
+					"-framework",
+					"\"FirebaseCoreInternal\"",
+					"-framework",
+					"\"FirebaseFirestore\"",
+					"-framework",
+					"\"FirebaseFirestoreSwift\"",
+					"-framework",
+					"\"FirebaseInstallations\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GoogleAppMeasurement\"",
+					"-framework",
+					"\"GoogleAppMeasurementIdentitySupport\"",
+					"-framework",
+					"\"GoogleDataTransport\"",
+					"-framework",
+					"\"GoogleUtilities\"",
+					"-framework",
+					"\"RxCocoa\"",
+					"-framework",
+					"\"RxDataSources\"",
+					"-framework",
+					"\"RxRelay\"",
+					"-framework",
+					"\"RxSwift\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"absl\"",
+					"-framework",
+					"\"grpc\"",
+					"-framework",
+					"\"grpcpp\"",
+					"-framework",
+					"\"leveldb\"",
+					"-framework",
+					"\"nanopb\"",
+					"-framework",
+					"\"openssl_grpc\"",
+					"-framework",
+					"\"uv\"",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"Differentiator\"",
+					"-framework",
+					"\"DropDown\"",
+					"-framework",
+					"\"FBLPromises\"",
+					"-framework",
+					"\"FirebaseAnalytics\"",
+					"-framework",
+					"\"FirebaseCore\"",
+					"-framework",
+					"\"FirebaseCoreDiagnostics\"",
+					"-framework",
+					"\"FirebaseCoreInternal\"",
+					"-framework",
+					"\"FirebaseFirestore\"",
+					"-framework",
+					"\"FirebaseFirestoreSwift\"",
+					"-framework",
+					"\"FirebaseInstallations\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GoogleAppMeasurement\"",
+					"-framework",
+					"\"GoogleAppMeasurementIdentitySupport\"",
+					"-framework",
+					"\"GoogleDataTransport\"",
+					"-framework",
+					"\"GoogleUtilities\"",
+					"-framework",
+					"\"RxCocoa\"",
+					"-framework",
+					"\"RxDataSources\"",
+					"-framework",
+					"\"RxRelay\"",
+					"-framework",
+					"\"RxSwift\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"absl\"",
+					"-framework",
+					"\"grpc\"",
+					"-framework",
+					"\"grpcpp\"",
+					"-framework",
+					"\"leveldb\"",
+					"-framework",
+					"\"nanopb\"",
+					"-framework",
+					"\"openssl_grpc\"",
+					"-framework",
+					"\"uv\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = kr.xoul.IntroduceBodyBuilding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -19,6 +19,7 @@ class RoutineViewController: UIViewController {
             routineTableView.separatorColor = .black
         }
     }
+    
     var viewModel = RoutineViewModel()
     var disposeBag = DisposeBag()
     
@@ -91,8 +92,18 @@ class RoutineViewController: UIViewController {
         //        getData()
         bindTableView(data: viewModel.routineObservable)
         navigationSet()
+        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: nil)
+        
         self.navigationItem.setRightBarButton(navigationItem.rightBarButtonItem, animated: true)
+        
+        self.navigationItem.rightBarButtonItem?.rx.tap
+            .bind { _ in
+                guard let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController else {return}
+                self.present(routineAddVC, animated: true)
+            }.disposed(by: disposeBag)
+        
+        
     }
     
 }
