@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import RxSwift
+import CoreData
 
 class RoutineAddViewModel {
     
@@ -37,4 +38,50 @@ class RoutineAddViewModel {
             }
         }
     }
+    
+    func saveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], switchBool: Bool){
+        do{
+            let routineObject = try getObject() //CoreData Entity인 MyProgram 정의
+            insertData(in: routineObject)
+            _ = RoutineViewModel()
+        }
+        catch{
+            print("coreData error: \(error)")
+        }
+        
+        func getObject() throws -> NSManagedObject{
+            let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            guard let routineEntity = NSEntityDescription.entity(forEntityName: "Routine", in: viewContext) else{
+                throw setDataError.EntityNotExist } //CoreData entity 정의
+            let routineObject = NSManagedObject(entity: routineEntity, insertInto: viewContext)
+            return routineObject
+        }
+        
+        // CoreData에 데이터 삽입
+        func insertData(in object: NSManagedObject) {
+            let routine = object as! Routine
+            //MyProgram entity 존재 시, unwrapping 후 coreData에 데이터 insert
+            routine.title = title
+            routine.divisionImage = imageName
+            routine.divisionString = divisionName
+            routine.monday = dayBools[0]
+            routine.tuesday = dayBools[1]
+            routine.wednesday = dayBools[2]
+            routine.thursday = dayBools[3]
+            routine.friday = dayBools[4]
+            routine.alarmSwitch = switchBool
+            do{
+                try (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext.save() //insert 적용
+            }
+            catch{
+                print("save error: \(error)")
+            }
+        }
+        enum setDataError: Error{
+            case EntityNotExist
+        }
+    }
+    
+    
+    
 }

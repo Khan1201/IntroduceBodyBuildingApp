@@ -23,51 +23,6 @@ class RoutineViewController: UIViewController {
     var viewModel = RoutineViewModel()
     var disposeBag = DisposeBag()
     
-    
-    func getData() {
-        
-        do{
-            let routineObject = try getObject() //CoreData Entity인 MyProgram 정의
-            insertData(in: routineObject)
-        }
-        catch{
-            print("coreData error: \(error)")
-        }
-        
-        func getObject() throws -> NSManagedObject{
-            let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-            guard let routineEntity = NSEntityDescription.entity(forEntityName: "Routine", in: viewContext) else{
-                throw setDataError.EntityNotExist } //CoreData entity 정의
-            let routineObject = NSManagedObject(entity: routineEntity, insertInto: viewContext)
-            return routineObject
-        }
-        
-        // CoreData에 데이터 삽입
-        func insertData(in object: NSManagedObject) {
-            let routine = object as! Routine
-            //MyProgram entity 존재 시, unwrapping 후 coreData에 데이터 insert
-            routine.title = "Brogains 10 Week Powerbuilding"
-            routine.divisionImage = "PBIcon"
-            routine.divisionString = "PowerBuilding"
-            routine.monday = true
-            routine.tuesday = false
-            routine.wednesday = true
-            routine.thursday = true
-            routine.friday = true
-            routine.alarmSwitch = true
-            do{
-                try (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext.save() //insert 적용
-            }
-            catch{
-                print("save error: \(error)")
-            }
-            viewModel = RoutineViewModel()
-        }
-    }
-    enum setDataError: Error{
-        case EntityNotExist
-    }
-    
     func bindTableView(data: BehaviorSubject<[Routine]>){
         
         data.bind(to: self.routineTableView.rx.items(cellIdentifier: "RoutineTableViewCell", cellType: RoutineTableViewCell.self)) { (index, element, cell) in

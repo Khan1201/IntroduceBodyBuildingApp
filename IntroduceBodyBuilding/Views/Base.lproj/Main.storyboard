@@ -72,7 +72,7 @@
                                                             <color key="textColor" systemColor="systemPinkColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Da-Tu-asT">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="Description" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Da-Tu-asT">
                                                             <rect key="frame" x="140" y="87.5" width="224" height="14.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
@@ -84,7 +84,7 @@
                                                             <color key="textColor" systemColor="systemPinkColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOR-6t-Z9K">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOR-6t-Z9K">
                                                             <rect key="frame" x="140" y="51" width="234" height="19.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                                             <nil key="textColor"/>
@@ -1015,6 +1015,7 @@
                     <connections>
                         <outlet property="divisionTextField" destination="46B-s9-s9E" id="FYj-s0-5ug"/>
                         <outlet property="embeddedView" destination="ySh-o9-sxx" id="N2G-sE-TMf"/>
+                        <outlet property="noticeSwitch" destination="smL-yT-7v1" id="fel-WB-x3c"/>
                         <outlet property="pickerView" destination="SRg-jH-bL9" id="liy-pL-8df"/>
                         <outlet property="programTextField" destination="ZSR-6P-dpu" id="Sfu-Cw-III"/>
                         <outlet property="targetTextField" destination="z0a-vM-RrW" id="0rc-a4-ITZ"/>
