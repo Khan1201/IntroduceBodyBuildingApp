@@ -19,13 +19,13 @@ class MyProgramViewModel {
     var powerLiftingObservable = BehaviorSubject<[MyProgram]>(value: [])
 
     init(){
-        makeCoreData()
+        readCoreData()
         bindingCoreData(to: bodyBuildingObservable, division: "bodybuilding")
         bindingCoreData(to: powerBuildingObservable, division: "powerbuilding")
         bindingCoreData(to: powerLiftingObservable, division: "powerlifting")
     }
     
-    func makeCoreData() { //coreData에서 데이터 read
+    func readCoreData() { //coreData에서 데이터 read
         let fetchRequest: NSFetchRequest<MyProgram> = MyProgram.fetchRequest()
         let context = appdelegate.persistentContainer.viewContext
         

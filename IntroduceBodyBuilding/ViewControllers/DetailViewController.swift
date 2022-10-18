@@ -18,7 +18,7 @@ class DetailViewController: UIViewController {
     //위 Index Observable의 값 튜플화한 Observable
     private let tableViewObservable = BehaviorSubject<[(String ,String)]>(value: [("","")])
     
-    //MARK: - @IBOutlet, @IBAction
+    //MARK: - @IBOutlet
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!{
@@ -71,6 +71,8 @@ class DetailViewController: UIViewController {
             addButton.layer.cornerRadius = 15
         }
     }
+    //MARK: - @IBAction
+    
     @IBAction func allRoutineButtonAction(_ sender: UIButton) {
         guard let webVC = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
@@ -79,7 +81,10 @@ class DetailViewController: UIViewController {
         self.navigationController?.pushViewController(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
-        
+        guard let routineVC = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "RoutineViewController") as? RoutineViewController else {return}
+        routineVC.moveBool = true
+        self.navigationController?.pushViewController(routineVC, animated: true)
     }
     @IBAction func basketButtonAction(_ sender: UIButton) {
         approachCoreData() //CoreData에 접근

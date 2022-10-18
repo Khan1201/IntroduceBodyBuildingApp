@@ -32,6 +32,37 @@ class MainViewController: UIViewController{
         hideKeyboardWhenTappedAround()
     }
 }
+
+//MARK: - //테이블 뷰 셀 바인딩, 테이뷸 뷰 옵션 설정
+
+extension MainViewController {
+    private func bindTableView(isFilterd: Bool) { //isFiltered -> true : 검색 활성화 시, false: 검색 비활성화 시
+        
+        setTableViewOption()
+        isFilterd ? bindCell(data: mainViewModel.filteredObservable) : bindCell(data: mainViewModel.tableViewObservable)
+        
+        //테이블 뷰 초기설정
+        func setTableViewOption(){
+            mainTableView.separatorStyle = .none
+            mainTableView.showsVerticalScrollIndicator = false
+            mainTableView.delegate = nil
+            mainTableView.dataSource = nil
+        }
+        
+        // 메인 테이블 뷰에 cell 바인딩
+        func bindCell(data: BehaviorSubject<[MainTVCellModel.Fields]>){
+            data.bind(to: self.mainTableView.rx.items(cellIdentifier: "MainTableViewCell", cellType: MainTableViewCell.self)) { (index, element, cell) in
+                
+                cell.titleLabel.text = element.title
+                cell.weekLabel.text = element.week
+                cell.descriptionLabel.text = element.description
+                cell.recommendLabel.text = element.recommend
+                cell.divisionLabel.text = element.division
+                cell.healthImageView.image = UIImage(named: element.image )
+            }.disposed(by: self.disposeBag)
+        }
+    }
+}
 //MARK: - 검색 활성화 후 필러링된 TableView 제공
 
 extension MainViewController: UISearchResultsUpdating{
@@ -72,36 +103,7 @@ extension MainViewController {
     @objc func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)    }
 }
-//MARK: - //테이블 뷰 셀 바인딩, 테이뷸 뷰 옵션 설정
 
-extension MainViewController {
-    private func bindTableView(isFilterd: Bool) { //isFiltered -> true : 검색 활성화 시, false: 검색 비활성화 시
-        
-        setTableViewOption()
-        isFilterd ? bindingCell(data: mainViewModel.filteredObservable) : bindingCell(data: mainViewModel.tableViewObservable)
-        
-        //테이블 뷰 초기설정
-        func setTableViewOption(){
-            mainTableView.separatorStyle = .none
-            mainTableView.showsVerticalScrollIndicator = false
-            mainTableView.delegate = nil
-            mainTableView.dataSource = nil
-        }
-        
-        // 메인 테이블 뷰에 cell 바인딩
-        func bindingCell(data: BehaviorSubject<[MainTVCellModel.Fields]>){
-            data.bind(to: self.mainTableView.rx.items(cellIdentifier: "MainTableViewCell", cellType: MainTableViewCell.self)) { (index, element, cell) in
-                
-                cell.titleLabel.text = element.title
-                cell.weekLabel.text = element.week
-                cell.descriptionLabel.text = element.description
-                cell.recommendLabel.text = element.recommend
-                cell.divisionLabel.text = element.division
-                cell.healthImageView.image = UIImage(named: element.image )
-            }.disposed(by: self.disposeBag)
-        }
-    }
-}
 //MARK: - 셀 클릭 이벤트 (한번만 선언위해 바깥으로 빼놓음)
 
 extension MainViewController {

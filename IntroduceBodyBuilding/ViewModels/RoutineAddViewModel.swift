@@ -43,7 +43,6 @@ class RoutineAddViewModel {
         do{
             let routineObject = try getObject() //CoreData Entity인 MyProgram 정의
             insertData(in: routineObject)
-            _ = RoutineViewModel()
         }
         catch{
             print("coreData error: \(error)")
@@ -64,6 +63,7 @@ class RoutineAddViewModel {
             routine.title = title
             routine.divisionImage = imageName
             routine.divisionString = divisionName
+            print(dayBools)
             routine.monday = dayBools[0]
             routine.tuesday = dayBools[1]
             routine.wednesday = dayBools[2]

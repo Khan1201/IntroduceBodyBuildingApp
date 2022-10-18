@@ -28,7 +28,6 @@ class DetailViewModel {
         .responseDecodable(of: DetailVCModel.self) { response in // decoding
             switch response.result {
             case .success :
-                print("성공")
                 if let value = response.value?.documents {
 //                    DetailViewModel.detailViewModel = value
                     self.detailViewObservable.onNext(value)
