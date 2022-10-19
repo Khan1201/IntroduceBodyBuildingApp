@@ -23,6 +23,13 @@ class RoutineViewController: UIViewController {
     lazy var moveBool: Bool = false // detailVC에서 접근 시 true, true -> routineAddVC 호출
     var viewModel = RoutineViewModel()
     var disposeBag = DisposeBag()
+    lazy var switchBool: Bool = false{
+        willSet{
+            if newValue{
+                print("켜짐")
+            }
+        }
+    }
     //MARK: - viewDidLoad()
     
     override func viewDidLoad() {
@@ -88,6 +95,7 @@ extension RoutineViewController{
                 cell.thursdayBool = element.thursday
                 cell.fridayBool = element.friday
                 cell.alarmSwitch.isOn = element.alarmSwitch
+                
             }.disposed(by: disposeBag)
         }
         

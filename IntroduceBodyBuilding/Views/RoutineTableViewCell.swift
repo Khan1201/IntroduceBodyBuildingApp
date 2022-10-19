@@ -7,8 +7,10 @@
 
 import Foundation
 import UIKit
+import UserNotifications
 
 class RoutineTableViewCell: UITableViewCell {
+    lazy var viewModel = RoutineViewModel()
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var divisionLabel: UILabel!
@@ -18,7 +20,6 @@ class RoutineTableViewCell: UITableViewCell {
             divisionImageView.layer.cornerRadius = 7
         }
     }
-    
     @IBOutlet weak var mondayLabel: UILabel!
     @IBOutlet weak var tuesdayLabel: UILabel!
     @IBOutlet weak var wednesdayLabel: UILabel!
@@ -27,14 +28,25 @@ class RoutineTableViewCell: UITableViewCell {
     
     @IBOutlet weak var alarmSwitch: UISwitch!
 
+    @IBAction func switchAction(_ sender: Any) {
+        if alarmSwitch.isOn{
+            viewModel.updateSwitchBool(condition: titleLabel.text!, switchBool: alarmSwitch.isOn)
+        }
+        else{
+            viewModel.updateSwitchBool(condition: titleLabel.text!, switchBool: alarmSwitch.isOn)
+        }
+    }
     var mondayBool: Bool?
     var tuesdayBool: Bool?
     var wednesdayBool: Bool?
     var thursdayBool: Bool?
     var fridayBool: Bool?
     
+    let userNotificationCenter = UNUserNotificationCenter.current()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

@@ -39,46 +39,95 @@ class RoutineAddViewModel {
         }
     }
     
-    func saveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], switchBool: Bool){
-        do{
-            let routineObject = try getObject() //CoreData Entity인 MyProgram 정의
-            insertData(in: routineObject)
+    // 저장 후 중복체크 bool return
+    func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], switchBool: Bool, viewController: RoutineAddViewController) -> Bool{
+        
+        var alreadySavedBool: Bool = false // 중복 체크 bool
+        alreadySavedBool = checkDuplicated()
+        
+        if alreadySavedBool{
+            makeAlert(viewController: viewController)
         }
-        catch{
-            print("coreData error: \(error)")
+        else{
+            approachCoreData()
+        }
+        return alreadySavedBool
+        
+        // 중복 체크
+        func checkDuplicated() -> Bool{
+            let coreDatas = readCoreData()
+            for coreData in coreDatas{
+                if coreData.title == title{
+                    return true
+                }
+            }
+            return false
+            
+            // 전체 coreData 불러옴
+            func readCoreData() -> [Routine] { //coreData에서 데이터 read
+                let fetchRequest: NSFetchRequest<Routine> = Routine.fetchRequest()
+                let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+                var data: [Routine] = []
+                do{
+                    data = try context.fetch(fetchRequest)
+                }catch{
+                    print(error)
+                }
+                return data
+            }
         }
         
-        func getObject() throws -> NSManagedObject{
-            let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-            guard let routineEntity = NSEntityDescription.entity(forEntityName: "Routine", in: viewContext) else{
-                throw setDataError.EntityNotExist } //CoreData entity 정의
-            let routineObject = NSManagedObject(entity: routineEntity, insertInto: viewContext)
-            return routineObject
+        // 중복일 시 vc에 표시할 alert
+        func makeAlert(viewController: UIViewController){
+            let alert =  UIAlertController(title: "안내", message: "루틴에 이미 존재합니다 !", preferredStyle: .alert)
+            let alertDeleteBtn = UIAlertAction(title: "Cancel", style: .destructive) { _ in }
+            alert.addAction(alertDeleteBtn)
+            viewController.present(alert, animated: true)
         }
         
-        // CoreData에 데이터 삽입
-        func insertData(in object: NSManagedObject) {
-            let routine = object as! Routine
-            //MyProgram entity 존재 시, unwrapping 후 coreData에 데이터 insert
-            routine.title = title
-            routine.divisionImage = imageName
-            routine.divisionString = divisionName
-            print(dayBools)
-            routine.monday = dayBools[0]
-            routine.tuesday = dayBools[1]
-            routine.wednesday = dayBools[2]
-            routine.thursday = dayBools[3]
-            routine.friday = dayBools[4]
-            routine.alarmSwitch = switchBool
+        // coreData 접근 -> 해당 값 insert
+        func approachCoreData(){
             do{
-                try (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext.save() //insert 적용
+                let routineObject = try getObject() //CoreData Entity인 MyProgram 정의
+                insertData(in: routineObject)
             }
             catch{
-                print("save error: \(error)")
+                print("coreData error: \(error)")
             }
-        }
-        enum setDataError: Error{
-            case EntityNotExist
+            
+            func getObject() throws -> NSManagedObject{
+                let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+                guard let routineEntity = NSEntityDescription.entity(forEntityName: "Routine", in: viewContext) else{
+                    throw setDataError.EntityNotExist } //CoreData entity 정의
+                let routineObject = NSManagedObject(entity: routineEntity, insertInto: viewContext)
+                return routineObject
+            }
+            
+            // CoreData에 데이터 삽입
+            func insertData(in object: NSManagedObject) {
+                let routine = object as! Routine
+                //MyProgram entity 존재 시, unwrapping 후 coreData에 데이터 insert
+                routine.title = title
+                routine.divisionImage = imageName
+                routine.divisionString = divisionName
+                routine.monday = dayBools[0]
+                routine.tuesday = dayBools[1]
+                routine.wednesday = dayBools[2]
+                routine.thursday = dayBools[3]
+                routine.friday = dayBools[4]
+                routine.alarmSwitch = switchBool
+                do{
+                    try (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext.save() //insert 적용
+                }
+                catch{
+                    print("save error: \(error)")
+                }
+            }
+            
+            // 에러 정의
+            enum setDataError: Error{
+                case EntityNotExist
+            }
         }
     }
     

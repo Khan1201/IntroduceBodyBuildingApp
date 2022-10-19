@@ -72,8 +72,11 @@ class RoutineAddViewController: UIViewController {
         self.presentingViewController?.dismiss(animated: true)
     }
     @IBAction func addSaveAction(_ sender: Any) {
-        viewModel.saveData(title: programTextField.text ?? "", imageName: coreDataDivisionIconName, divisionName: divisionTextField.text ?? "", dayBools: coreDataDayBools, switchBool: coreDataSwitchBool)
-        self.presentingViewController?.dismiss(animated: true)
+        let duplicatedBool = viewModel.returnDuplicatedBoolAfterSaveData(title: programTextField.text ?? "", imageName: coreDataDivisionIconName, divisionName: divisionTextField.text ?? "", dayBools: coreDataDayBools, switchBool: coreDataSwitchBool, viewController: self)
+        
+        if duplicatedBool == false{
+            self.presentingViewController?.dismiss(animated: true)
+        }
     }
     //MARK: - viewDidLoad()
     

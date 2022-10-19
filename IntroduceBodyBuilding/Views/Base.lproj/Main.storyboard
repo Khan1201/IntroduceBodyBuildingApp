@@ -616,6 +616,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cHh-yH-rvL">
                                                     <rect key="frame" x="358" y="32" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="switchAction:" destination="Xbr-2W-SlR" eventType="valueChanged" id="d4T-y4-1Tn"/>
+                                                    </connections>
                                                 </switch>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="vyR-1C-Bnn">
                                                     <rect key="frame" x="20" y="82.5" width="387" height="22"/>

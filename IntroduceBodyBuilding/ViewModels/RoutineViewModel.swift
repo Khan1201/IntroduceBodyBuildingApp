@@ -42,8 +42,6 @@ class RoutineViewModel{
                 let tempFetchRequest: NSFetchRequest<Routine> = Routine.fetchRequest()
                 result = try context.fetch(tempFetchRequest)
                 try context.save()
-//                let tempFetchRequest: NSFetchRequest<Routine> = Routine.fetchRequest()
-//                print("삭제 후 값은 : \(try context.fetch(tempFetchRequest))")
                 
             } catch {
                 print("save error: \(error)")
@@ -52,6 +50,26 @@ class RoutineViewModel{
             print("fetch error: \(error)")
         }
         return result
+    }
+    
+    func updateSwitchBool(condition: String, switchBool: Bool) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest.init(entityName: "Routine")
+        fetchRequest.predicate = NSPredicate(format: "title = %@", condition)
+
+        do {
+            let test = try managedContext.fetch(fetchRequest)
+            let objectUpdate = test[0] as! NSManagedObject
+            objectUpdate.setValue(switchBool, forKey: "alarmSwitch")
+            do {
+                try managedContext.save()
+            } catch {
+                print(error)
+            }
+        } catch {
+            print(error)
+        }
     }
     
     init(){
