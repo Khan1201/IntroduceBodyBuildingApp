@@ -23,13 +23,7 @@ class RoutineViewController: UIViewController {
     lazy var moveBool: Bool = false // detailVC에서 접근 시 true, true -> routineAddVC 호출
     var viewModel = RoutineViewModel()
     var disposeBag = DisposeBag()
-    lazy var switchBool: Bool = false{
-        willSet{
-            if newValue{
-                print("켜짐")
-            }
-        }
-    }
+    lazy var switchBool: Bool = false
     //MARK: - viewDidLoad()
     
     override func viewDidLoad() {
@@ -103,9 +97,17 @@ extension RoutineViewController{
             self.routineTableView.rx.itemDeleted
                 .bind { [unowned self] indexPath in
                     var result:[Routine] = [] // 데이터 삭제 후 패치된 데이터를 받을 변수
-                    self.viewModel.routineObservable
-                        .subscribe { element in
-                            if let title = element[indexPath.row].title{
+                    self.viewModel.routineObservable // 테이블 뷰에 바인딩 된 데이터를 얻어옴
+                        .subscribe {[unowned self] element in
+                            if let title = element[indexPath.row].title{ // 삭제할 셀 title = coredata 해당 index의 title
+                                if element[indexPath.row].alarmSwitch { // 알림 switch -> on
+                                    let selectedDays: Int = Int(element[indexPath.row].notificationIndex) // 선택된 요일 카운트
+                                    var indexArray: [String] = [] // selectedDays -> [SelectedDays]
+                                    for index in 0..<selectedDays{
+                                        indexArray.append("\(index)") // Sequence의 index만 추출하면 됨, index의 String 값은 상관 x
+                                    }
+                                    self.viewModel.deleteNotification(title: element[indexPath.row].title ?? "", days: indexArray) // [notificationCenter identifier] 생성 위해 해당 인자 넘겨줌
+                                }
                                 result = self.viewModel.deleteCoreData(deleteCondition: title) //해당 함수는 삭제 후 시점의 데이터 반환
                             }
                         } onDisposed: {

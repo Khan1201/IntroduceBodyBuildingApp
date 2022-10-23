@@ -39,8 +39,8 @@ class RoutineAddViewModel {
         }
     }
     
-    // 저장 후 중복체크 bool return
-    func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], switchBool: Bool, viewController: RoutineAddViewController) -> Bool{
+    // 저장 후 중복체크 bool return 함. true -> 중복이므로 alert 띄움, false -> coreData 삽입 (루틴 페이지에 등록)
+    func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], switchBool: Bool, notificationIndex: Int, viewController: RoutineAddViewController) -> Bool{
         
         var alreadySavedBool: Bool = false // 중복 체크 bool
         alreadySavedBool = checkDuplicated()
@@ -116,6 +116,7 @@ class RoutineAddViewModel {
                 routine.thursday = dayBools[3]
                 routine.friday = dayBools[4]
                 routine.alarmSwitch = switchBool
+                routine.notificationIndex = Int16(notificationIndex)
                 do{
                     try (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext.save() //insert 적용
                 }

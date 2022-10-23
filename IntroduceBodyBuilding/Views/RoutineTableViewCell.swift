@@ -31,9 +31,11 @@ class RoutineTableViewCell: UITableViewCell {
     @IBAction func switchAction(_ sender: Any) {
         if alarmSwitch.isOn{
             viewModel.updateSwitchBool(condition: titleLabel.text!, switchBool: alarmSwitch.isOn)
+            viewModel.makeLocalNotification(title: titleLabel.text!, days: notificationDays)
         }
         else{
             viewModel.updateSwitchBool(condition: titleLabel.text!, switchBool: alarmSwitch.isOn)
+            viewModel.deleteNotification(title: titleLabel.text!, days: notificationDays)
         }
     }
     var mondayBool: Bool?
@@ -42,11 +44,10 @@ class RoutineTableViewCell: UITableViewCell {
     var thursdayBool: Bool?
     var fridayBool: Bool?
     
-    let userNotificationCenter = UNUserNotificationCenter.current()
+    var notificationDays: [String] = []
     
     override func awakeFromNib() {
-        super.awakeFromNib()
-        
+        super.awakeFromNib()        
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -76,22 +77,26 @@ extension RoutineTableViewCell {
     }
     
     func bindAllLabel() {
-        bindLabel(to: mondayLabel, newValue: mondayBool)
-        bindLabel(to: tuesdayLabel, newValue: tuesdayBool)
-        bindLabel(to: wednesdayLabel, newValue: wednesdayBool)
-        bindLabel(to: thursdayLabel, newValue: thursdayBool)
-        bindLabel(to: fridayLabel, newValue: fridayBool)
+        bindLabel(to: mondayLabel, dayBool: mondayBool)
+        bindLabel(to: tuesdayLabel, dayBool: tuesdayBool)
+        bindLabel(to: wednesdayLabel, dayBool: wednesdayBool)
+        bindLabel(to: thursdayLabel, dayBool: thursdayBool)
+        bindLabel(to: fridayLabel, dayBool: fridayBool)
     }
     
-    func bindLabel(to label: UILabel, newValue: Bool?){
-        if let newValue = newValue{
-            if newValue{
+    func bindLabel(to label: UILabel, dayBool: Bool?){
+        if let dayBool = dayBool{
+            if dayBool{
                 label.backgroundColor = .darkGray
                 label.textColor = .systemOrange
+                notificationDays.append(label.text!) // 해당 요일 활성화 -> notification 배열에 저장
             }
             label.layer.masksToBounds = true
             label.layer.cornerRadius = 7
         }
+    }
+    func getNotificationDays() -> [String]{
+        return notificationDays
     }
     
 }

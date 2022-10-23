@@ -28,6 +28,7 @@ class MainViewController: UIViewController{
         makeNavigationBar()
         bindTableView(isFilterd: false)
         addCellCilckEvent()
+        requestNotificationAuthorization()
         makePlusButton()
         hideKeyboardWhenTappedAround()
     }
@@ -229,3 +230,17 @@ extension MainViewController {
         }
     }
 }
+//MARK: - 로컬 푸쉬 알림 허용 알림
+
+extension MainViewController {
+    func requestNotificationAuthorization() {
+        let authOptions = UNAuthorizationOptions(arrayLiteral: .alert, .badge, .sound)
+
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { success, error in
+            if let error = error {
+                print("Error: \(error)")
+            }
+        }
+    }
+}
+
