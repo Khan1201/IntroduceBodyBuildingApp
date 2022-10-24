@@ -14,6 +14,7 @@ import UserNotifications
 class RoutineViewModel{
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
     var routineObservable = BehaviorSubject<[Routine]>(value: [])
+    var routineAddObservable = BehaviorSubject<[RoutineVCModel.Fields]>(value: [])
     
     func readCoreData() { //coreData에서 데이터 read
         let fetchRequest: NSFetchRequest<Routine> = Routine.fetchRequest()
@@ -42,7 +43,7 @@ class RoutineViewModel{
                 let tempFetchRequest: NSFetchRequest<Routine> = Routine.fetchRequest()
                 result = try context.fetch(tempFetchRequest)
                 try context.save()
-                
+                print("데이터 삭제 됨 !")
             } catch {
                 print("save error: \(error)")
             }
@@ -105,10 +106,9 @@ class RoutineViewModel{
                 if weekDay != 0 {
                     var dateComponents = DateComponents()
                     dateComponents.calendar = Calendar.current
-                    dateComponents.weekday = 1
-                    dateComponents.hour = 21
-                    dateComponents.minute = 19
-                    
+                    dateComponents.weekday = weekDay
+                    dateComponents.hour = 23
+                    dateComponents.minute = 8
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     let request = UNNotificationRequest(identifier: "\(title): \(identifier)",
                                                         content: notificationContent,
@@ -133,6 +133,7 @@ class RoutineViewModel{
             identifiers.append("\(title): \(index)")
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        print("\(identifiers) 삭제 됨 !")
     }
     
     init(){

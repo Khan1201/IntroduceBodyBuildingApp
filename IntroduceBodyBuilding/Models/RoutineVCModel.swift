@@ -11,7 +11,7 @@ struct RoutineVCModel: Codable {
         
     var documents: [Fields] = [] //observable로 보내줄 파싱 데이터
 
-    struct Fields: Codable{
+    struct Fields: Codable, Equatable{
         var title: String = ""
         var week: String = ""
         var recommend: String = ""

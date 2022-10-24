@@ -13,10 +13,13 @@
         <attribute name="divisionString" optional="YES" attributeType="String"/>
         <attribute name="friday" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="monday" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="notificationIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="recommend" optional="YES" attributeType="String"/>
+        <attribute name="selectedDays" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="thursday" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="tuesday" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="wednesday" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="week" optional="YES" attributeType="String"/>
+        <attribute name="weekCount" optional="YES" attributeType="String"/>
     </entity>
 </model>

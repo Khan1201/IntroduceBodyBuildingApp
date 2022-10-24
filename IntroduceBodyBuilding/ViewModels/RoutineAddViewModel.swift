@@ -39,8 +39,36 @@ class RoutineAddViewModel {
         }
     }
     
+    // tableCell 선택으로 VC호출 -> 저장 시 해당 메소드 실행 (데이터 추가가 아닌 업데이트)
+    func updateData(condition: String, switchBool: Bool, dayBools: [Bool], selectedDays: Int) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest.init(entityName: "Routine")
+        fetchRequest.predicate = NSPredicate(format: "title = %@", condition)
+        
+        do {
+            let test = try managedContext.fetch(fetchRequest)
+            let objectUpdate = test[0] as! NSManagedObject
+            objectUpdate.setValue(dayBools[0], forKey: "monday")
+            objectUpdate.setValue(dayBools[1], forKey: "tuesday")
+            objectUpdate.setValue(dayBools[2], forKey: "wednesday")
+            objectUpdate.setValue(dayBools[3], forKey: "thursday")
+            objectUpdate.setValue(dayBools[4], forKey: "friday")
+            objectUpdate.setValue(switchBool, forKey: "alarmSwitch")
+            objectUpdate.setValue(Int16(selectedDays), forKey: "selectedDays")
+            do {
+                try managedContext.save()
+            } catch {
+                print(error)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    // 루틴 추가 버튼으로 VC호출 -> 저장 시 메소드 호출 (coreData에 데이터 추가)
     // 저장 후 중복체크 bool return 함. true -> 중복이므로 alert 띄움, false -> coreData 삽입 (루틴 페이지에 등록)
-    func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], switchBool: Bool, notificationIndex: Int, viewController: RoutineAddViewController) -> Bool{
+    func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], recommend: String, week: String, weekCount: String,switchBool: Bool, selectedDays: Int, viewController: RoutineAddViewController) -> Bool{
         
         var alreadySavedBool: Bool = false // 중복 체크 bool
         alreadySavedBool = checkDuplicated()
@@ -110,13 +138,16 @@ class RoutineAddViewModel {
                 routine.title = title
                 routine.divisionImage = imageName
                 routine.divisionString = divisionName
+                routine.recommend = recommend
+                routine.week = week
+                routine.weekCount = weekCount
                 routine.monday = dayBools[0]
                 routine.tuesday = dayBools[1]
                 routine.wednesday = dayBools[2]
                 routine.thursday = dayBools[3]
                 routine.friday = dayBools[4]
                 routine.alarmSwitch = switchBool
-                routine.notificationIndex = Int16(notificationIndex)
+                routine.selectedDays = Int16(selectedDays)
                 do{
                     try (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext.save() //insert 적용
                 }
