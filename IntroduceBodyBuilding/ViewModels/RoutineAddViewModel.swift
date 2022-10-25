@@ -56,6 +56,8 @@ class RoutineAddViewModel {
             objectUpdate.setValue(dayBools[4], forKey: "friday")
             objectUpdate.setValue(switchBool, forKey: "alarmSwitch")
             objectUpdate.setValue(Int16(selectedDays), forKey: "selectedDays")
+            print("테스트 : \(dayBools)")
+            print("테스트 : \(selectedDays)")
             do {
                 try managedContext.save()
             } catch {
@@ -70,16 +72,13 @@ class RoutineAddViewModel {
     // 저장 후 중복체크 bool return 함. true -> 중복이므로 alert 띄움, false -> coreData 삽입 (루틴 페이지에 등록)
     func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], recommend: String, week: String, weekCount: String,switchBool: Bool, selectedDays: Int, viewController: RoutineAddViewController) -> Bool{
         
-        var alreadySavedBool: Bool = false // 중복 체크 bool
-        alreadySavedBool = checkDuplicated()
+        var duplicated: Bool = false // 중복 체크 bool
+        duplicated = checkDuplicated()
         
-        if alreadySavedBool{
-            makeAlert(viewController: viewController)
-        }
-        else{
+        if duplicated == false{
             approachCoreData()
         }
-        return alreadySavedBool
+        return duplicated
         
         // 중복 체크
         func checkDuplicated() -> Bool{
@@ -103,14 +102,6 @@ class RoutineAddViewModel {
                 }
                 return data
             }
-        }
-        
-        // 중복일 시 vc에 표시할 alert
-        func makeAlert(viewController: UIViewController){
-            let alert =  UIAlertController(title: "안내", message: "루틴에 이미 존재합니다 !", preferredStyle: .alert)
-            let alertDeleteBtn = UIAlertAction(title: "Cancel", style: .destructive) { _ in }
-            alert.addAction(alertDeleteBtn)
-            viewController.present(alert, animated: true)
         }
         
         // coreData 접근 -> 해당 값 insert
@@ -162,7 +153,4 @@ class RoutineAddViewModel {
             }
         }
     }
-    
-    
-    
 }

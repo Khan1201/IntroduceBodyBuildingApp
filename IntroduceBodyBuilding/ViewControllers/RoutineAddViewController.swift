@@ -28,16 +28,14 @@ class RoutineAddViewController: UIViewController {
     }
     @IBOutlet weak var embeddedView: UIView!{
         didSet{
-            embeddedView.layer.masksToBounds = true
-            embeddedView.layer.cornerRadius = 10
+            setCornerRadius(embeddedView, radius: 10)
         }
     }
     @IBOutlet weak var programTextField: UITextField!
     @IBOutlet var dayButtons: [UIButton]!{
         didSet{
             for dayButton in dayButtons{
-                dayButton.layer.masksToBounds = true
-                dayButton.layer.cornerRadius = 6
+                setCornerRadius(dayButton, radius: 6)
             }
         }
     }
@@ -46,10 +44,18 @@ class RoutineAddViewController: UIViewController {
     @IBOutlet weak var totalPeriodTextField: UITextField!
     @IBOutlet weak var weekNoticeLabel: UILabel!
     @IBOutlet weak var noticeSwitch: UISwitch!
+    
+    
+    @IBOutlet weak var viewRoutineButton: UIButton!{
+        didSet{
+            setCornerRadius(viewRoutineButton, radius: 10)
+            viewRoutineButton.layer.isHidden = !fromTableCellSelectionBool // 루틴 페이지에서 편집 시 버튼 보임
+        }
+    }
+    
     @IBOutlet weak var routineDeleteButton: UIButton!{
         didSet{
-            routineDeleteButton.layer.masksToBounds = true
-            routineDeleteButton.layer.cornerRadius = 10
+            setCornerRadius(routineDeleteButton, radius: 10)
             routineDeleteButton.layer.isHidden = !fromTableCellSelectionBool // 루틴 페이지에서 편집 시 버튼 보임
         }
     }
@@ -57,20 +63,21 @@ class RoutineAddViewController: UIViewController {
     //MARK: - 해당 VC의 UI event를 위한 변수
     
     lazy var routineViewModel = RoutineViewModel()
+    lazy var detailViewModel = DetailViewModel()
+    
     let routineAddviewModel = RoutineAddViewModel()
     let disposeBag = DisposeBag()
     lazy var fromTableCellSelectionBool: Bool = false // 호출한 페이지 확인 bool
     lazy var fromTableCellSelectedDaysIntArray: [String] = []
     lazy var fromTableCellSwitchBool: Bool = false
     lazy var viewControllerName: String = "루틴 추가"
-    lazy var selectedDayBools: [Bool] = [] // 월 ~ 금 버튼 선택 체크 확인 bool
-    lazy var selectedDayStrings: [String] = [] // 월 ~ 금 선택된 버튼 요일 array (notification의 weekDay 구분 위해)
+    lazy var selectedDaysBoolArray: [Bool] = [] // 월 ~ 금 버튼 선택 체크 확인 bool
+    lazy var selectedDaysStringArray: [String] = [] // 월 ~ 금 선택된 버튼 요일 array (notification의 weekDay 구분 위해)
     lazy var weekDayCount: Int = 0 // 운동 총 기간 중, 주 n회 카운트
     lazy var selectedDayCount: Int = 0 //월 ~ 금 버튼 체크 카운트 (버튼 최대 선택 카운트)
     
     //MARK: - CoreData에 저장할 데이터
     
-    lazy var coreDataDayBools: [Bool] = [] // CoreData의 월 ~ 금 변수에 보낼 array
     var coreDataDivisionIconName: String { // CoreData의 아이콘 구분 변수에 보낼 변수
         switch divisionTextField.text{ // division 데이터로 운동 종류 구분
         case "BodyBuilding":
@@ -106,12 +113,12 @@ class RoutineAddViewController: UIViewController {
         if fromTableCellSelectionBool{
             
             // coreData 업데이트
-            routineAddviewModel.updateData(condition: programTextField.text!, switchBool: coreDataSwitchBool, dayBools: coreDataDayBools, selectedDays: selectedDayCount)
+            routineAddviewModel.updateData(condition: programTextField.text!, switchBool: coreDataSwitchBool, dayBools: selectedDaysBoolArray, selectedDays: selectedDayCount)
             
             // coreData에 저장된 swtichBool state
             if coreDataSwitchBool{
                 routineViewModel.deleteNotification(title: programTextField.text!, days: fromTableCellSelectedDaysIntArray)
-                routineViewModel.makeLocalNotification(title: programTextField.text!, days: selectedDayStrings)
+                routineViewModel.makeLocalNotification(title: programTextField.text!, days: selectedDaysStringArray)
             }
             else{
                 routineViewModel.deleteNotification(title: programTextField.text!, days: fromTableCellSelectedDaysIntArray)
@@ -121,20 +128,56 @@ class RoutineAddViewController: UIViewController {
         
         // 루틴 추가 버튼으로 호출 되었을 시
         else{
+            // coredata 접근 후 중복 state bool return. 중복이 아니면, 데이터 저장 함
+            let duplicated: Bool = routineAddviewModel.returnDuplicatedBoolAfterSaveData(title: programTextField.text!, imageName: coreDataDivisionIconName, divisionName: divisionTextField.text!, dayBools: selectedDaysBoolArray, recommend: targetTextField.text!, week: totalPeriodTextField.text!, weekCount: String(weekDayCount), switchBool: coreDataSwitchBool, selectedDays: selectedDayCount, viewController: self)
             
-            // coredata 접근 후 중복 확인. 중복이면 저장X -> 중복O bool return, 중복아니면 저장 O-> 중복X bool return
-            let duplicatedBool = routineAddviewModel.returnDuplicatedBoolAfterSaveData(title: programTextField.text!, imageName: coreDataDivisionIconName, divisionName: divisionTextField.text!, dayBools: coreDataDayBools, recommend: targetTextField.text!, week: totalPeriodTextField.text!, weekCount: String(weekDayCount), switchBool: coreDataSwitchBool, selectedDays: selectedDayCount, viewController: self)
-            
-            if duplicatedBool == false{
-                
+            if duplicated{
+                makeAlert()
+            }
+            else{
                 // 알림 스위치 on -> 해당 프로그램 notification 등록
                 if coreDataSwitchBool{
-                    routineViewModel.makeLocalNotification(title: programTextField.text!, days: selectedDayStrings)
+                    routineViewModel.makeLocalNotification(title: programTextField.text!, days: selectedDaysStringArray)
                 }
                 self.presentingViewController?.dismiss(animated: true)
             }
         }
     }
+    
+    @IBAction func addViewAction(_ sender: Any) {
+        
+        
+        if let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
+            
+            detailVC.fromRoutinVC = true
+            setDetailVCData(detailVC: detailVC)
+            
+            self.present(detailVC, animated: true)
+
+        }
+        
+        // 해당 프로그램 타이틀과 맞는 detailVC 데이터를 observable에 set
+        func setDetailVCData(detailVC: DetailViewController){
+            lazy var tempData: DetailVCModel.Fields = .init()
+
+            detailViewModel.detailViewObservable
+                .filter({ element in
+                    element != []
+                })
+                .subscribe { [unowned self] elements in
+                    if let elements = elements.element{
+                        for element in elements{
+                            if element.title == self.programTextField.text!{
+                                detailVC.detailVCIndexObservable // observable set
+                                    .onNext(element)
+                            }
+                        }
+                    }
+                }.disposed(by: disposeBag)
+        }
+        
+    }
+    
     
     @IBAction func addDeleteAction(_ sender: Any) {
         _ = routineViewModel.deleteCoreData(deleteCondition: programTextField.text!)
@@ -151,7 +194,7 @@ class RoutineAddViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindPickerView(fromRoutineVC: fromTableCellSelectionBool)
-    }    
+    }
 }
 
 //MARK: - pickerView 바인딩
@@ -195,10 +238,9 @@ extension RoutineAddViewController {
             // 피커뷰 UI 및 UI 데이터 초기화
             func resetInitialState(){
                 self.selectedDayCount = 0
-                self.selectedDayBools = [false, false, false, false, false]
-                self.coreDataDayBools = [false, false, false, false, false]
+                self.selectedDaysBoolArray = [false, false, false, false, false]
                 self.noticeSwitch.isOn = false
-                self.selectedDayStrings = []
+                self.selectedDaysStringArray = []
                 for dayButton in self.dayButtons{
                     dayButton.backgroundColor = .systemGray5
                     dayButton.tintColor = .systemGray2
@@ -208,12 +250,14 @@ extension RoutineAddViewController {
             // 초기 선택값 설정
             func setInitialSelected(){
                 data
-                    .filter({ element in
+                    .filter({ element in //observable 초기값은 []이므로, 필터로 거르고 다음 값 얻음
                         element != []
                     })
                     .take(1)
                     .bind { [unowned self] element in
-                        setSelectedDaysFromTableCell()
+                        
+                        // 셀 선택으로 호출 되었을 시 -> 현재 셀의 요일 값 적용, 루틴 추가 버튼으로 호출 되었을 시 -> 요일 변수 모두 초기화
+                        fromTableCellSelectionBool ? setSelectedDaysFromTableCell() : resetInitialState()
                         
                         self.noticeSwitch.isOn = self.fromTableCellSwitchBool
                         self.programTextField.text = element[0].title
@@ -224,10 +268,10 @@ extension RoutineAddViewController {
                         self.weekDayCount = Int(element[0].weekCount) ?? 0
                     }.disposed(by: disposeBag)
                 
-                // 등록한 버튼 요일 불러옴
+                // 셀 선택으로 호출 시 바인딩 했던 데이터로 등록한 버튼 요일 불러옴
                 func setSelectedDaysFromTableCell(){
                     for dayButton in dayButtons {
-                        for selectedDay in selectedDayStrings{
+                        for selectedDay in selectedDaysStringArray{
                             if dayButton.currentTitle! == selectedDay{
                                 dayButton.backgroundColor = .darkGray
                                 dayButton.tintColor = .systemOrange
@@ -255,27 +299,19 @@ extension RoutineAddViewController {
                     // 요일 최대 선택 가능 횟수
                     if selectedDayCount < weekDayCount {
                         // 해당 요일 선택 bool -> false 이면, 요일 선택 가능
-                        if (selectedDayBools[index] == false) {
-                            setSelectedButton(index: index)
-                            setCoreDataDayBools(condition: sender.currentTitle!) // 선택된 true 값 coreData 변수에 저장
-                            selectedDayStrings.append(sender.currentTitle!) // 선택된 요일 배열에 삽입
+                        if (selectedDaysBoolArray[index] == false) {
+                            setSelectedButton(index: index) // 선택시, 현재 버튼 카운트 +1 및 해당 요일 true
                         }
                         else{ // 해당 요일 선택 bool -> true 이면, 요일 선택해제 가능
                             setReleasedButton(index: index)
-                            if let index = selectedDayStrings.firstIndex(of: sender.currentTitle!){ // 해제된 요일 배열에서 삭제
-                                selectedDayStrings.remove(at: index)
-                            }
+                            
                         }
                     }
                     
                     // 현재 선택한 요일 카운트 = 최대 요일 카운트 시, 버튼선택 해제만 가능하도록
                     else{
-                        if selectedDayBools[index] == true { // 해당 요일 선택 bool -> true, 요일 해제 가능
+                        if selectedDaysBoolArray[index] == true { // 해당 요일 선택 bool -> true, 요일 해제 가능
                             setReleasedButton(index: index)
-                            setCoreDataDayBools(condition: sender.currentTitle!)
-                            if let index = selectedDayStrings.firstIndex(of: sender.currentTitle!){
-                                selectedDayStrings.remove(at: index)
-                            }
                         }
                     }
                 }
@@ -285,35 +321,40 @@ extension RoutineAddViewController {
             func setSelectedButton(index: Int){
                 sender.backgroundColor = .darkGray
                 sender.tintColor = .systemOrange
-                selectedDayBools[index] = true // 해당 요일 bool 값 true 활성화 (선택 됨)
+                selectedDaysBoolArray[index] = true // 해당 요일 bool 값 true 활성화 (선택 됨)
                 selectedDayCount += 1 // 현재 요일 카운트 + 1
+                selectedDaysStringArray.append(sender.currentTitle!) // 선택된 요일 배열에 삽입
             }
             
             // 버튼 해제 시, UI event
             func setReleasedButton(index: Int){
                 sender.backgroundColor = .systemGray5
                 sender.tintColor = .systemGray2
-                selectedDayBools[index] = false
+                selectedDaysBoolArray[index] = false
                 selectedDayCount -= 1
-            }
-            
-            // 해당 요일이 선택되면, CoreData 변수의 해당 요일 true (디폴트는 false)
-            func setCoreDataDayBools(condition: String){
-                switch condition {
-                case "월" :
-                    coreDataDayBools[0] = !coreDataDayBools[0]
-                case "화" :
-                    coreDataDayBools[1] = !coreDataDayBools[1]
-                case "수" :
-                    coreDataDayBools[2] = !coreDataDayBools[2]
-                case "목" :
-                    coreDataDayBools[3] = !coreDataDayBools[3]
-                case "금" :
-                    coreDataDayBools[4] = !coreDataDayBools[4]
-                default:
-                    print("Day 값 존재하지 않음")
+                if let index = selectedDaysStringArray.firstIndex(of: sender.currentTitle!){ // 해제된 요일 배열에서 삭제
+                    selectedDaysStringArray.remove(at: index)
                 }
             }
         }
+    }
+}
+//MARK: - 저장 버튼 클릭 후 데이터 중복 시, alert
+
+extension RoutineAddViewController{
+    func makeAlert(){
+        let alert =  UIAlertController(title: "안내", message: "루틴에 이미 존재합니다 !", preferredStyle: .alert)
+        let alertDeleteBtn = UIAlertAction(title: "Cancel", style: .destructive) { _ in }
+        alert.addAction(alertDeleteBtn)
+        self.present(alert, animated: true)
+    }
+}
+
+//MARK: - view object corner 적용
+
+extension RoutineAddViewController{
+    func  setCornerRadius(_ object: AnyObject, radius: CGFloat){
+        object.layer?.masksToBounds = true
+        object.layer?.cornerRadius = radius
     }
 }

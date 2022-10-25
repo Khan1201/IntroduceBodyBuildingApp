@@ -10,7 +10,6 @@ import Alamofire
 import RxSwift
 
 class DetailViewModel {
-//    static var detailViewModel: [DetailVCModel.Fields] = []
     var detailViewObservable: BehaviorSubject<[DetailVCModel.Fields]> = BehaviorSubject(value: [])
     
     init() {

@@ -13,12 +13,22 @@ class DetailViewController: UIViewController {
     let disposeBag = DisposeBag()
     
     //MainVC, MyProgramVC에서 쓰이기 때문에 private 지정 X
-    let detailVCIndexObservable = BehaviorSubject<DetailVCModel.Fields>(value: DetailVCModel.Fields())
+    var detailVCIndexObservable = BehaviorSubject<DetailVCModel.Fields>(value: DetailVCModel.Fields())
     
     //위 Index Observable의 값 튜플화한 Observable
     private let tableViewObservable = BehaviorSubject<[(String ,String)]>(value: [("","")])
     
+    var fromRoutinVC: Bool = false
     //MARK: - @IBOutlet
+    
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    @IBOutlet weak var goBackButton: UIButton!{
+        didSet{
+            goBackButton.isHidden = !fromRoutinVC
+        }
+    }
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!{
@@ -43,7 +53,6 @@ class DetailViewController: UIViewController {
     }
     @IBOutlet weak var descriptionLabel: UILabel!{
         didSet{
-            
             //줄 간격 설정
             let attrString = NSMutableAttributedString(string: descriptionLabel.text!)
             let paragraphStyle = NSMutableParagraphStyle()
@@ -73,6 +82,10 @@ class DetailViewController: UIViewController {
     }
     //MARK: - @IBAction
     
+    @IBAction func goBackButtonAction(_ sender: Any) {
+        self.presentingViewController?.dismiss(animated: true)
+    }
+    
     @IBAction func allRoutineButtonAction(_ sender: UIButton) {
         guard let webVC = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
@@ -95,6 +108,15 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         bindView()
         bindTableViewInView()
+   
+    }
+    //MARK: - viewDidAppear()
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        if fromRoutinVC{
+            scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.height), animated: true)
+        }
     }
 }
 //MARK: - 이전 뷰 인덱스에 맞는 detailViewModel 데이터 바인딩

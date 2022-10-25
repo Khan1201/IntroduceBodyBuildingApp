@@ -123,11 +123,10 @@ extension RoutineViewController{
                     lazy var selectedDaysIntArray: [String] = []
                     lazy var selectedDayCount: Int = 0
                     lazy var currentSwitchBool: Bool = false
-                    lazy var routineVC: RoutineViewController = self
                     
                     lazy var selectedDaysStringArray: [String] = []
                     lazy var selectedDaysBoolArray: [Bool] = [false, false, false, false, false]
-
+                    lazy var routineVC: RoutineViewController = self
                     
                     //해당 셀의 index 데이터 가져오기 위해
                     self.viewModel.routineObservable
@@ -136,7 +135,7 @@ extension RoutineViewController{
                             // 헤당 형태에 맞춰서 setting
                             tableCellData = [RoutineVCModel.Fields(title: element[indexPath.row].title!, week: element[indexPath.row].week!, recommend: element[indexPath.row].recommend!, division: element[indexPath.row].divisionString!, weekCount: element[indexPath.row].weekCount!)]
                             
-                            // notification update 위해 selectedDaysArray setting
+//                             notification update 위해 selectedDaysArray setting
                             selectedDaysIntArray = getSelectedDaysIntArray(selectedDays:Int(element[indexPath.row].selectedDays))
                             currentSwitchBool = element[indexPath.row].alarmSwitch
                             selectedDayCount = Int(element[indexPath.row].selectedDays)
@@ -170,17 +169,16 @@ extension RoutineViewController{
                             
                             // RoutineAddViewController 재사용, 호출 장소 구분
                             if let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController{
-                                routineAddVC.fromTableCellSelectionBool = true
-                                routineAddVC.routineViewModel.routineAddObservable
+                                routineAddVC.fromTableCellSelectionBool = true // 셀 선택으로 호출 되었다는 bool -> true
+                                routineAddVC.routineViewModel.routineAddObservable // 현재 셀 데이터 넣어줌
                                     .onNext(tableCellData)
                                 routineAddVC.viewControllerName = "루틴 편집"
                                 routineAddVC.fromTableCellSelectedDaysIntArray  = selectedDaysIntArray
                                 routineAddVC.fromTableCellSwitchBool = currentSwitchBool
                             
-                                routineAddVC.selectedDayCount = selectedDayCount
-                                routineAddVC.coreDataDayBools = selectedDaysBoolArray
-                                routineAddVC.selectedDayBools = selectedDaysBoolArray
-                                routineAddVC.selectedDayStrings = selectedDaysStringArray
+                                routineAddVC.selectedDayCount = selectedDayCount // 선택 된 요일 정수
+                                routineAddVC.selectedDaysBoolArray = selectedDaysBoolArray
+                                routineAddVC.selectedDaysStringArray = selectedDaysStringArray
                                 
                                 routineAddVC.modalPresentationStyle = .fullScreen
                                 routineVC.present(routineAddVC, animated: true)
@@ -209,9 +207,15 @@ extension RoutineViewController {
 extension RoutineViewController {
     func getSelectedDaysIntArray(selectedDays: Int) -> [String]{
         var selectedDaysArray: [String] = [] // selectedDays -> [SelectedDays]
-        for index in 0..<selectedDays{
-            selectedDaysArray.append("\(index)") // Sequence의 index만 추출하면 됨, index의 String 값은 상관 x
+        
+        if selectedDays != 0{
+            for index in 1...selectedDays{
+                selectedDaysArray.append("\(index)") // Sequence의 index만 추출하면 됨, index의 String 값은 상관 x
+            }
+            return selectedDaysArray
         }
-        return selectedDaysArray
+        else {
+            return selectedDaysArray
+        }
     }
 }

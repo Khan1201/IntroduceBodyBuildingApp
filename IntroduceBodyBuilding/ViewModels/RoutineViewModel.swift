@@ -43,7 +43,6 @@ class RoutineViewModel{
                 let tempFetchRequest: NSFetchRequest<Routine> = Routine.fetchRequest()
                 result = try context.fetch(tempFetchRequest)
                 try context.save()
-                print("데이터 삭제 됨 !")
             } catch {
                 print("save error: \(error)")
             }
@@ -133,7 +132,6 @@ class RoutineViewModel{
             identifiers.append("\(title): \(index)")
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
-        print("\(identifiers) 삭제 됨 !")
     }
     
     init(){

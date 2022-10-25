@@ -11,7 +11,7 @@ struct DetailVCModel : Codable{
     
     var documents: [Fields] = []
     
-    struct Fields: Codable{
+    struct Fields: Codable, Equatable{
         var title: String = ""
         var image: String = ""
         var description: String = ""
