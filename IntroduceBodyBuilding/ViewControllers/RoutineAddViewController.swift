@@ -145,11 +145,11 @@ class RoutineAddViewController: UIViewController {
     }
     
     @IBAction func addViewAction(_ sender: Any) {
-        
+         
         
         if let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
             
-            detailVC.fromRoutinVC = true
+            detailVC.fromRoutineVC = true
             setDetailVCData(detailVC: detailVC)
             
             self.present(detailVC, animated: true)

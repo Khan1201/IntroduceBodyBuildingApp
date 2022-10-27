@@ -12,6 +12,7 @@ class MyProgramViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     let myProgramViewModel = MyProgramViewModel()
+    let detailViewModel = DetailViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,25 +79,34 @@ extension MyProgramViewController {
                 }.disposed(by: disposeBag)
         }
         
-        // 각 divisiedCollectionView에 이벤트 추가
-        func addCilckEvent(targetView: UICollectionView, sendObservable: BehaviorSubject<[MyProgram]> ){
-            targetView.rx.itemSelected
-                .withLatestFrom(sendObservable) { [weak self] indexPath, data in
-                    let convertObservable: BehaviorSubject<DetailVCModel.Fields> = BehaviorSubject(value: DetailVCModel.Fields(title: data[indexPath.row].title ?? "", image: data[indexPath.row].image ?? "", description: data[indexPath.row].description_ ?? ""))
-                    
-                    guard let detailVC = UIStoryboard(name: "Main", bundle: nil)
-                        .instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
-                    
-                    convertObservable.subscribe { data in
-                        detailVC.detailVCIndexObservable.onNext(data)
-                        detailVC.addButtonBool = false
-                        self?.present(detailVC, animated: true)
-                    }.disposed(by:self?.disposeBag ?? DisposeBag())
-                }
-                .subscribe(onDisposed:  {
-                }).disposed(by: disposeBag)
+        func addCilckEvent(targetView: UICollectionView, sendObservable: BehaviorSubject<[MyProgram]>){
+            
+            guard let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
+            
+            Observable.combineLatest(targetView.rx.itemSelected, sendObservable)
+                .subscribe { [unowned self] indexPath, data in
+                    detailViewModel.detailViewObservable
+                        .filter({ element in
+                            element != []
+                        })
+                        .subscribe { elements in
+                            print("구독")
+                            print(elements)
+                            if let elements = elements.element{
+                                for element in elements{
+                                    if element.title == data[indexPath.row].title{ //detail VC 접근
+                                        detailVC.detailVCIndexObservable
+                                            .onNext(element)
+                                        detailVC.fromMyProgramVC = true
+                                        self.present(detailVC, animated: true)
+                                    }
+                                }
+                            }
+                        }.dispose()
+                }.disposed(by: disposeBag)
         }
     }
+    
 }
 //MARK: - 삭제 버튼 생성
 

@@ -18,7 +18,8 @@ class DetailViewController: UIViewController {
     //위 Index Observable의 값 튜플화한 Observable
     private let tableViewObservable = BehaviorSubject<[(String ,String)]>(value: [("","")])
     
-    var fromRoutinVC: Bool = false
+    var fromRoutineVC: Bool = false
+    var fromMyProgramVC: Bool = false
     //MARK: - @IBOutlet
     
     
@@ -26,7 +27,7 @@ class DetailViewController: UIViewController {
     
     @IBOutlet weak var goBackButton: UIButton!{
         didSet{
-            goBackButton.isHidden = !fromRoutinVC
+            goBackButton.isHidden = !(fromRoutineVC || fromMyProgramVC)
         }
     }
     
@@ -64,11 +65,13 @@ class DetailViewController: UIViewController {
             descriptionLabel.attributedText = attrString
         }
     }
+    
     @IBOutlet weak var addRoutineButton: UIButton!{
         didSet{
             addRoutineButton.setTitle("루틴등록", for: .normal)
             addRoutineButton.layer.masksToBounds = true
             addRoutineButton.layer.cornerRadius = 15
+            addRoutineButton.isEnabled = !(fromRoutineVC || fromMyProgramVC)
         }
     }
     @IBOutlet weak var addButton: UIButton!{
@@ -78,6 +81,7 @@ class DetailViewController: UIViewController {
             }
             addButton.layer.masksToBounds = true
             addButton.layer.cornerRadius = 15
+            addButton.isEnabled = !(fromRoutineVC || fromMyProgramVC)
         }
     }
     //MARK: - @IBAction
@@ -114,7 +118,7 @@ class DetailViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        if fromRoutinVC{
+        if fromRoutineVC{
             scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.height), animated: true)
         }
     }

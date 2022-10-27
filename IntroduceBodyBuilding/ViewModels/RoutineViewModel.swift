@@ -106,8 +106,8 @@ class RoutineViewModel{
                     var dateComponents = DateComponents()
                     dateComponents.calendar = Calendar.current
                     dateComponents.weekday = weekDay
-                    dateComponents.hour = 23
-                    dateComponents.minute = 8
+                    dateComponents.hour = 0
+                    dateComponents.minute = 21
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     let request = UNNotificationRequest(identifier: "\(title): \(identifier)",
                                                         content: notificationContent,
