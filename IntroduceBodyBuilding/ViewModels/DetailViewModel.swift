@@ -11,6 +11,7 @@ import RxSwift
 
 class DetailViewModel {
     var detailViewObservable: BehaviorSubject<[DetailVCModel.Fields]> = BehaviorSubject(value: [])
+    var moveObservable: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     
     init() {
         makeDetailVCData()

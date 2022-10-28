@@ -73,7 +73,7 @@
                                                             <color key="textColor" systemColor="systemPinkColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="Description" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Da-Tu-asT">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Da-Tu-asT">
                                                             <rect key="frame" x="140" y="87.5" width="224" height="14.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
@@ -85,7 +85,7 @@
                                                             <color key="textColor" systemColor="systemPinkColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOR-6t-Z9K">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOR-6t-Z9K">
                                                             <rect key="frame" x="140" y="51" width="234" height="19.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                                             <nil key="textColor"/>
@@ -205,20 +205,20 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day n" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5Z-hc-frU">
-                                                                    <rect key="frame" x="20" y="10" width="44.5" height="20.5"/>
+                                                                    <rect key="frame" x="20" y="17" width="45" height="20.5"/>
                                                                     <color key="tintColor" systemColor="systemGray4Color"/>
                                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="운동 종류" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dyF-9R-O1W">
-                                                                    <rect key="frame" x="79" y="45.5" width="56" height="18"/>
+                                                                    <rect key="frame" x="79" y="47.5" width="56" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cfe-rT-6wK">
-                                                                    <rect key="frame" x="29" y="45.5" width="30" height="30"/>
+                                                                    <rect key="frame" x="29" y="47.5" width="30" height="30"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="30" id="0Py-uC-S2G"/>
                                                                         <constraint firstAttribute="width" constant="30" id="vPc-dn-bw9"/>
@@ -227,11 +227,15 @@
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="dyF-9R-O1W" firstAttribute="top" secondItem="cfe-rT-6wK" secondAttribute="top" id="2Ad-mA-T9V"/>
-                                                                <constraint firstItem="h5Z-hc-frU" firstAttribute="top" secondItem="jB3-mx-ZZV" secondAttribute="top" constant="10" id="Joe-nv-vgg"/>
-                                                                <constraint firstItem="cfe-rT-6wK" firstAttribute="top" secondItem="h5Z-hc-frU" secondAttribute="bottom" constant="15" id="NkP-gW-vdi"/>
+                                                                <constraint firstItem="h5Z-hc-frU" firstAttribute="top" secondItem="jB3-mx-ZZV" secondAttribute="top" constant="17" id="Joe-nv-vgg"/>
+                                                                <constraint firstItem="cfe-rT-6wK" firstAttribute="top" secondItem="h5Z-hc-frU" secondAttribute="bottom" priority="750" constant="10" id="NkP-gW-vdi"/>
+                                                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="dyF-9R-O1W" secondAttribute="trailing" constant="196" id="Rdo-qU-2ms"/>
                                                                 <constraint firstItem="h5Z-hc-frU" firstAttribute="leading" secondItem="jB3-mx-ZZV" secondAttribute="leading" constant="20" id="ZFL-Ut-hhn"/>
                                                                 <constraint firstItem="cfe-rT-6wK" firstAttribute="leading" secondItem="h5Z-hc-frU" secondAttribute="leading" constant="9" id="gQ4-Sx-NCi"/>
                                                                 <constraint firstItem="dyF-9R-O1W" firstAttribute="leading" secondItem="cfe-rT-6wK" secondAttribute="trailing" constant="20" id="hzY-g2-Ujn"/>
+                                                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="h5Z-hc-frU" secondAttribute="trailing" constant="266" id="pH4-TV-Ehf"/>
+                                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="cfe-rT-6wK" secondAttribute="bottom" constant="22.5" id="spG-S1-IWu"/>
+                                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="dyF-9R-O1W" secondAttribute="bottom" priority="750" constant="13" id="uoQ-xC-fkj"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>

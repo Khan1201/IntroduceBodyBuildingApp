@@ -12,6 +12,8 @@ class DetailViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
+    var moveBoolObservable = PublishSubject<Bool>()
+    
     //MainVC, MyProgramVC에서 쓰이기 때문에 private 지정 X
     var detailVCIndexObservable = BehaviorSubject<DetailVCModel.Fields>(value: DetailVCModel.Fields())
     
@@ -40,7 +42,8 @@ class DetailViewController: UIViewController {
     }
     @IBOutlet weak var routineTableView: UITableView!{
         didSet{
-            routineTableView.rowHeight = 300
+            routineTableView.rowHeight = UITableView.automaticDimension
+            routineTableView.estimatedRowHeight = 150
             routineTableView.layer.masksToBounds = true
             routineTableView.layer.cornerRadius = 15
             routineTableView.separatorColor = .black
@@ -71,7 +74,7 @@ class DetailViewController: UIViewController {
             addRoutineButton.setTitle("루틴등록", for: .normal)
             addRoutineButton.layer.masksToBounds = true
             addRoutineButton.layer.cornerRadius = 15
-            addRoutineButton.isEnabled = !(fromRoutineVC || fromMyProgramVC)
+            addRoutineButton.isEnabled = !(fromRoutineVC)
         }
     }
     @IBOutlet weak var addButton: UIButton!{
@@ -98,10 +101,22 @@ class DetailViewController: UIViewController {
         self.navigationController?.pushViewController(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
-        guard let routineVC = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "RoutineViewController") as? RoutineViewController else {return}
-        routineVC.moveBool = true
-        self.navigationController?.pushViewController(routineVC, animated: true)
+        
+        if fromMyProgramVC{
+            self.presentingViewController?.dismiss(animated: true, completion: {
+                let routineVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineViewController")
+                self.present(routineVC, animated: true)
+                
+            })
+        }
+        else{
+            guard let routineVC = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewController(withIdentifier: "RoutineViewController") as? RoutineViewController else {return}
+            routineVC.moveBool = true
+            self.navigationController?.pushViewController(routineVC, animated: true)
+        }
+        
+        
     }
     @IBAction func basketButtonAction(_ sender: UIButton) {
         approachCoreData() //CoreData에 접근
@@ -112,6 +127,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         bindView()
         bindTableViewInView()
+        
    
     }
     //MARK: - viewDidAppear()
@@ -128,6 +144,7 @@ class DetailViewController: UIViewController {
 extension DetailViewController {
     private func bindView() {
         detailVCIndexObservable.subscribe({[weak self] data in
+            
             self?.titleLabel.text = data.element?.title ?? "not exist"
             self?.descriptionLabel.text = data.element?.description ?? "not exist"
             self?.imageView.image = UIImage(named: data.element?.image ?? "not exist")
@@ -153,6 +170,7 @@ extension DetailViewController {
 
 extension DetailViewController {
     private func bindTableViewInView(){
+        
         tableViewObservable
             .bind(to: self.routineTableView.rx.items(cellIdentifier: "DetailTableViewCell", cellType: DetailTableViewCell.self)){ (index, element, cell) in
                 

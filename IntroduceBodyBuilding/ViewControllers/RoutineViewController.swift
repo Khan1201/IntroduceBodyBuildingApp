@@ -53,16 +53,25 @@ extension RoutineViewController {
         self.navigationItem.title = "루틴"
         self.navigationItem.largeTitleDisplayMode = .always //큰 제목 활성화
         
-        //네비게이션바에 + 버튼 활성화
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: nil)
-        self.navigationItem.setRightBarButton(navigationItem.rightBarButtonItem, animated: true)
-        
+        //네비게이션바에 + 버튼, 홈 버튼 활성화
+        let plusButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: nil)
+        let homeButton = UIBarButtonItem(image: UIImage(systemName: "house"), style: .plain, target: nil, action: nil)
+
+        self.navigationItem.rightBarButtonItems = [plusButton, homeButton]
+        self.navigationItem.setRightBarButtonItems(navigationItem.rightBarButtonItems, animated: true)
+
         // + 버튼 클릭 이벤트
-        self.navigationItem.rightBarButtonItem?.rx.tap
+        self.navigationItem.rightBarButtonItems?[0].rx.tap
             .bind { _ in
                 guard let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController else {return}
                 routineAddVC.modalPresentationStyle = .fullScreen //현재 VC의 viewWillAppear 호출 위해 .fullsceen으로 설정
                 self.present(routineAddVC, animated: true)
+            }.disposed(by: disposeBag)
+        
+        // 홈 버튼 클릭 이벤트
+        self.navigationItem.rightBarButtonItems?[1].rx.tap
+            .bind { _ in
+                self.navigationController?.popToRootViewController(animated: true)
             }.disposed(by: disposeBag)
     }
 }
