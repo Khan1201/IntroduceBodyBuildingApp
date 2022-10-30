@@ -119,7 +119,8 @@ extension MainViewController {
                 
                 for detailVCData in detailVCDatas{ //Array인 detailViewModel의 Data에 접근
                     if zipData.1.title == detailVCData.title{
-                        detailVC.detailVCIndexObservable.onNext(detailVCData)
+                        detailVC.viewModel.detailVCIndexObservable
+                            .onNext(detailVCData)
                     }
                 }
                 self?.navigationController?.pushViewController(detailVC, animated: true)

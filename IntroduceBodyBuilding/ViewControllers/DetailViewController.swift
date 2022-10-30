@@ -9,29 +9,15 @@ class DetailViewController: UIViewController {
     
     var addButtonBool: Bool?
     private var url: String?
-    
+    let viewModel = DetailViewModel()
     let disposeBag = DisposeBag()
     
-    var moveBoolObservable = PublishSubject<Bool>()
-    
-    //MainVC, MyProgramVC에서 쓰이기 때문에 private 지정 X
-    var detailVCIndexObservable = BehaviorSubject<DetailVCModel.Fields>(value: DetailVCModel.Fields())
-    
-    //위 Index Observable의 값 튜플화한 Observable
-    private let tableViewObservable = BehaviorSubject<[(String ,String)]>(value: [("","")])
-    
-    var fromRoutineVC: Bool = false
-    var fromMyProgramVC: Bool = false
     //MARK: - @IBOutlet
     
     
     @IBOutlet weak var scrollView: UIScrollView!
     
-    @IBOutlet weak var goBackButton: UIButton!{
-        didSet{
-            goBackButton.isHidden = !(fromRoutineVC || fromMyProgramVC)
-        }
-    }
+    @IBOutlet weak var goBackButton: UIButton!
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!{
@@ -68,13 +54,20 @@ class DetailViewController: UIViewController {
             descriptionLabel.attributedText = attrString
         }
     }
+    @IBOutlet weak var authorEmbeddedView: UIView!{
+        didSet{
+            authorEmbeddedView.layer.masksToBounds = true
+            authorEmbeddedView.layer.cornerRadius = 7
+        }
+    }
+    @IBOutlet weak var authorLabel: UILabel!
+    
     
     @IBOutlet weak var addRoutineButton: UIButton!{
         didSet{
             addRoutineButton.setTitle("루틴등록", for: .normal)
             addRoutineButton.layer.masksToBounds = true
             addRoutineButton.layer.cornerRadius = 15
-            addRoutineButton.isEnabled = !(fromRoutineVC)
         }
     }
     @IBOutlet weak var addButton: UIButton!{
@@ -84,7 +77,6 @@ class DetailViewController: UIViewController {
             }
             addButton.layer.masksToBounds = true
             addButton.layer.cornerRadius = 15
-            addButton.isEnabled = !(fromRoutineVC || fromMyProgramVC)
         }
     }
     //MARK: - @IBAction
@@ -102,21 +94,25 @@ class DetailViewController: UIViewController {
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
         
-        if fromMyProgramVC{
-            self.presentingViewController?.dismiss(animated: true, completion: {
-                let routineVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineViewController")
-                self.present(routineVC, animated: true)
-                
-            })
-        }
-        else{
-            guard let routineVC = UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "RoutineViewController") as? RoutineViewController else {return}
-            routineVC.moveBool = true
-            self.navigationController?.pushViewController(routineVC, animated: true)
-        }
-        
-        
+        viewModel.fromMyProgramVC
+            .subscribe { bool in
+                if let bool = bool.element{
+                    if bool{
+                        self.presentingViewController?.dismiss(animated: true, completion: {
+                            print("성공")
+                            self.viewModel.fromDetailVCRoutineAddButton.onNext(true)
+                            self.viewModel.fromDetailVCRoutineAddButton.dispose()
+                        })
+                    }
+                    else{
+                        guard let routineVC = UIStoryboard(name: "Main", bundle: nil)
+                            .instantiateViewController(withIdentifier: "RoutineViewController") as? RoutineViewController else {return}
+                        routineVC.viewModel.fromAddRoutineObservable
+                            .onNext(true)
+                        self.navigationController?.pushViewController(routineVC, animated: true)
+                    }
+                }
+            }.dispose()
     }
     @IBAction func basketButtonAction(_ sender: UIButton) {
         approachCoreData() //CoreData에 접근
@@ -125,30 +121,35 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fromVC()
         bindView()
         bindTableViewInView()
-        
    
     }
     //MARK: - viewDidAppear()
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        if fromRoutineVC{
-            scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.height), animated: true)
+        
+        // 루틴 or 루틴 추가 페이지에서 호출 시
+        if !addButton.isEnabled && !addRoutineButton.isEnabled{
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: (self.scrollView.contentSize.height) - (self.scrollView.bounds.height)), animated: true)
         }
+        
     }
 }
 //MARK: - 이전 뷰 인덱스에 맞는 detailViewModel 데이터 바인딩
 
 extension DetailViewController {
     private func bindView() {
-        detailVCIndexObservable.subscribe({[weak self] data in
+        viewModel.detailVCIndexObservable
+            .subscribe({[unowned self] data in
             
-            self?.titleLabel.text = data.element?.title ?? "not exist"
-            self?.descriptionLabel.text = data.element?.description ?? "not exist"
-            self?.imageView.image = UIImage(named: data.element?.image ?? "not exist")
-            self?.url = data.element?.url ?? "not exist"
+            self.titleLabel.text = data.element?.title ?? "not exist"
+            self.descriptionLabel.text = data.element?.description ?? "not exist"
+            self.imageView.image = UIImage(named: data.element?.image ?? "not exist")
+            self.url = data.element?.url ?? "not exist"
+            self.authorLabel.text = data.element?.author ?? "not exist"
             
             var tempArray:[(String, String)] = []
             guard let days = data.element?.day else {return}
@@ -162,7 +163,7 @@ extension DetailViewController {
                     }
                 }
             }
-            self?.tableViewObservable.onNext(tempArray)
+                self.viewModel.tableViewObservable.onNext(tempArray)
         }).disposed(by: disposeBag)
     }
 }
@@ -171,7 +172,7 @@ extension DetailViewController {
 extension DetailViewController {
     private func bindTableViewInView(){
         
-        tableViewObservable
+        viewModel.tableViewObservable
             .bind(to: self.routineTableView.rx.items(cellIdentifier: "DetailTableViewCell", cellType: DetailTableViewCell.self)){ (index, element, cell) in
                 
                 cell.backgroundColor = .systemGray6
@@ -247,7 +248,7 @@ extension DetailViewController {
         func insertData(in object: NSManagedObject) {
             let myProgram = object as! MyProgram
             //MyProgram entity 존재 시, unwrapping 후 coreData에 데이터 insert
-            detailVCIndexObservable
+            viewModel.detailVCIndexObservable
                 .subscribe { data in
                     myProgram.title = data.element?.title //
                     myProgram.image = data.element?.image
@@ -285,6 +286,36 @@ extension DetailViewController {
         enum setDataError: Error{
             case EntityNotExist
         }
+    }
+}
+
+// 호출한 VC에 따른 UI 바인딩
+extension DetailViewController{
+    func fromVC(){
+        
+        viewModel.fromRoutineVC
+            .filter({ bool in
+                bool == true
+            })
+            .subscribe { [weak self] trueBool in
+                if let trueBool = trueBool.element{
+                    self?.goBackButton.isHidden = !trueBool
+                    self?.addButton.isEnabled = !trueBool
+                    self?.addRoutineButton.isEnabled = !trueBool
+                    
+                }
+                
+            }.disposed(by: disposeBag)
+        
+        viewModel.fromMyProgramVC
+            .filter { bool in
+                bool == true
+            }
+            .subscribe { [weak self] trueBool in
+                self?.goBackButton.isHidden = !trueBool
+                self?.addButton.isEnabled = !trueBool
+                self?.addRoutineButton.isEnabled = trueBool
+            }.disposed(by: disposeBag)
     }
 }
 

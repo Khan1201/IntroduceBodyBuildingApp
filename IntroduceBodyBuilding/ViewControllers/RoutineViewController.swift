@@ -19,8 +19,6 @@ class RoutineViewController: UIViewController {
             routineTableView.separatorColor = .black
         }
     }
-    
-    lazy var moveBool: Bool = false // detailVC에서 접근 시 true, true -> routineAddVC 호출
     lazy var switchBool: Bool = false
     lazy var indexArray: [String] = [] // selectedDays -> [SelectedDays]
     var viewModel = RoutineViewModel()
@@ -38,6 +36,8 @@ class RoutineViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // 테이블 뷰 리로드
         do{
             viewModel.routineObservable.onNext(try RoutineViewModel().routineObservable.value())
         }
@@ -203,12 +203,17 @@ extension RoutineViewController{
 
 extension RoutineViewController {
     func checkMove(){
-        if moveBool{
-            moveBool = false
-            let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController")
-            routineAddVC.modalPresentationStyle = .fullScreen //현재 VC의 viewWillAppear 호출 위해 .fullsceen으로 설정
-            self.present(routineAddVC, animated: true)
-        }
+        
+        viewModel.fromAddRoutineObservable
+            .filter({ bool in
+                bool == true
+            })
+            .subscribe { _ in
+                print("실행")
+                let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController")
+                routineAddVC.modalPresentationStyle = .fullScreen //현재 VC의 viewWillAppear 호출 위해 .fullsceen으로 설정
+                self.present(routineAddVC, animated: true)
+            }.disposed(by: disposeBag)
     }
 }
 //MARK: - selectedDays: Int -> selectedDays: [String] (선택된 요일 갯수인 n의 정수형태 -> n개가 포함된 String 배열 형태로,                                                                                             notification identifier 구분 위해)

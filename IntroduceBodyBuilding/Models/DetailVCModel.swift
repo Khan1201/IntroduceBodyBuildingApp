@@ -18,6 +18,7 @@ struct DetailVCModel : Codable{
         var day: [String] = []
         var routineAtDay: [String] = []
         var url: String = ""
+        var author: String = ""
     }
     
     struct StringValue: Codable { //firestore api 형식에 맞게 key name set
@@ -49,7 +50,7 @@ struct DetailVCModel : Codable{
         case fields
     }
     enum FieldKeys: String, CodingKey{
-        case title, image, description, day, routineAtDay, url
+        case title, image, description, day, routineAtDay, url, author
     }    
     enum ArrayKeys: String, CodingKey{
         case arrayValue
@@ -72,6 +73,7 @@ extension DetailVCModel{
             fields.image = try fieldKeys.decode(StringValue.self, forKey: .image).value
             fields.description = try fieldKeys.decode(StringValue.self, forKey: .description).value
             fields.url = try fieldKeys.decode(StringValue.self, forKey: .url).value
+            fields.author = try fieldKeys.decode(StringValue.self, forKey: .author).value
             
             try arrayBinding(in: &fields.day, key: .day)
             try arrayBinding(in: &fields.routineAtDay, key: .routineAtDay)

@@ -11,7 +11,15 @@ import RxSwift
 
 class DetailViewModel {
     var detailViewObservable: BehaviorSubject<[DetailVCModel.Fields]> = BehaviorSubject(value: [])
-    var moveObservable: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+    
+    //MainVC, MyProgramVC에서 쓰이기 때문에 private 지정 X
+    lazy var detailVCIndexObservable = BehaviorSubject<DetailVCModel.Fields>(value: DetailVCModel.Fields())
+    
+    //위 Index Observable의 값 튜플화한 Observable
+    lazy var tableViewObservable = BehaviorSubject<[(String ,String)]>(value: [("","")])
+    lazy var fromRoutineVC = BehaviorSubject<Bool>(value: false)
+    lazy var fromMyProgramVC = BehaviorSubject<Bool>(value: false)
+    lazy var fromDetailVCRoutineAddButton = PublishSubject<Bool>()
     
     init() {
         makeDetailVCData()

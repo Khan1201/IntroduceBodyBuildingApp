@@ -17,6 +17,7 @@ class MyProgramViewModel {
     var bodyBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
     var powerBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
     var powerLiftingObservable = BehaviorSubject<[MyProgram]>(value: [])
+    let fromDetailVCRoutineAddButton = PublishSubject<Bool>()
 
     init(){
         readCoreData()

@@ -15,6 +15,8 @@ class RoutineViewModel{
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
     var routineObservable = BehaviorSubject<[Routine]>(value: [])
     var routineAddObservable = BehaviorSubject<[RoutineVCModel.Fields]>(value: [])
+    let fromAddRoutineObservable = BehaviorSubject<Bool>(value: false)  // 루틴 등록 버튼으로 접근 시 체크
+
     
     func readCoreData() { //coreData에서 데이터 read
         let fetchRequest: NSFetchRequest<Routine> = Routine.fetchRequest()

@@ -49,7 +49,6 @@ class RoutineAddViewController: UIViewController {
     @IBOutlet weak var viewRoutineButton: UIButton!{
         didSet{
             setCornerRadius(viewRoutineButton, radius: 10)
-            viewRoutineButton.layer.isHidden = !fromTableCellSelectionBool // 루틴 페이지에서 편집 시 버튼 보임
         }
     }
     
@@ -149,7 +148,7 @@ class RoutineAddViewController: UIViewController {
         
         if let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
             
-            detailVC.fromRoutineVC = true
+            detailVC.viewModel.fromRoutineVC.onNext(true)
             setDetailVCData(detailVC: detailVC)
             
             self.present(detailVC, animated: true)
@@ -158,8 +157,6 @@ class RoutineAddViewController: UIViewController {
         
         // 해당 프로그램 타이틀과 맞는 detailVC 데이터를 observable에 set
         func setDetailVCData(detailVC: DetailViewController){
-            lazy var tempData: DetailVCModel.Fields = .init()
-
             detailViewModel.detailViewObservable
                 .filter({ element in
                     element != []
@@ -168,7 +165,7 @@ class RoutineAddViewController: UIViewController {
                     if let elements = elements.element{
                         for element in elements{
                             if element.title == self.programTextField.text!{
-                                detailVC.detailVCIndexObservable // observable set
+                                detailVC.viewModel.detailVCIndexObservable // observable set
                                     .onNext(element)
                             }
                         }

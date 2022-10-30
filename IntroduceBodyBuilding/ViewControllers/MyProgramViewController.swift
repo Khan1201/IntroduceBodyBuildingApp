@@ -13,18 +13,16 @@ class MyProgramViewController: UIViewController {
     let disposeBag = DisposeBag()
     let myProgramViewModel = MyProgramViewModel()
     let detailViewModel = DetailViewModel()
-    lazy var moveBool = false
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationSet()
         bindCollectionView()
+        fromDetailAddButton()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("확인")
-        checkMove()
     }
     
 }
@@ -100,9 +98,10 @@ extension MyProgramViewController {
         func addCilckEvent(targetView: UICollectionView, sendObservable: BehaviorSubject<[MyProgram]>){
             
             guard let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
-            
             targetView.rx.itemSelected
                 .withLatestFrom(sendObservable, resultSelector: { indexPath, data in
+                    
+                    // detailVC 데이터 받아옴
                     self.detailViewModel.detailViewObservable
                         .filter { element in
                             element != []
@@ -111,23 +110,35 @@ extension MyProgramViewController {
                             if let elements = elements.element{
                                 for element in elements{
                                     if element.title == data[indexPath.row].title{ //detail VC 접근
-                                        detailVC.detailVCIndexObservable
-                                            .onNext(element)
-                                        detailVC.fromMyProgramVC = true
+                                        bindDetailVC(detailVC, data: element)
                                     }
                                 }
                             }
                         }.dispose()
                 })
                 .subscribe { _ in
-                    detailVC.moveBoolObservable
-                        .subscribe { [unowned self] bool in
-                            self.moveBool = bool.element ?? false
-                        }
-                        .disposed(by: self.disposeBag)
                     self.present(detailVC, animated: true)
                 }.disposed(by: disposeBag)
+            
+            //detailVC에 데이터 바인딩
+            func bindDetailVC(_ detailVC: DetailViewController, data: DetailVCModel.Fields){
+                detailVC.viewModel.detailVCIndexObservable
+                    .onNext(data) // 해당 셀 데이터와 일치하는 detailVC 데이터 보냄
+                detailVC.viewModel.fromMyProgramVC.onNext(true) // myProgramVC에서 호출 했다는 것을 알림
+                
+                // myProgramVC -> detailVC의 루틴 등록 버튼 클릭 구독
+                detailVC.viewModel.fromDetailVCRoutineAddButton = PublishSubject()
+                detailVC.viewModel.fromDetailVCRoutineAddButton
+                    .subscribe { [unowned self] bool in
+                        if let bool = bool.element{
+                            myProgramViewModel.fromDetailVCRoutineAddButton
+                                .onNext(bool)
+                        }
+                    }.disposed(by: self.disposeBag)
+          
+            }
         }
+        
     }
     
 }
@@ -166,12 +177,15 @@ extension MyProgramViewController{
     }
 }
 extension MyProgramViewController{
-    func checkMove(){
-        if moveBool{
-            moveBool = false
-            guard let routineVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineViewController") as? RoutineViewController else{return}
-            routineVC.moveBool = true
-            self.navigationController?.pushViewController(routineVC, animated: true)
-        }
+    
+    // myProgramVC -> detailVC의 루틴 등록 버튼 클릭 시 -> routinVC로 이동
+    func fromDetailAddButton(){
+        myProgramViewModel.fromDetailVCRoutineAddButton
+            .subscribe { _ in
+                guard let routineVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineViewController") as? RoutineViewController else{return}
+                routineVC.viewModel.fromAddRoutineObservable
+                    .onNext(true)
+                self.navigationController?.pushViewController(routineVC, animated: true)
+            }.disposed(by: disposeBag)
     }
 }
