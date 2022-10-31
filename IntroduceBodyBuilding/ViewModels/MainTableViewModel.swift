@@ -18,6 +18,14 @@ class MainTableViewModel {
         makeCellData()
     }
     
+    //검색 활성화 인식 로직
+    func getIsFiltering(_ vc: MainViewController) -> Bool{
+            let searchController = vc.navigationItem.searchController
+            let isActive = searchController?.isActive ?? false
+            let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false //서치바에 텍스트가 존재 시 true
+            return isActive && isSearchBarHasText
+        }
+    
     func makeCellData() {
         let url = "https://firestore.googleapis.com/v1/projects/bodybuildingapp-3e7db/databases/(default)/documents/Program"
         AF.request(url,

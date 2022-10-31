@@ -11,6 +11,9 @@ import RxSwift
 
 class RoutineViewController: UIViewController {
     
+    var viewModel = RoutineViewModel()
+    var disposeBag = DisposeBag()
+    
     @IBOutlet weak var routineTableView: UITableView!{
         didSet{
             routineTableView.rowHeight = 120
@@ -19,21 +22,15 @@ class RoutineViewController: UIViewController {
             routineTableView.separatorColor = .black
         }
     }
-    lazy var switchBool: Bool = false
-    lazy var indexArray: [String] = [] // selectedDays -> [SelectedDays]
-    var viewModel = RoutineViewModel()
-    var disposeBag = DisposeBag()
-    //MARK: - viewDidLoad()
+    
+    //MARK: - viewDidLoad(), viewWillAppear()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         checkMove()
         bindTableView()
         navigationSet()
-        
     }
-    //MARK: - viewWillAppear()
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -62,16 +59,17 @@ extension RoutineViewController {
 
         // + 버튼 클릭 이벤트
         self.navigationItem.rightBarButtonItems?[0].rx.tap
-            .bind { _ in
+            .bind { [weak self] _ in
                 guard let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController else {return}
+                routineAddVC.viewModel.fromTableCell.fromTableCellSelectionBool.onNext(false)
                 routineAddVC.modalPresentationStyle = .fullScreen //현재 VC의 viewWillAppear 호출 위해 .fullsceen으로 설정
-                self.present(routineAddVC, animated: true)
+                self?.present(routineAddVC, animated: true)
             }.disposed(by: disposeBag)
         
         // 홈 버튼 클릭 이벤트
         self.navigationItem.rightBarButtonItems?[1].rx.tap
-            .bind { _ in
-                self.navigationController?.popToRootViewController(animated: true)
+            .bind { [weak self] _ in
+                self?.navigationController?.popToRootViewController(animated: true)
             }.disposed(by: disposeBag)
     }
 }
@@ -105,27 +103,27 @@ extension RoutineViewController{
         
         func addDeleteEvent(){
             self.routineTableView.rx.itemDeleted
-                .bind { [unowned self] indexPath in
+                .bind { [weak self] indexPath in
                     var result:[Routine] = [] // 데이터 삭제 후 패치된 데이터를 받을 변수
-                    self.viewModel.routineObservable // 테이블 뷰에 바인딩 된 데이터를 얻어옴
-                        .subscribe {[unowned self] element in
+                    self?.viewModel.routineObservable // 테이블 뷰에 바인딩 된 데이터를 얻어옴
+                        .subscribe {[weak self] element in
                             if let title = element[indexPath.row].title{ // 삭제할 셀 title = coredata 해당 index의 title
                                 if element[indexPath.row].alarmSwitch { // 알림 switch -> on
                                     let selectedDaysArray =
-                                    getSelectedDaysIntArray(selectedDays: Int(element[indexPath.row].selectedDays))
+                                    self?.getSelectedDaysIntArray(selectedDays: Int(element[indexPath.row].selectedDays))
                                     
-                                    self.viewModel.deleteNotification(title: element[indexPath.row].title ?? "", days: selectedDaysArray) // [notificationCenter identifier] 생성 위해 해당 인자 넘겨줌
+                                    self?.viewModel.deleteNotification(title: element[indexPath.row].title ?? "", days: selectedDaysArray ?? []) // [notificationCenter identifier] 생성 위해 해당 인자 넘겨줌
                                 }
-                                result = self.viewModel.deleteCoreData(deleteCondition: title) //해당 함수는 삭제 후 시점의 데이터 반환
+                                result = self?.viewModel.deleteCoreData(deleteCondition: title) ?? [] //해당 함수는 삭제 후 시점의 데이터 반환
                             }
                         } onDisposed: {
-                            self.viewModel.routineObservable.onNext(result) //강제 dispose 후 테이블 뷰 리로딩
+                            self?.viewModel.routineObservable.onNext(result) //강제 dispose 후 테이블 뷰 리로딩
                         }.dispose()
                 }.disposed(by: disposeBag)
         }
         func addClickEvent(){
             self.routineTableView.rx.itemSelected
-                .bind { [unowned self] indexPath in
+                .bind { [weak self] indexPath in
                     
                     // 루틴 편집 페이지에 보낼 현재 데이터
                     lazy var tableCellData: [RoutineVCModel.Fields] = []
@@ -135,17 +133,18 @@ extension RoutineViewController{
                     
                     lazy var selectedDaysStringArray: [String] = []
                     lazy var selectedDaysBoolArray: [Bool] = [false, false, false, false, false]
-                    lazy var routineVC: RoutineViewController = self
+                    
+                    guard let routineVC = self else {return}
                     
                     //해당 셀의 index 데이터 가져오기 위해
-                    self.viewModel.routineObservable
-                        .subscribe { [unowned self] element in
+                    self?.viewModel.routineObservable
+                        .subscribe { [weak self] element in
                             
                             // 헤당 형태에 맞춰서 setting
                             tableCellData = [RoutineVCModel.Fields(title: element[indexPath.row].title!, week: element[indexPath.row].week!, recommend: element[indexPath.row].recommend!, division: element[indexPath.row].divisionString!, weekCount: element[indexPath.row].weekCount!)]
                             
 //                             notification update 위해 selectedDaysArray setting
-                            selectedDaysIntArray = getSelectedDaysIntArray(selectedDays:Int(element[indexPath.row].selectedDays))
+                            selectedDaysIntArray = self?.getSelectedDaysIntArray(selectedDays:Int(element[indexPath.row].selectedDays)) ?? []
                             currentSwitchBool = element[indexPath.row].alarmSwitch
                             selectedDayCount = Int(element[indexPath.row].selectedDays)
                             setSelectedDaysStringAndBoolArray()
@@ -178,16 +177,16 @@ extension RoutineViewController{
                             
                             // RoutineAddViewController 재사용, 호출 장소 구분
                             if let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController{
-                                routineAddVC.fromTableCellSelectionBool = true // 셀 선택으로 호출 되었다는 bool -> true
+                                routineAddVC.viewModel.fromTableCell.fromTableCellSelectionBool.onNext(true) //셀 선택으로 호출 되었다는 bool 넘겨줌
                                 routineAddVC.routineViewModel.routineAddObservable // 현재 셀 데이터 넣어줌
                                     .onNext(tableCellData)
-                                routineAddVC.viewControllerName = "루틴 편집"
-                                routineAddVC.fromTableCellSelectedDaysIntArray  = selectedDaysIntArray
-                                routineAddVC.fromTableCellSwitchBool = currentSwitchBool
+                                routineAddVC.viewModel.uiData.viewControllerName = "루틴 편집"
+                                routineAddVC.viewModel.fromTableCell.fromTableCellSelectedDaysIntArray  = selectedDaysIntArray
+                                routineAddVC.viewModel.fromTableCell.fromTableCellSwitchBool = currentSwitchBool
                             
-                                routineAddVC.selectedDayCount = selectedDayCount // 선택 된 요일 정수
-                                routineAddVC.selectedDaysBoolArray = selectedDaysBoolArray
-                                routineAddVC.selectedDaysStringArray = selectedDaysStringArray
+                                routineAddVC.viewModel.uiData.selectedDayCount = selectedDayCount // 선택 된 요일 정수
+                                routineAddVC.viewModel.uiData.selectedDaysBoolArray = selectedDaysBoolArray
+                                routineAddVC.viewModel.uiData.selectedDaysStringArray = selectedDaysStringArray
                                 
                                 routineAddVC.modalPresentationStyle = .fullScreen
                                 routineVC.present(routineAddVC, animated: true)
@@ -205,8 +204,8 @@ extension RoutineViewController {
     func checkMove(){
         
         viewModel.fromAddRoutineObservable
-            .filter({ bool in
-                bool == true
+            .filter({
+                $0 != false
             })
             .subscribe { _ in
                 print("실행")
@@ -217,7 +216,6 @@ extension RoutineViewController {
     }
 }
 //MARK: - selectedDays: Int -> selectedDays: [String] (선택된 요일 갯수인 n의 정수형태 -> n개가 포함된 String 배열 형태로,                                                                                             notification identifier 구분 위해)
-
 extension RoutineViewController {
     func getSelectedDaysIntArray(selectedDays: Int) -> [String]{
         var selectedDaysArray: [String] = [] // selectedDays -> [SelectedDays]

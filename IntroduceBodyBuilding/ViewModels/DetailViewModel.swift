@@ -12,14 +12,19 @@ import RxSwift
 class DetailViewModel {
     var detailViewObservable: BehaviorSubject<[DetailVCModel.Fields]> = BehaviorSubject(value: [])
     
-    //MainVC, MyProgramVC에서 쓰이기 때문에 private 지정 X
+    // MainVC, MyProgramVC에서 쓰이기 때문에 private 지정 X
     lazy var detailVCIndexObservable = BehaviorSubject<DetailVCModel.Fields>(value: DetailVCModel.Fields())
     
-    //위 Index Observable의 값 튜플화한 Observable
+    // 위 Index Observable의 값 튜플화한 Observable
     lazy var tableViewObservable = BehaviorSubject<[(String ,String)]>(value: [("","")])
+    
+    // 호출한 VC 판별
     lazy var fromRoutineVC = BehaviorSubject<Bool>(value: false)
     lazy var fromMyProgramVC = BehaviorSubject<Bool>(value: false)
     lazy var fromDetailVCRoutineAddButton = PublishSubject<Bool>()
+    
+    // webViewVC에 전달할 string
+    lazy var url = BehaviorSubject<String>(value: "")
     
     init() {
         makeDetailVCData()

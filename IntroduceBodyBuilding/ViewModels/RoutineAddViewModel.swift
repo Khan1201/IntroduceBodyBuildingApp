@@ -14,6 +14,47 @@ class RoutineAddViewModel {
     
     let routineAddObservable: BehaviorSubject<[RoutineVCModel.Fields]> = BehaviorSubject(value: []) //루틴 추가 뷰 data
     
+    var fromTableCell = FromTableCell()
+    var uiData = UIData()
+    var toSaveCoreData = ToSaveCoreData()
+    
+    struct FromTableCell{
+        lazy var fromTableCellSelectionBool = BehaviorSubject<Bool>(value: false)
+        lazy var fromTableCellSelectedDaysIntArray: [String] = []
+        lazy var fromTableCellSwitchBool: Bool = false
+    }
+    
+    struct UIData{
+        lazy var viewControllerName: String = "루틴 추가"
+        lazy var selectedDaysBoolArray: [Bool] = [] // 월 ~ 금 버튼 선택 체크 확인 bool
+        lazy var selectedDaysStringArray: [String] = [] // 월 ~ 금 선택된 버튼 요일 array (notification의 weekDay 구분 위해)
+        lazy var weekDayCount: Int = 0 // 운동 총 기간 중, 주 n회 카운트
+        lazy var selectedDayCount: Int = 0 //월 ~ 금 버튼 체크 카운트 (버튼 최대 선택 카운트)
+    }
+    struct ToSaveCoreData{
+        func getDivisionIconName(_ textFieldOfText: String) -> String{
+            switch textFieldOfText{
+            case "BodyBuilding":
+                return "BBIcon"
+                
+            case "PowerBuilding":
+                return "PBIcon"
+                
+            case "PowerLifting":
+                return "PLIcon"
+                
+            default:
+                print("구분 값을 알 수 없습니다.")
+                return ""
+            }
+        }
+        //CoreData의 스위치 구분 변수에 보낼 변수
+        func getUISwitchBool(_ uiSwitchBool: Bool) -> Bool{
+            let resultBool = uiSwitchBool ? true : false
+            return resultBool
+        }
+    }
+
     init() {
         makeData()
     }
@@ -70,7 +111,7 @@ class RoutineAddViewModel {
     
     // 루틴 추가 버튼으로 VC호출 -> 저장 시 메소드 호출 (coreData에 데이터 추가)
     // 저장 후 중복체크 bool return 함. true -> 중복이므로 alert 띄움, false -> coreData 삽입 (루틴 페이지에 등록)
-    func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], recommend: String, week: String, weekCount: String,switchBool: Bool, selectedDays: Int, viewController: RoutineAddViewController) -> Bool{
+    func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], recommend: String, week: String, weekCount: String,switchBool: Bool, selectedDays: Int) -> Bool{
         
         var duplicated: Bool = false // 중복 체크 bool
         duplicated = checkDuplicated()

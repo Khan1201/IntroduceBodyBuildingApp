@@ -5,14 +5,16 @@ import CoreAudio
 import RxSwift
 
 class MyProgramViewController: UIViewController {
+
+    let disposeBag = DisposeBag()
+    let myProgramViewModel = MyProgramViewModel()
+    let detailViewModel = DetailViewModel()
     
     @IBOutlet weak var BBCollectionView: UICollectionView!
     @IBOutlet weak var PBCollectionView: UICollectionView!
     @IBOutlet weak var PLCollectionView: UICollectionView!
     
-    let disposeBag = DisposeBag()
-    let myProgramViewModel = MyProgramViewModel()
-    let detailViewModel = DetailViewModel()
+    //MARK: - viewDidLoad(), viewWillAppear()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,10 +24,10 @@ class MyProgramViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("확인")
     }
     
 }
+
 //MARK: - 네비게이션 바 속성
 
 extension MyProgramViewController {
@@ -103,8 +105,8 @@ extension MyProgramViewController {
                     
                     // detailVC 데이터 받아옴
                     self.detailViewModel.detailViewObservable
-                        .filter { element in
-                            element != []
+                        .filter {
+                            $0 != []
                         }
                         .subscribe { elements in
                             if let elements = elements.element{
@@ -129,12 +131,12 @@ extension MyProgramViewController {
                 // myProgramVC -> detailVC의 루틴 등록 버튼 클릭 구독
                 detailVC.viewModel.fromDetailVCRoutineAddButton = PublishSubject()
                 detailVC.viewModel.fromDetailVCRoutineAddButton
-                    .subscribe { [unowned self] bool in
+                    .subscribe { [weak self] bool in
                         if let bool = bool.element{
-                            myProgramViewModel.fromDetailVCRoutineAddButton
+                            self?.myProgramViewModel.fromDetailVCRoutineAddButton
                                 .onNext(bool)
                         }
-                    }.disposed(by: self.disposeBag)
+                    }.disposed(by: disposeBag)
           
             }
         }
@@ -176,6 +178,9 @@ extension MyProgramViewController{
         }
     }
 }
+
+//MARK: - myProgramVC > detailVC의 루틴 등록 버튼 구독
+
 extension MyProgramViewController{
     
     // myProgramVC -> detailVC의 루틴 등록 버튼 클릭 시 -> routinVC로 이동

@@ -14,13 +14,6 @@ class MainViewController: UIViewController{
     private var mainViewModel = MainTableViewModel()
     private var detailViewModel = DetailViewModel()
     
-    var isFiltering: Bool{ //검색 활성화 인식 로직
-        let searchController = self.navigationItem.searchController
-        let isActive = searchController?.isActive ?? false
-        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false //서치바에 텍스트가 존재 시 true
-        return isActive && isSearchBarHasText
-    }
-    
     //MARK: - viewDidLoad()
     
     override func viewDidLoad() {
@@ -86,7 +79,7 @@ extension MainViewController: UISearchResultsUpdating{
             .subscribe { [weak self] data in
                 if let self = self{
                     self.mainViewModel.filteredObservable.onNext(data)
-                    self.bindTableView(isFilterd: self.isFiltering)
+                    self.bindTableView(isFilterd: self.mainViewModel.getIsFiltering(self))
                 }
             }.disposed(by: disposeBag)
     }

@@ -7,8 +7,6 @@ import QuickLook
 
 class DetailViewController: UIViewController {
     
-    var addButtonBool: Bool?
-    private var url: String?
     let viewModel = DetailViewModel()
     let disposeBag = DisposeBag()
     
@@ -72,9 +70,6 @@ class DetailViewController: UIViewController {
     }
     @IBOutlet weak var addButton: UIButton!{
         didSet{
-            if addButtonBool == false{ //장바구니에서 접근할시 버튼
-                addButton.isEnabled = false
-            }
             addButton.layer.masksToBounds = true
             addButton.layer.cornerRadius = 15
         }
@@ -89,17 +84,21 @@ class DetailViewController: UIViewController {
         guard let webVC = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
         webVC.routineTitle = titleLabel.text ?? "not exist"
-        webVC.url = self.url ?? "not exist"
+        viewModel.url
+            .filter({
+                $0 != ""
+            })
+            .subscribe { url in
+            webVC.url = url.element ?? "not exist"
+        }.dispose()
         self.navigationController?.pushViewController(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
-        
-        viewModel.fromMyProgramVC
+        viewModel.fromMyProgramVC // myProgramVC -> DetailVC에서 호출하면, dismiss 후 routineVC -> routineAddVC
             .subscribe { bool in
                 if let bool = bool.element{
                     if bool{
                         self.presentingViewController?.dismiss(animated: true, completion: {
-                            print("성공")
                             self.viewModel.fromDetailVCRoutineAddButton.onNext(true)
                             self.viewModel.fromDetailVCRoutineAddButton.dispose()
                         })
@@ -117,7 +116,7 @@ class DetailViewController: UIViewController {
     @IBAction func basketButtonAction(_ sender: UIButton) {
         approachCoreData() //CoreData에 접근
     }
-    //MARK: - viewDidLoad()
+    //MARK: - viewDidLoad(), viewDidAppear()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,8 +125,6 @@ class DetailViewController: UIViewController {
         bindTableViewInView()
    
     }
-    //MARK: - viewDidAppear()
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
@@ -135,7 +132,6 @@ class DetailViewController: UIViewController {
         if !addButton.isEnabled && !addRoutineButton.isEnabled{
             self.scrollView.setContentOffset(CGPoint(x: 0, y: (self.scrollView.contentSize.height) - (self.scrollView.bounds.height)), animated: true)
         }
-        
     }
 }
 //MARK: - 이전 뷰 인덱스에 맞는 detailViewModel 데이터 바인딩
@@ -143,13 +139,13 @@ class DetailViewController: UIViewController {
 extension DetailViewController {
     private func bindView() {
         viewModel.detailVCIndexObservable
-            .subscribe({[unowned self] data in
+            .subscribe({[weak self] data in
             
-            self.titleLabel.text = data.element?.title ?? "not exist"
-            self.descriptionLabel.text = data.element?.description ?? "not exist"
-            self.imageView.image = UIImage(named: data.element?.image ?? "not exist")
-            self.url = data.element?.url ?? "not exist"
-            self.authorLabel.text = data.element?.author ?? "not exist"
+            self?.titleLabel.text = data.element?.title ?? "not exist"
+            self?.descriptionLabel.text = data.element?.description ?? "not exist"
+            self?.imageView.image = UIImage(named: data.element?.image ?? "not exist")
+                self?.viewModel.url.onNext(data.element?.url ?? "not exist")
+            self?.authorLabel.text = data.element?.author ?? "not exist"
             
             var tempArray:[(String, String)] = []
             guard let days = data.element?.day else {return}
@@ -163,7 +159,7 @@ extension DetailViewController {
                     }
                 }
             }
-                self.viewModel.tableViewObservable.onNext(tempArray)
+                self?.viewModel.tableViewObservable.onNext(tempArray)
         }).disposed(by: disposeBag)
     }
 }
@@ -289,13 +285,14 @@ extension DetailViewController {
     }
 }
 
-// 호출한 VC에 따른 UI 바인딩
+//MARK: - 호출한 VC에 따른 UI 바인딩
+
 extension DetailViewController{
     func fromVC(){
         
         viewModel.fromRoutineVC
-            .filter({ bool in
-                bool == true
+            .filter({
+                $0 != false
             })
             .subscribe { [weak self] trueBool in
                 if let trueBool = trueBool.element{
@@ -306,10 +303,9 @@ extension DetailViewController{
                 }
                 
             }.disposed(by: disposeBag)
-        
         viewModel.fromMyProgramVC
-            .filter { bool in
-                bool == true
+            .filter {
+                $0 != false
             }
             .subscribe { [weak self] trueBool in
                 self?.goBackButton.isHidden = !trueBool
