@@ -1,10 +1,3 @@
-//
-//  WebViewController.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/10/10.
-//
-
 import UIKit
 import WebKit
 import SnapKit
@@ -40,17 +33,27 @@ extension WebViewController {
         loadWebView()
         
         func setWebView(){
+            
+            let source: String = "var meta = document.createElement('meta');" +
+            "meta.name = 'viewport';" +
+            "meta.content = 'width=device-width, initial-scale=0.4, maximum-scale=5.0, user-scalable=yes';" +
+            "var head = document.getElementsByTagName('head')[0];" +
+            "head.appendChild(meta);"
+
+            let script: WKUserScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+            
             let preferences = WKPreferences()
             preferences.javaScriptEnabled = true
             preferences.javaScriptCanOpenWindowsAutomatically = true
             
             let contentController = WKUserContentController()
             contentController.add(self, name: "bridge")
+            contentController.addUserScript(script)
             
             let configuration = WKWebViewConfiguration()
             configuration.preferences = preferences
             configuration.userContentController = contentController
-            
+
             webView = WKWebView(frame: self.view.bounds, configuration: configuration)
             webView.uiDelegate = self
             webView.navigationDelegate = self
@@ -101,4 +104,6 @@ extension WebViewController: WKScriptMessageHandler{
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
     }
 }
+
+
 

@@ -1,11 +1,9 @@
-
 import UIKit
 import CoreData
-import CoreAudio
 import RxSwift
 
 class MyProgramViewController: UIViewController {
-
+    
     let disposeBag = DisposeBag()
     let myProgramViewModel = MyProgramViewModel()
     let detailViewModel = DetailViewModel()
@@ -25,7 +23,6 @@ class MyProgramViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
-    
 }
 
 //MARK: - 네비게이션 바 속성
@@ -34,20 +31,19 @@ extension MyProgramViewController {
     private func navigationSet(){
         self.navigationItem.title = "보관함"
         self.navigationItem.largeTitleDisplayMode = .never
- 
+        
         // 홈 버튼 활성화
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "house"), style: .plain, target: nil, action: nil)
         self.navigationItem.setRightBarButton(navigationItem.rightBarButtonItem, animated: true)
-
+        
         // 홈 버튼 클릭 이벤트
         self.navigationItem.rightBarButtonItem?.rx.tap
             .bind { _ in
                 self.navigationController?.popToRootViewController(animated: true)
-
+                
             }.disposed(by: disposeBag)
     }
 }
-
 
 //MARK: - 컬렉션 뷰에 데이터 바인딩
 
@@ -137,13 +133,11 @@ extension MyProgramViewController {
                                 .onNext(bool)
                         }
                     }.disposed(by: disposeBag)
-          
             }
         }
-        
     }
-    
 }
+
 //MARK: - 삭제 버튼 생성
 
 extension MyProgramViewController{
@@ -188,7 +182,7 @@ extension MyProgramViewController{
         myProgramViewModel.fromDetailVCRoutineAddButton
             .subscribe { _ in
                 guard let routineVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineViewController") as? RoutineViewController else{return}
-                routineVC.viewModel.fromAddRoutineObservable
+                routineVC.viewModel.fromAddRoutineInDetailVC
                     .onNext(true)
                 self.navigationController?.pushViewController(routineVC, animated: true)
             }.disposed(by: disposeBag)

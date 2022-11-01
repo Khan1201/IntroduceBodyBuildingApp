@@ -1,22 +1,14 @@
-//
-//  MyProgramViewModel.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/09/29.
-//
-
 import Foundation
 import CoreData
 import UIKit
 import RxSwift
 
 class MyProgramViewModel {
-    let appdelegate = UIApplication.shared.delegate as! AppDelegate
-    
     static var coreData = [MyProgram]()
-    var bodyBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
-    var powerBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
-    var powerLiftingObservable = BehaviorSubject<[MyProgram]>(value: [])
+    
+    let bodyBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
+    let powerBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
+    let powerLiftingObservable = BehaviorSubject<[MyProgram]>(value: [])
     let fromDetailVCRoutineAddButton = PublishSubject<Bool>()
 
     init(){
@@ -25,10 +17,15 @@ class MyProgramViewModel {
         bindingCoreData(to: powerBuildingObservable, division: "powerbuilding")
         bindingCoreData(to: powerLiftingObservable, division: "powerlifting")
     }
-    
+}
+
+//MARK: - CoreData 전체 읽어옴
+
+extension MyProgramViewModel{
     func readCoreData() { //coreData에서 데이터 read
-        let fetchRequest: NSFetchRequest<MyProgram> = MyProgram.fetchRequest()
+        let appdelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appdelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<MyProgram> = MyProgram.fetchRequest()
         
         do{
             MyProgramViewModel.coreData = try context.fetch(fetchRequest)
@@ -36,8 +33,12 @@ class MyProgramViewModel {
             print(error)
         }
     }
-    
-    func bindingCoreData(to observable: BehaviorSubject<[MyProgram]>, division: String) { // coreData -> 해당 collection view에 바인딩
+}
+
+//MARK: - coreData -> 해당 collection view에 바인딩
+
+extension MyProgramViewModel{
+    func bindingCoreData(to observable: BehaviorSubject<[MyProgram]>, division: String) {
         var divisionModel: [MyProgram] = []
         
         for coreData in MyProgramViewModel.coreData{
@@ -61,9 +62,14 @@ class MyProgramViewModel {
         }
         observable.onNext(divisionModel)
     }
-    
+}
+
+//MARK: - CoreData 삭제
+
+extension MyProgramViewModel{
     func deleteCoreData(to divisonModel: BehaviorSubject<[MyProgram]>, deleteCondition: String, division: String) {
-                
+        
+        let appdelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appdelegate.persistentContainer.viewContext
         // coreData context 선언
         
@@ -82,9 +88,6 @@ class MyProgramViewModel {
         } catch {
             print("fetch error: \(error)")
         }
-        
-        bindingCoreData(to: divisonModel, division: division) //삭제 후 데이터 리바인딩 
+        bindingCoreData(to: divisonModel, division: division) //삭제 후 데이터 리바인딩
     }
-    
 }
-

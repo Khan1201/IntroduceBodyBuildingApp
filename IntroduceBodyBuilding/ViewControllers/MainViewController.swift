@@ -1,4 +1,3 @@
-
 import UIKit
 import CoreData
 import RxSwift
@@ -19,8 +18,8 @@ class MainViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         makeNavigationBar()
-        bindTableView(isFilterd: false)
         addCellCilckEvent()
+        self.bindTableView(isFilterd: false)
         requestNotificationAuthorization()
         makePlusButton()
         hideKeyboardWhenTappedAround()
@@ -87,7 +86,7 @@ extension MainViewController: UISearchResultsUpdating{
 //MARK: - 검색 활성화 후 주변 클릭 시 키보드 내리기
 
 extension MainViewController {
-   private func hideKeyboardWhenTappedAround() {
+    private func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MainViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         mainTableView.keyboardDismissMode = .onDrag
@@ -105,8 +104,12 @@ extension MainViewController {
         
         //itemSelectd -> IndexPath 추출, modelSelected -> .title 추출
         Observable.zip(mainTableView.rx.itemSelected, mainTableView.rx.modelSelected(MainTVCellModel.Fields.self))
+            .observe(on: MainScheduler.instance)
             .withLatestFrom(detailViewModel.detailViewObservable){ [weak self] (zipData, detailVCDatas) in
                 //zipData -> (indexPath, modelData)
+                print(zipData.1.title)
+                print(detailVCDatas)
+                
                 self?.mainTableView.deselectRow(at: zipData.0, animated: true) //셀 선택시 선택 효과 고정 제거
                 guard let detailVC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
                 
@@ -211,7 +214,7 @@ extension MainViewController {
         navigationSet(searchController: searchController)
         
         func navigationSet(searchController: UISearchController){
-            self.navigationItem.title = "Health Program"
+            self.navigationItem.title = "운동 프로그램"
             self.navigationController?.navigationBar.prefersLargeTitles = true
             self.navigationItem.hidesSearchBarWhenScrolling = true //스크롤 내릴 시 검색창 숨김
             self.navigationItem.searchController = searchController //서치바 활성화
@@ -229,7 +232,7 @@ extension MainViewController {
 extension MainViewController {
     func requestNotificationAuthorization() {
         let authOptions = UNAuthorizationOptions(arrayLiteral: .alert, .badge, .sound)
-
+        
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { success, error in
             if let error = error {
                 print("Error: \(error)")

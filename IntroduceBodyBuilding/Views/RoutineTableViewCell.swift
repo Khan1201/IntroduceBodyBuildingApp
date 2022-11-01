@@ -1,16 +1,10 @@
-//
-//  RoutineTableViewCell.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/10/05.
-//
-
 import Foundation
 import UIKit
 import UserNotifications
 
 class RoutineTableViewCell: UITableViewCell {
     lazy var viewModel = RoutineViewModel()
+    
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var divisionLabel: UILabel!

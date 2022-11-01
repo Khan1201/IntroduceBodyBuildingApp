@@ -1,18 +1,9 @@
-//
-//  DetailViewModel.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/09/27.
-//
-
 import Foundation
 import Alamofire
 import RxSwift
 
 class DetailViewModel {
-    var detailViewObservable: BehaviorSubject<[DetailVCModel.Fields]> = BehaviorSubject(value: [])
-    
-    // MainVC, MyProgramVC에서 쓰이기 때문에 private 지정 X
+    let detailViewObservable: BehaviorSubject<[DetailVCModel.Fields]> = BehaviorSubject(value: [])
     lazy var detailVCIndexObservable = BehaviorSubject<DetailVCModel.Fields>(value: DetailVCModel.Fields())
     
     // 위 Index Observable의 값 튜플화한 Observable
@@ -29,7 +20,11 @@ class DetailViewModel {
     init() {
         makeDetailVCData()
     }
-    
+}
+
+//MARK: - detailVC의 전체 데이터 생성
+
+extension DetailViewModel{
     func makeDetailVCData() {
         let url = "https://firestore.googleapis.com/v1/projects/bodybuildingapp-3e7db/databases/(default)/documents/Detail"
         AF.request(url,
@@ -42,7 +37,7 @@ class DetailViewModel {
             switch response.result {
             case .success :
                 if let value = response.value?.documents {
-//                    DetailViewModel.detailViewModel = value
+                    //                    DetailViewModel.detailViewModel = value
                     self.detailViewObservable.onNext(value)
                 }
             case .failure(let error):

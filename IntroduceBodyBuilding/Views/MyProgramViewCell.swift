@@ -1,18 +1,8 @@
-//
-//  MyProgramViewCell.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/09/29.
-//
-
 import Foundation
 import UIKit
 
     class BBCollectionViewCell: UICollectionViewCell {
-        
-        
         @IBOutlet weak var BBAllComponentEmbeddedView: UIView!
-        
         @IBOutlet weak var BBimageView: UIImageView!
         {
             didSet{
@@ -25,9 +15,7 @@ import UIKit
     }
     
     class PBCollectionViewCell: UICollectionViewCell {
-        
         @IBOutlet weak var PBAllComponentEmbeddedView: UIView!
-        
         @IBOutlet weak var PBimageView: UIImageView!
         {
             didSet{
@@ -36,7 +24,6 @@ import UIKit
                 PBimageView.layer.borderWidth = 0.5
             }
         }
-        
         @IBOutlet weak var PBTitleLabel: UILabel!
     }
     
@@ -51,8 +38,6 @@ import UIKit
                 PLimageView.layer.borderWidth = 0.5
             }
         }
-        
         @IBOutlet weak var PLTitleLabel: UILabel!
-        
     }
 

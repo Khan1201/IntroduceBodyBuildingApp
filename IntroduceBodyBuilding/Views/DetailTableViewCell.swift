@@ -1,10 +1,3 @@
-//
-//  detailTableViewCell.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/10/07.
-//
-
 import Foundation
 import UIKit
 

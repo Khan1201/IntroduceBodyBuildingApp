@@ -1,10 +1,3 @@
-//
-//  VCModel.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/08/19.
-//
-
 import Foundation
 
 struct DetailVCModel : Codable{

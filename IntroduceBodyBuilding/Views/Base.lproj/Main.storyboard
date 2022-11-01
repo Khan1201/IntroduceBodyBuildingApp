@@ -428,14 +428,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BodyBuilding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dte-1W-pKr">
-                                <rect key="frame" x="30" y="56" width="131" height="25.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="보디빌딩" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dte-1W-pKr">
+                                <rect key="frame" x="30" y="56" width="73" height="26"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="47a-KD-ied">
-                                <rect key="frame" x="12" y="91.5" width="402" height="170"/>
+                                <rect key="frame" x="12" y="92" width="402" height="170"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="IQI-LN-JsM"/>
@@ -463,7 +463,7 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eNv-y0-zvq">
                                                     <rect key="frame" x="0.0" y="10" width="182" height="120"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="175" id="2Mj-MA-nQ6"/>
+                                                        <constraint firstAttribute="width" constant="150" id="2Mj-MA-nQ6"/>
                                                         <constraint firstAttribute="height" constant="120" id="Xjn-OQ-pCQ"/>
                                                     </constraints>
                                                 </imageView>
@@ -488,21 +488,21 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PowerBuilding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qU1-2U-G7U">
-                                <rect key="frame" x="30" y="284" width="142" height="25.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="파워빌딩" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qU1-2U-G7U">
+                                <rect key="frame" x="30" y="284.5" width="73" height="26"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qSE-ds-6if" userLabel="DivisionLine">
-                                <rect key="frame" x="12" y="268.5" width="392" height="0.5"/>
+                                <rect key="frame" x="12" y="269" width="392" height="0.5"/>
                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.29999999999999999" id="E0b-3P-RcA"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="DaK-3L-6j1" userLabel="PBCollection View">
-                                <rect key="frame" x="12" y="319.5" width="402" height="170"/>
+                                <rect key="frame" x="12" y="320.5" width="402" height="170"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="SIO-JF-zxr"/>
@@ -530,7 +530,7 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AZH-W4-fjc">
                                                     <rect key="frame" x="0.0" y="10" width="182" height="120"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="175" id="BGp-Kk-pFI"/>
+                                                        <constraint firstAttribute="width" constant="150" id="BGp-Kk-pFI"/>
                                                         <constraint firstAttribute="height" constant="120" id="prB-yf-Wnn"/>
                                                     </constraints>
                                                 </imageView>
@@ -555,21 +555,21 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PowerLifting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z2h-B4-7SI">
-                                <rect key="frame" x="30" y="511.5" width="125" height="25.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="파워리프팅" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z2h-B4-7SI">
+                                <rect key="frame" x="30" y="512.5" width="91" height="26"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qfc-2C-6xt" userLabel="DivisionLine">
-                                <rect key="frame" x="12" y="496.5" width="392" height="0.0"/>
+                                <rect key="frame" x="12" y="497.5" width="392" height="0.0"/>
                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.29999999999999999" id="xVi-ae-WhU"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="37Y-E3-TeE" userLabel="PLCollection View">
-                                <rect key="frame" x="12" y="547" width="402" height="170"/>
+                                <rect key="frame" x="12" y="548.5" width="402" height="170"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="u0X-9e-uLd"/>
@@ -597,7 +597,7 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="y81-NO-tkN">
                                                     <rect key="frame" x="0.0" y="10" width="182" height="120"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="175" id="YkS-eC-tBR"/>
+                                                        <constraint firstAttribute="width" constant="150" id="YkS-eC-tBR"/>
                                                         <constraint firstAttribute="height" constant="120" id="ola-hq-Tzb"/>
                                                     </constraints>
                                                 </imageView>
@@ -815,13 +815,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출처 : LiftVault.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nh-hn-Wb3">
-                                <rect key="frame" x="131" y="58" width="152" height="21"/>
+                                <rect key="frame" x="131" y="58" width="152" height="21.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1WN-Jw-uCR">
-                                <rect key="frame" x="106" y="58.5" width="20" height="20"/>
+                                <rect key="frame" x="106" y="58.5" width="20" height="20.5"/>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <imageReference key="image" image="safari" catalog="system" symbolScale="medium"/>
                             </imageView>

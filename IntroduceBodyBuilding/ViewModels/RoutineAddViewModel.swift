@@ -1,64 +1,34 @@
-//
-//  MainVM.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/09/22.
-//
-
 import Foundation
 import Alamofire
 import RxSwift
 import CoreData
 
 class RoutineAddViewModel {
-    
     let routineAddObservable: BehaviorSubject<[RoutineVCModel.Fields]> = BehaviorSubject(value: []) //루틴 추가 뷰 data
+    lazy var switchStatefromRoutineAddVC = PublishSubject<Bool>() // 스위치 toggle 상태 감지 (toast 생성 위해)
+    lazy var dataFromTableCell = DataFromTableCell()
+    lazy var uiData = UIData()
     
-    var fromTableCell = FromTableCell()
-    var uiData = UIData()
-    var toSaveCoreData = ToSaveCoreData()
-    
-    struct FromTableCell{
-        lazy var fromTableCellSelectionBool = BehaviorSubject<Bool>(value: false)
-        lazy var fromTableCellSelectedDaysIntArray: [String] = []
-        lazy var fromTableCellSwitchBool: Bool = false
+    struct DataFromTableCell{
+        var fromTableCellSelectionBool = BehaviorSubject<Bool>(value: false)
+        var fromTableCellSelectedDaysIntArray: [String] = []
+        var fromTableCellSwitchBool: Bool = false
     }
-    
     struct UIData{
-        lazy var viewControllerName: String = "루틴 추가"
-        lazy var selectedDaysBoolArray: [Bool] = [] // 월 ~ 금 버튼 선택 체크 확인 bool
-        lazy var selectedDaysStringArray: [String] = [] // 월 ~ 금 선택된 버튼 요일 array (notification의 weekDay 구분 위해)
-        lazy var weekDayCount: Int = 0 // 운동 총 기간 중, 주 n회 카운트
-        lazy var selectedDayCount: Int = 0 //월 ~ 금 버튼 체크 카운트 (버튼 최대 선택 카운트)
+        var viewControllerName: String = "루틴 추가"
+        var selectedDaysBoolArray: [Bool] = [] // 월 ~ 금 버튼 선택 체크 확인 bool
+        var selectedDaysStringArray: [String] = [] // 월 ~ 금 선택된 버튼 요일 array (notification의 weekDay 구분 위해)
+        var weekDayCount: Int = 0 // 운동 총 기간 중, 주 n회 카운트
+        var selectedDayCount: Int = 0 //월 ~ 금 버튼 체크 카운트 (버튼 최대 선택 카운트)
     }
-    struct ToSaveCoreData{
-        func getDivisionIconName(_ textFieldOfText: String) -> String{
-            switch textFieldOfText{
-            case "BodyBuilding":
-                return "BBIcon"
-                
-            case "PowerBuilding":
-                return "PBIcon"
-                
-            case "PowerLifting":
-                return "PLIcon"
-                
-            default:
-                print("구분 값을 알 수 없습니다.")
-                return ""
-            }
-        }
-        //CoreData의 스위치 구분 변수에 보낼 변수
-        func getUISwitchBool(_ uiSwitchBool: Bool) -> Bool{
-            let resultBool = uiSwitchBool ? true : false
-            return resultBool
-        }
-    }
-
     init() {
         makeData()
     }
-    
+}
+
+//MARK: - routineAddVC 전체 데이터 생성
+
+extension RoutineAddViewModel{
     func makeData() {
         let url = "https://firestore.googleapis.com/v1/projects/bodybuildingapp-3e7db/databases/(default)/documents/Program"
         AF.request(url,
@@ -79,8 +49,11 @@ class RoutineAddViewModel {
             }
         }
     }
-    
-    // tableCell 선택으로 VC호출 -> 저장 시 해당 메소드 실행 (데이터 추가가 아닌 업데이트)
+}
+
+//MARK: - tableCell 선택으로 VC호출 -> 저장 시, 해당 메소드 실행 (데이터 추가가 아닌 업데이트)
+
+extension RoutineAddViewModel{
     func updateData(condition: String, switchBool: Bool, dayBools: [Bool], selectedDays: Int) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -108,8 +81,12 @@ class RoutineAddViewModel {
             print(error)
         }
     }
+}
+
+//MARK: - 루틴 추가 버튼으로 VC호출 -> 저장 시 해당 메소드 실행(coreData에 데이터 추가)
+
+extension RoutineAddViewModel{
     
-    // 루틴 추가 버튼으로 VC호출 -> 저장 시 메소드 호출 (coreData에 데이터 추가)
     // 저장 후 중복체크 bool return 함. true -> 중복이므로 alert 띄움, false -> coreData 삽입 (루틴 페이지에 등록)
     func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], recommend: String, week: String, weekCount: String,switchBool: Bool, selectedDays: Int) -> Bool{
         
@@ -192,6 +169,27 @@ class RoutineAddViewModel {
             enum setDataError: Error{
                 case EntityNotExist
             }
+        }
+    }
+}
+
+//MARK: - CoreData안의 데이터 형식으로 return
+
+extension RoutineAddViewModel{
+    func getDivisionIconName(_ textFieldOfText: String) -> String{
+        switch textFieldOfText{
+        case "BodyBuilding":
+            return "BBIcon"
+            
+        case "PowerBuilding":
+            return "PBIcon"
+            
+        case "PowerLifting":
+            return "PLIcon"
+            
+        default:
+            print("구분 값을 알 수 없습니다.")
+            return ""
         }
     }
 }

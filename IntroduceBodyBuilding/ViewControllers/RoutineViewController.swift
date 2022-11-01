@@ -1,10 +1,3 @@
-//
-//  RoutineViewController.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/10/05.
-//
-
 import UIKit
 import CoreData
 import RxSwift
@@ -42,6 +35,7 @@ class RoutineViewController: UIViewController {
             print("Reload error: \(error)")
         }
     }
+
 }
 //MARK: - Navigation 세팅
 
@@ -53,17 +47,24 @@ extension RoutineViewController {
         //네비게이션바에 + 버튼, 홈 버튼 활성화
         let plusButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: nil)
         let homeButton = UIBarButtonItem(image: UIImage(systemName: "house"), style: .plain, target: nil, action: nil)
-
+        
         self.navigationItem.rightBarButtonItems = [plusButton, homeButton]
         self.navigationItem.setRightBarButtonItems(navigationItem.rightBarButtonItems, animated: true)
-
+        
         // + 버튼 클릭 이벤트
         self.navigationItem.rightBarButtonItems?[0].rx.tap
             .bind { [weak self] _ in
+                guard let self = self else {return}
                 guard let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController else {return}
-                routineAddVC.viewModel.fromTableCell.fromTableCellSelectionBool.onNext(false)
+                // 테이블 셀이 아닌, +버튼 클릭임으로
+                routineAddVC.viewModel.dataFromTableCell.fromTableCellSelectionBool.onNext(false)
+                
+                //RoutineAddVC로부터 알림 상태 on으로 dismiss 시, 시간 알림 toast 출력
+                routineAddVC.viewModel.switchStatefromRoutineAddVC.subscribe { _ in
+                    self.showToast(message: "AM 07:00에 알림이 발생합니다.")
+                }.disposed(by: self.disposeBag)
                 routineAddVC.modalPresentationStyle = .fullScreen //현재 VC의 viewWillAppear 호출 위해 .fullsceen으로 설정
-                self?.present(routineAddVC, animated: true)
+                self.present(routineAddVC, animated: true)
             }.disposed(by: disposeBag)
         
         // 홈 버튼 클릭 이벤트
@@ -97,7 +98,6 @@ extension RoutineViewController{
                 cell.thursdayBool = element.thursday
                 cell.fridayBool = element.friday
                 cell.alarmSwitch.isOn = element.alarmSwitch
-                
             }.disposed(by: disposeBag)
         }
         
@@ -108,9 +108,9 @@ extension RoutineViewController{
                     self?.viewModel.routineObservable // 테이블 뷰에 바인딩 된 데이터를 얻어옴
                         .subscribe {[weak self] element in
                             if let title = element[indexPath.row].title{ // 삭제할 셀 title = coredata 해당 index의 title
-                                if element[indexPath.row].alarmSwitch { // 알림 switch -> on
+                                if element[indexPath.row].alarmSwitch { // 알림 switch -> on일 시, notification 삭제
                                     let selectedDaysArray =
-                                    self?.getSelectedDaysIntArray(selectedDays: Int(element[indexPath.row].selectedDays))
+                                    self?.convertSelectedDaysIntToStringArray(selectedDaysInt: Int(element[indexPath.row].selectedDays))
                                     
                                     self?.viewModel.deleteNotification(title: element[indexPath.row].title ?? "", days: selectedDaysArray ?? []) // [notificationCenter identifier] 생성 위해 해당 인자 넘겨줌
                                 }
@@ -128,12 +128,10 @@ extension RoutineViewController{
                     // 루틴 편집 페이지에 보낼 현재 데이터
                     lazy var tableCellData: [RoutineVCModel.Fields] = []
                     lazy var selectedDaysIntArray: [String] = []
-                    lazy var selectedDayCount: Int = 0
+                    lazy var selectedDayCountInt: Int = 0
                     lazy var currentSwitchBool: Bool = false
-                    
                     lazy var selectedDaysStringArray: [String] = []
                     lazy var selectedDaysBoolArray: [Bool] = [false, false, false, false, false]
-                    
                     guard let routineVC = self else {return}
                     
                     //해당 셀의 index 데이터 가져오기 위해
@@ -143,12 +141,11 @@ extension RoutineViewController{
                             // 헤당 형태에 맞춰서 setting
                             tableCellData = [RoutineVCModel.Fields(title: element[indexPath.row].title!, week: element[indexPath.row].week!, recommend: element[indexPath.row].recommend!, division: element[indexPath.row].divisionString!, weekCount: element[indexPath.row].weekCount!)]
                             
-//                             notification update 위해 selectedDaysArray setting
-                            selectedDaysIntArray = self?.getSelectedDaysIntArray(selectedDays:Int(element[indexPath.row].selectedDays)) ?? []
+                            // notification update 위해 현재 데이터 binding
+                            selectedDaysIntArray = self?.convertSelectedDaysIntToStringArray(selectedDaysInt:Int(element[indexPath.row].selectedDays)) ?? []
                             currentSwitchBool = element[indexPath.row].alarmSwitch
-                            selectedDayCount = Int(element[indexPath.row].selectedDays)
+                            selectedDayCountInt = Int(element[indexPath.row].selectedDays)
                             setSelectedDaysStringAndBoolArray()
-                            
                             
                             func setSelectedDaysStringAndBoolArray(){
                                 let selectedDayBoolsInCell: [Bool] = [element[indexPath.row].monday, element[indexPath.row].tuesday, element[indexPath.row].wednesday, element[indexPath.row].thursday, element[indexPath.row].friday]
@@ -176,52 +173,39 @@ extension RoutineViewController{
                         } onDisposed: {
                             
                             // RoutineAddViewController 재사용, 호출 장소 구분
-                            if let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController{
-                                routineAddVC.viewModel.fromTableCell.fromTableCellSelectionBool.onNext(true) //셀 선택으로 호출 되었다는 bool 넘겨줌
-                                routineAddVC.routineViewModel.routineAddObservable // 현재 셀 데이터 넣어줌
-                                    .onNext(tableCellData)
-                                routineAddVC.viewModel.uiData.viewControllerName = "루틴 편집"
-                                routineAddVC.viewModel.fromTableCell.fromTableCellSelectedDaysIntArray  = selectedDaysIntArray
-                                routineAddVC.viewModel.fromTableCell.fromTableCellSwitchBool = currentSwitchBool
+                            guard let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController else {return}
+                            guard let self = self else {return}
                             
-                                routineAddVC.viewModel.uiData.selectedDayCount = selectedDayCount // 선택 된 요일 정수
-                                routineAddVC.viewModel.uiData.selectedDaysBoolArray = selectedDaysBoolArray
-                                routineAddVC.viewModel.uiData.selectedDaysStringArray = selectedDaysStringArray
-                                
-                                routineAddVC.modalPresentationStyle = .fullScreen
-                                routineVC.present(routineAddVC, animated: true)
-                            }
+                            //셀 선택으로 호출 되었다는 bool 넘겨줌
+                            routineAddVC.viewModel.dataFromTableCell.fromTableCellSelectionBool.onNext(true)
+                            routineAddVC.routineViewModel.routineAddObservable.onNext(tableCellData) // 현재 셀 데이터 넣어줌
+                            routineAddVC.viewModel.dataFromTableCell.fromTableCellSelectedDaysIntArray  = selectedDaysIntArray
+                            routineAddVC.viewModel.dataFromTableCell.fromTableCellSwitchBool = currentSwitchBool
+                            routineAddVC.viewModel.uiData.viewControllerName = "루틴 편집"
+                            routineAddVC.viewModel.uiData.selectedDayCount = selectedDayCountInt // 선택 된 요일 정수
+                            routineAddVC.viewModel.uiData.selectedDaysBoolArray = selectedDaysBoolArray
+                            routineAddVC.viewModel.uiData.selectedDaysStringArray = selectedDaysStringArray
+                            
+                            // RoutineAddVC로부터 알림 상태 on으로 dismiss 시, 시간 알림 toast 출력
+                            routineAddVC.viewModel.switchStatefromRoutineAddVC.subscribe { _ in
+                                self.showToast(message: "AM 07:00에 알림이 발생합니다.")
+                            }.disposed(by: self.disposeBag)
+                            
+                            routineAddVC.modalPresentationStyle = .fullScreen
+                            routineVC.present(routineAddVC, animated: true)
                         }.dispose()
                 }.disposed(by: disposeBag)
         }
-        
-        
     }
 }
-//MARK: - DetailVC에서 온 것인지 체크
 
-extension RoutineViewController {
-    func checkMove(){
-        
-        viewModel.fromAddRoutineObservable
-            .filter({
-                $0 != false
-            })
-            .subscribe { _ in
-                print("실행")
-                let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController")
-                routineAddVC.modalPresentationStyle = .fullScreen //현재 VC의 viewWillAppear 호출 위해 .fullsceen으로 설정
-                self.present(routineAddVC, animated: true)
-            }.disposed(by: disposeBag)
-    }
-}
 //MARK: - selectedDays: Int -> selectedDays: [String] (선택된 요일 갯수인 n의 정수형태 -> n개가 포함된 String 배열 형태로,                                                                                             notification identifier 구분 위해)
 extension RoutineViewController {
-    func getSelectedDaysIntArray(selectedDays: Int) -> [String]{
+    func convertSelectedDaysIntToStringArray(selectedDaysInt: Int) -> [String]{
         var selectedDaysArray: [String] = [] // selectedDays -> [SelectedDays]
         
-        if selectedDays != 0{
-            for index in 1...selectedDays{
+        if selectedDaysInt != 0{
+            for index in 1...selectedDaysInt{
                 selectedDaysArray.append("\(index)") // Sequence의 index만 추출하면 됨, index의 String 값은 상관 x
             }
             return selectedDaysArray
@@ -231,3 +215,48 @@ extension RoutineViewController {
         }
     }
 }
+
+//MARK: - DetailVC에서 온 것인지 체크
+
+extension RoutineViewController {
+    func checkMove(){
+        
+        viewModel.fromAddRoutineInDetailVC
+            .filter({
+                $0 != false
+            })
+            .subscribe { [weak self]_ in
+                guard let self = self else {return}
+                guard let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController else {return}
+                routineAddVC.viewModel.switchStatefromRoutineAddVC
+                    .subscribe { _ in
+                        self.showToast(message: "AM 07:00에 알림이 발생합니다.")
+                    }.disposed(by: self.disposeBag)
+                routineAddVC.modalPresentationStyle = .fullScreen //현재 VC의 viewWillAppear 호출 위해 .fullsceen으로 설정
+                self.present(routineAddVC, animated: true)
+            }.disposed(by: disposeBag)
+    }
+}
+
+//MARK: - routineAddVC -> routineVC으로 dismiss 시, toast 메세지 출력
+
+extension RoutineViewController{
+    func showToast(message : String, font: UIFont = UIFont.systemFont(ofSize: 11.0)) {
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 84, y: self.view.frame.size.height-100, width: 170, height: 30))
+        toastLabel.backgroundColor = .systemGray
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 8, delay: 0.5, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
+}
+

@@ -1,10 +1,3 @@
-//
-//  RoutineAddViewController.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/10/13.
-//
-
 import UIKit
 import RxSwift
 import CoreData
@@ -13,7 +6,7 @@ class RoutineAddViewController: UIViewController {
     
     let viewModel = RoutineAddViewModel()
     let disposeBag = DisposeBag()
-
+    
     var routineViewModel = RoutineViewModel()
     lazy var detailViewModel = DetailViewModel()
     
@@ -65,69 +58,77 @@ class RoutineAddViewController: UIViewController {
     @IBAction func addSaveAction(_ sender: Any) {
         
         // 호출한 VC check
-        viewModel.fromTableCell.fromTableCellSelectionBool
+        viewModel.dataFromTableCell.fromTableCellSelectionBool
             .subscribe { [weak self] bool in
-                guard let fromTableCellSelectionBool = bool.element else {return}
-
-                // coreData에 저장된 swtichBool state
-                guard let coreDataSwitchBool = self?.noticeSwitch.isOn else {return}
+                guard let fromTableCellSelectionBool = bool.element else {return} // tableCell에서의 호출 구독
+                guard let switchBool = self?.noticeSwitch.isOn else {return}
+                guard let title = self?.programTextField.text! else {return}
+                guard let selectedDaysBoolArray = self?.viewModel.uiData.selectedDaysBoolArray else {return}
+                guard let selectedDaysInt = self?.viewModel.uiData.selectedDayCount else {return}
+                guard let selectedDaysIntArray = self?.viewModel.dataFromTableCell.fromTableCellSelectedDaysIntArray else {return}
+                guard let selectedDaysStringArray = self?.viewModel.uiData.selectedDaysStringArray else {return}
                 
                 // tableCell의 선택으로 호출 되었을 시
                 if fromTableCellSelectionBool{
                     // coreData 업데이트
-                    self?.viewModel.updateData(condition: self?.programTextField.text! ?? "", switchBool: coreDataSwitchBool, dayBools: self?.viewModel.uiData.selectedDaysBoolArray ?? [], selectedDays: self?.viewModel.uiData.selectedDayCount ?? 0)
-
+                    self?.viewModel.updateData(condition: title, switchBool: switchBool, dayBools: selectedDaysBoolArray, selectedDays: selectedDaysInt)
+                    
                     // 스위치 on일 시, notification 추가
-                    if coreDataSwitchBool{
-                        self?.routineViewModel.deleteNotification(title: self?.programTextField.text! ?? "", days: self?.viewModel.fromTableCell.fromTableCellSelectedDaysIntArray ?? [])
-                        self?.routineViewModel.makeLocalNotification(title: self?.programTextField.text! ?? "", days: self?.viewModel.uiData.selectedDaysStringArray ?? [])
+                    if switchBool{
+                        self?.routineViewModel.deleteNotification(title: title, days: selectedDaysIntArray)
+                        self?.routineViewModel.makeLocalNotification(title: title, days: selectedDaysStringArray)
                     }
                     else{
-                        self?.routineViewModel.deleteNotification(title: self?.programTextField.text! ?? "", days: self?.viewModel.fromTableCell.fromTableCellSelectedDaysIntArray ?? [])
+                        self?.routineViewModel.deleteNotification(title: title, days: selectedDaysIntArray)
                     }
-                    self?.presentingViewController?.dismiss(animated: true)
+                    self?.presentingViewController?.dismiss(animated: true){
+                        if switchBool{
+                            self?.viewModel.switchStatefromRoutineAddVC.onNext(true)
+                        }
+                    }
                 }
                 
                 // 루틴 추가 버튼으로 호출 되었을 시
                 else{
-                    let imageName = self?.viewModel.toSaveCoreData.getDivisionIconName(self?.divisionTextField.text! ?? "") ?? ""
-                    let title = self?.programTextField.text! ?? ""
-                    let divisionName = self?.divisionTextField.text! ?? ""
-                    let dayBools = self?.viewModel.uiData.selectedDaysBoolArray ?? []
-                    let recommend = self?.targetTextField.text! ?? ""
-                    let week = self?.totalPeriodTextField.text! ?? ""
-                    let weekCount = String(self?.viewModel.uiData.weekDayCount ?? 0)
-                    let switchBool = self?.noticeSwitch.isOn ?? false
-                    let selectedDays = self?.viewModel.uiData.selectedDayCount ?? 0
-                    
+                    guard let title = self?.programTextField.text! else {return}
+                    guard let imageName = self?.viewModel.getDivisionIconName(self?.divisionTextField.text! ?? "") else {return}
+                    guard let divisionName = self?.divisionTextField.text! else {return}
+                    guard let selectedDaysBoolArray = self?.viewModel.uiData.selectedDaysBoolArray else {return}
+                    guard let recommend = self?.targetTextField.text! else {return}
+                    guard let totalWeek = self?.totalPeriodTextField.text! else {return}
+                    guard let oneWeekCount = self?.viewModel.uiData.weekDayCount else {return}
+                    guard let switchBool = self?.noticeSwitch.isOn else {return}
+                    guard let selectedDaysInt = self?.viewModel.uiData.selectedDayCount else {return}
+                    guard let selectedDaysStringArray = self?.viewModel.uiData.selectedDaysStringArray else {return}
                     
                     // coredata 접근 후 중복 state bool return. 중복이 아니면, 데이터 저장 함
-                    guard let duplicated = self?.viewModel.returnDuplicatedBoolAfterSaveData(title: title, imageName: imageName, divisionName: divisionName, dayBools: dayBools, recommend: recommend, week: week, weekCount: weekCount, switchBool: switchBool, selectedDays: selectedDays) else {return}
-
+                    guard let duplicated = self?.viewModel.returnDuplicatedBoolAfterSaveData(title: title, imageName: imageName, divisionName: divisionName, dayBools: selectedDaysBoolArray, recommend: recommend, week: totalWeek, weekCount: String(oneWeekCount), switchBool: switchBool, selectedDays: selectedDaysInt) else {return}
+                    
                     if duplicated{
                         self?.makeAlert()
                     }
                     else{
-                        // 알림 스위치 on -> 해당 프로그램 notification 등록
-                        if coreDataSwitchBool{
-                            self?.routineViewModel.makeLocalNotification(title: self?.programTextField.text! ?? "", days: self?.viewModel.uiData.selectedDaysStringArray ?? [])
+                         // 알림 스위치 on -> 해당 프로그램 notification 등록
+                        if switchBool{
+                            self?.routineViewModel.makeLocalNotification(title: title, days: selectedDaysStringArray)
                         }
-                        self?.presentingViewController?.dismiss(animated: true)
+                        self?.presentingViewController?.dismiss(animated: true){
+                            if switchBool{
+                                self?.viewModel.switchStatefromRoutineAddVC.onNext(true) // dismiss 후 toast 출력위해
+                            }
+                        }
                     }
                 }
             }.disposed(by: disposeBag)
     }
     
     @IBAction func addViewAction(_ sender: Any) {
-         
         
         if let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
-            
             detailVC.viewModel.fromRoutineVC.onNext(true)
             setDetailVCData(detailVC: detailVC)
             
             self.present(detailVC, animated: true)
-
         }
         
         // 해당 프로그램 타이틀과 맞는 detailVC 데이터를 observable에 set
@@ -147,19 +148,16 @@ class RoutineAddViewController: UIViewController {
                     }
                 }.disposed(by: disposeBag)
         }
-        
     }
-    
     
     @IBAction func addDeleteAction(_ sender: Any) {
         _ = routineViewModel.deleteCoreData(deleteCondition: programTextField.text!)
-        if viewModel.fromTableCell.fromTableCellSwitchBool{
-            routineViewModel.deleteNotification(title: programTextField.text!, days: viewModel.fromTableCell.fromTableCellSelectedDaysIntArray)
+        if viewModel.dataFromTableCell.fromTableCellSwitchBool{
+            routineViewModel.deleteNotification(title: programTextField.text!, days: viewModel.dataFromTableCell.fromTableCellSelectedDaysIntArray)
         }
         
         self.presentingViewController?.dismiss(animated: true)
     }
-    
     
     //MARK: - viewDidLoad()
     
@@ -178,7 +176,7 @@ extension RoutineAddViewController {
         pickerView.dataSource = nil
         
         
-        viewModel.fromTableCell.fromTableCellSelectionBool
+        viewModel.dataFromTableCell.fromTableCellSelectionBool
             .subscribe { [weak self] bool in
                 guard let fromTableCellSelectionBool = bool.element else {return}
                 
@@ -239,15 +237,15 @@ extension RoutineAddViewController {
                     })
                     .take(1)
                     .bind { [weak self] element in
-
+                        
                         // 셀 선택으로 호출 되었을 시 -> 현재 셀의 요일 값 적용, 루틴 추가 버튼으로 호출 되었을 시 -> 요일 변수 모두 초기화
-                        self?.viewModel.fromTableCell.fromTableCellSelectionBool
+                        self?.viewModel.dataFromTableCell.fromTableCellSelectionBool
                             .subscribe({ bool in
                                 guard let fromTableCellSelectionBool = bool.element else {return}
                                 fromTableCellSelectionBool ? setSelectedDaysFromTableCell() : resetInitialState()
                             }).dispose()
-
-                        self?.noticeSwitch.isOn = self?.viewModel.fromTableCell.fromTableCellSwitchBool ?? false
+                        
+                        self?.noticeSwitch.isOn = self?.viewModel.dataFromTableCell.fromTableCellSwitchBool ?? false
                         self?.programTextField.text = element[0].title
                         self?.divisionTextField.text = element[0].division
                         self?.targetTextField.text = element[0].recommend
@@ -351,7 +349,7 @@ extension RoutineAddViewController{
 
 extension RoutineAddViewController{
     func bindUIFromTableCellSelection(){
-        viewModel.fromTableCell.fromTableCellSelectionBool
+        viewModel.dataFromTableCell.fromTableCellSelectionBool
             .filter({
                 $0 != false
             })
@@ -360,7 +358,7 @@ extension RoutineAddViewController{
                 self?.pickerView.translatesAutoresizingMaskIntoConstraints = false
                 self?.pickerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
                 self?.routineDeleteButton.layer.isHidden = false // 루틴 페이지에서 편집 시 버튼 보임
-                
             }.disposed(by: disposeBag)
     }
 }
+

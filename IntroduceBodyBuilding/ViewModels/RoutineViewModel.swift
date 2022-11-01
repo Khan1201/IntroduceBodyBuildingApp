@@ -1,10 +1,3 @@
-//
-//  RoutineViewModel.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/10/05.
-//
-
 import Foundation
 import UIKit
 import CoreData
@@ -13,12 +6,21 @@ import UserNotifications
 
 class RoutineViewModel{
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
-    var routineObservable = BehaviorSubject<[Routine]>(value: [])
-    var routineAddObservable = BehaviorSubject<[RoutineVCModel.Fields]>(value: [])
-    let fromAddRoutineObservable = BehaviorSubject<Bool>(value: false)  // 루틴 등록 버튼으로 접근 시 체크
-
+    let routineObservable = BehaviorSubject<[Routine]>(value: [])
     
-    func readCoreData() { //coreData에서 데이터 read
+    // 셀 인덱스에 맞는 routineAddVC 데이터 바인딩 위해
+    lazy var routineAddObservable = BehaviorSubject<[RoutineVCModel.Fields]>(value: [])
+    lazy var fromAddRoutineInDetailVC = BehaviorSubject<Bool>(value: false)  // detailVC의 루틴 등록 버튼으로 접근 확인
+
+    init(){
+        readCoreData()
+    }
+}
+
+//MARK: - coreData에서 데이터 read
+
+extension RoutineViewModel{
+    func readCoreData() {
         let fetchRequest: NSFetchRequest<Routine> = Routine.fetchRequest()
         let context = appdelegate.persistentContainer.viewContext
         do{
@@ -28,6 +30,11 @@ class RoutineViewModel{
         }
     }
     
+}
+
+//MARK: - coreData에서 데이터 delete
+
+extension RoutineViewModel{
     func deleteCoreData(deleteCondition: String) -> [Routine]{
         let context = appdelegate.persistentContainer.viewContext
         context.automaticallyMergesChangesFromParent = true
@@ -53,7 +60,11 @@ class RoutineViewModel{
         }
         return result
     }
-    
+}
+
+//MARK: - switch toggle on -> coredata switch bool 업데이트
+
+extension RoutineViewModel{
     func updateSwitchBool(condition: String, switchBool: Bool) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -73,7 +84,11 @@ class RoutineViewModel{
             print(error)
         }
     }
-    
+}
+
+//MARK: - 로컬 notification 생성
+
+extension RoutineViewModel{
     func makeLocalNotification(title: String, days: [String]) {
         let notificationContent = UNMutableNotificationContent()
         
@@ -84,7 +99,6 @@ class RoutineViewModel{
         // 월 ~ 금 알림이 선택된 날짜 배열을 받음 -> 해당 날짜 수 만큼 알림 등록
         func loopUntilDays(){
             for (index, day) in days.enumerated(){
-                
                 //배열 접근  -> weeDay 값 get
                 let weekDay: Int = {
                     switch day{
@@ -126,18 +140,18 @@ class RoutineViewModel{
             }
         }
     }
-    
+}
+
+//MARK: - 로컬 notification 삭제
+
+extension RoutineViewModel{
     func deleteNotification(title: String, days: [String]){
         var identifiers: [String] = []
         for (index, _) in days.enumerated(){
-            //배열 접근  -> weeDay 값 get
+            //배열 접근  -> 배열 index 값 get
             identifiers.append("\(title): \(index)")
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
-    }
-    
-    init(){
-        readCoreData()
     }
 }
 

@@ -1,4 +1,3 @@
-
 import UIKit
 import CoreData
 import RxSwift
@@ -12,11 +11,8 @@ class DetailViewController: UIViewController {
     
     //MARK: - @IBOutlet
     
-    
     @IBOutlet weak var scrollView: UIScrollView!
-    
     @IBOutlet weak var goBackButton: UIButton!
-    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!{
         didSet{
@@ -74,12 +70,12 @@ class DetailViewController: UIViewController {
             addButton.layer.cornerRadius = 15
         }
     }
+    
     //MARK: - @IBAction
     
     @IBAction func goBackButtonAction(_ sender: Any) {
         self.presentingViewController?.dismiss(animated: true)
     }
-    
     @IBAction func allRoutineButtonAction(_ sender: UIButton) {
         guard let webVC = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
@@ -89,26 +85,27 @@ class DetailViewController: UIViewController {
                 $0 != ""
             })
             .subscribe { url in
-            webVC.url = url.element ?? "not exist"
-        }.dispose()
+                webVC.url = url.element ?? "not exist"
+            }.dispose()
         self.navigationController?.pushViewController(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
-        viewModel.fromMyProgramVC // myProgramVC -> DetailVC에서 호출하면, dismiss 후 routineVC -> routineAddVC
-            .subscribe { bool in
+        viewModel.fromMyProgramVC // myProgramVC 호출한지 구독,
+            .subscribe { [weak self] bool in
                 if let bool = bool.element{
-                    if bool{
-                        self.presentingViewController?.dismiss(animated: true, completion: {
-                            self.viewModel.fromDetailVCRoutineAddButton.onNext(true)
-                            self.viewModel.fromDetailVCRoutineAddButton.dispose()
+                    
+                    if bool{ //dismiss 후 routineVC -> routineAddVC
+                        self?.presentingViewController?.dismiss(animated: true, completion: {
+                            self?.viewModel.fromDetailVCRoutineAddButton.onNext(true)
+                            self?.viewModel.fromDetailVCRoutineAddButton.dispose()
                         })
                     }
-                    else{
+                    else{ // 바로 routineAddVC로 이동
                         guard let routineVC = UIStoryboard(name: "Main", bundle: nil)
                             .instantiateViewController(withIdentifier: "RoutineViewController") as? RoutineViewController else {return}
-                        routineVC.viewModel.fromAddRoutineObservable
+                        routineVC.viewModel.fromAddRoutineInDetailVC
                             .onNext(true)
-                        self.navigationController?.pushViewController(routineVC, animated: true)
+                        self?.navigationController?.pushViewController(routineVC, animated: true)
                     }
                 }
             }.dispose()
@@ -123,7 +120,7 @@ class DetailViewController: UIViewController {
         fromVC()
         bindView()
         bindTableViewInView()
-   
+        
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
@@ -140,27 +137,27 @@ extension DetailViewController {
     private func bindView() {
         viewModel.detailVCIndexObservable
             .subscribe({[weak self] data in
-            
-            self?.titleLabel.text = data.element?.title ?? "not exist"
-            self?.descriptionLabel.text = data.element?.description ?? "not exist"
-            self?.imageView.image = UIImage(named: data.element?.image ?? "not exist")
+                
+                self?.titleLabel.text = data.element?.title ?? "not exist"
+                self?.descriptionLabel.text = data.element?.description ?? "not exist"
+                self?.imageView.image = UIImage(named: data.element?.image ?? "not exist")
                 self?.viewModel.url.onNext(data.element?.url ?? "not exist")
-            self?.authorLabel.text = data.element?.author ?? "not exist"
-            
-            var tempArray:[(String, String)] = []
-            guard let days = data.element?.day else {return}
-            guard let routines = data.element?.routineAtDay else {return}
-            
-            for (dayIndex, day) in days.enumerated(){ //(day, routine)의 튜플 배열 반환 -> [(day, routine)]
-                for (routinIndex, routine) in routines.enumerated(){
-                    if dayIndex == routinIndex{
-                        let tuple = (day, routine)
-                        tempArray.append(tuple)
+                self?.authorLabel.text = data.element?.author ?? "not exist"
+                
+                var tempArray:[(String, String)] = []
+                guard let days = data.element?.day else {return}
+                guard let routines = data.element?.routineAtDay else {return}
+                
+                for (dayIndex, day) in days.enumerated(){ //(day, routine)의 튜플 배열 반환 -> [(day, routine)]
+                    for (routinIndex, routine) in routines.enumerated(){
+                        if dayIndex == routinIndex{
+                            let tuple = (day, routine)
+                            tempArray.append(tuple)
+                        }
                     }
                 }
-            }
                 self?.viewModel.tableViewObservable.onNext(tempArray)
-        }).disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
     }
 }
 //MARK: - View안의 TableView에 데이터 바인딩
@@ -299,10 +296,9 @@ extension DetailViewController{
                     self?.goBackButton.isHidden = !trueBool
                     self?.addButton.isEnabled = !trueBool
                     self?.addRoutineButton.isEnabled = !trueBool
-                    
                 }
-                
             }.disposed(by: disposeBag)
+        
         viewModel.fromMyProgramVC
             .filter {
                 $0 != false
