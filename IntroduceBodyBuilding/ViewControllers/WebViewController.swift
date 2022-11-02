@@ -5,6 +5,9 @@ import SnapKit
 class WebViewController: UIViewController{
     private var webView: WKWebView!
     
+    @IBAction func closeButtonAction(_ sender: Any) {
+        self.presentingViewController?.dismiss(animated: true)
+    }
     @IBOutlet weak var sourceLabel: UILabel!
     var routineTitle: String = ""
     var url: String = ""
@@ -77,7 +80,7 @@ extension WebViewController {
         func setAutoLayout() {
             view.addSubview(webView)
             webView.snp.makeConstraints { make in
-                make.top.equalTo(sourceLabel).offset(30)
+                make.top.equalTo(sourceLabel).offset(35)
                 make.left.right.bottom.equalToSuperview()
             }
         }

@@ -7,8 +7,6 @@ import UIKit
         {
             didSet{
                 BBimageView.layer.cornerRadius = 10
-                BBimageView.layer.borderColor = UIColor.systemGray.cgColor
-                BBimageView.layer.borderWidth = 0.5
             }
         }
         @IBOutlet weak var BBTitleLabel: UILabel!
@@ -20,8 +18,6 @@ import UIKit
         {
             didSet{
                 PBimageView.layer.cornerRadius = 10
-                PBimageView.layer.borderColor = UIColor.systemGray.cgColor
-                PBimageView.layer.borderWidth = 0.5
             }
         }
         @IBOutlet weak var PBTitleLabel: UILabel!
@@ -34,8 +30,6 @@ import UIKit
         {
             didSet{
                 PLimageView.layer.cornerRadius = 10
-                PLimageView.layer.borderColor = UIColor.systemGray.cgColor
-                PLimageView.layer.borderWidth = 0.5
             }
         }
         @IBOutlet weak var PLTitleLabel: UILabel!

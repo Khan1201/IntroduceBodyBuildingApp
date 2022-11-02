@@ -51,7 +51,7 @@ extension MainViewController {
                 cell.descriptionLabel.text = element.description
                 cell.recommendLabel.text = element.recommend
                 cell.divisionLabel.text = element.division
-                cell.healthImageView.image = UIImage(named: element.image )
+                cell.healthImageView.image = UIImage(named: element.title )
             }.disposed(by: self.disposeBag)
         }
     }
@@ -107,9 +107,6 @@ extension MainViewController {
             .observe(on: MainScheduler.instance)
             .withLatestFrom(detailViewModel.detailViewObservable){ [weak self] (zipData, detailVCDatas) in
                 //zipData -> (indexPath, modelData)
-                print(zipData.1.title)
-                print(detailVCDatas)
-                
                 self?.mainTableView.deselectRow(at: zipData.0, animated: true) //셀 선택시 선택 효과 고정 제거
                 guard let detailVC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
                 
@@ -167,7 +164,7 @@ extension MainViewController {
                     dropDown.width = 140
                     dropDown.cellHeight = 70
                     dropDown.cornerRadius = 15
-                    dropDown.backgroundColor = UIColor(named: "dropDownColor")!
+                    dropDown.backgroundColor = UIColor(named: "DropDownColor")!
                     dropDown.textColor = .black
                     dropDown.dataSource = ["루틴","보관함"]
                     dropDown.topOffset = CGPoint(x: -60, y:-(dropDown.anchorView?.plainView.bounds.height)!)

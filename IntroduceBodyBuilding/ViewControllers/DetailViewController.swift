@@ -77,6 +77,7 @@ class DetailViewController: UIViewController {
         self.presentingViewController?.dismiss(animated: true)
     }
     @IBAction func allRoutineButtonAction(_ sender: UIButton) {
+        
         guard let webVC = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
         webVC.routineTitle = titleLabel.text ?? "not exist"
@@ -87,7 +88,8 @@ class DetailViewController: UIViewController {
             .subscribe { url in
                 webVC.url = url.element ?? "not exist"
             }.dispose()
-        self.navigationController?.pushViewController(webVC, animated: true)
+        webVC.modalPresentationStyle = .fullScreen
+        self.present(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
         viewModel.fromMyProgramVC // myProgramVC 호출한지 구독,

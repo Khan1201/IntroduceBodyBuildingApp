@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 import RxSwift
+import SnapKit
 
 class MyProgramViewController: UIViewController {
     
@@ -70,24 +71,26 @@ extension MyProgramViewController {
         
         //divisionModel -> 각 종목에 맞는 collectionview에 바인딩
         func bindDivisedCollectionView(){
+            
             myProgramViewModel.bodyBuildingObservable
                 .bind(to: BBCollectionView.rx.items(cellIdentifier: "BBCollectionViewCell",cellType: BBCollectionViewCell.self)) { (index, element, cell) in
+                    print(element)
                     cell.BBTitleLabel.text = element.title
-                    cell.BBimageView.image = UIImage(named: element.image ?? "")
+                    cell.BBimageView.image = UIImage(named: element.title ?? "")
                     self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.bodyBuildingObservable, division: "bodybuilding")
                 }.disposed(by: disposeBag)
             
             myProgramViewModel.powerBuildingObservable
                 .bind(to: PBCollectionView.rx.items(cellIdentifier: "PBCollectionViewCell",cellType: PBCollectionViewCell.self)) { (index, element, cell) in
                     cell.PBTitleLabel.text = element.title
-                    cell.PBimageView.image = UIImage(named: element.image ?? "")
+                    cell.PBimageView.image = UIImage(named: element.title ?? "")
                     self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.powerBuildingObservable, division: "powerbuilding")
                 }.disposed(by: disposeBag)
             
             myProgramViewModel.powerLiftingObservable
                 .bind(to: PLCollectionView.rx.items(cellIdentifier: "PLCollectionViewCell",cellType: PLCollectionViewCell.self)) { (index, element, cell) in
                     cell.PLTitleLabel.text = element.title
-                    cell.PLimageView.image = UIImage(named: element.image ?? "")
+                    cell.PLimageView.image = UIImage(named: element.title ?? "")
                     self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.powerLiftingObservable, division: "powerlifting")
                 }.disposed(by: disposeBag)
         }
@@ -156,10 +159,10 @@ extension MyProgramViewController{
             
             cell.addSubview(closeButton)
             
-            closeButton.topAnchor.constraint(equalTo: cell.topAnchor, constant: 0).isActive = true
-            closeButton.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 140).isActive = true
-            closeButton.bottomAnchor.constraint(equalTo: cell.bottomAnchor, constant: -125).isActive = true
-            closeButton.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: 0).isActive = true
+            closeButton.snp.makeConstraints { make in
+                make.top.equalTo(cell.snp.top).offset(15)
+                make.right.equalTo(cell.snp.right).offset(-5)
+            }
         }
         
         //데이터 삭제 이벤트, division은 삭제 후 구분된 Observable에 새로운 데이터 next 위해
@@ -188,3 +191,12 @@ extension MyProgramViewController{
             }.disposed(by: disposeBag)
     }
 }
+
+//extension MyProgramViewController{
+//
+//    func setEmptyUI(data: MyProgram){
+//        if data == ""{
+//
+//        }
+//    }
+//}

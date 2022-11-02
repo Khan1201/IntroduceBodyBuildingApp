@@ -91,13 +91,23 @@ extension RoutineViewController{
                 cell.titleLabel.text = element.title
                 cell.divisionLabel.text = element.divisionString
                 cell.divisionImageView.image = UIImage(named: element.divisionImage ?? "")
-                
+
                 cell.mondayBool = element.monday
                 cell.tuesdayBool = element.tuesday
                 cell.wednesdayBool = element.wednesday
                 cell.thursdayBool = element.thursday
                 cell.fridayBool = element.friday
                 cell.alarmSwitch.isOn = element.alarmSwitch
+                
+                cell.alarmSwitch.rx.controlEvent(.valueChanged)
+                    .subscribe { [weak self] _ in
+                        if cell.alarmSwitch.isOn{
+                            self?.modifyNotificationAndCoreDataAfterCheckAuthorizaiton(cell: cell, switchState: true)
+                        }
+                        else{
+                            self?.modifyNotificationAndCoreDataAfterCheckAuthorizaiton(cell: cell, switchState: false)
+                        }
+                    }.disposed(by: self.disposeBag)
             }.disposed(by: disposeBag)
         }
         
@@ -252,11 +262,63 @@ extension RoutineViewController{
         toastLabel.layer.cornerRadius = 10;
         toastLabel.clipsToBounds  =  true
         self.view.addSubview(toastLabel)
-        UIView.animate(withDuration: 8, delay: 0.5, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 8, delay: 0.3, options: .curveLinear, animations: {
             toastLabel.alpha = 0.0
         }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()
         })
+    }
+}
+
+//MARK: - 알림 스위치 상태 변화 -> 권한 체크 or CoreData 및 Nofitication 접근
+
+extension RoutineViewController{
+    func modifyNotificationAndCoreDataAfterCheckAuthorizaiton(cell: RoutineTableViewCell, switchState: Bool){
+        
+        switchState ? offToOn() : onToOff()
+        
+        // 스위치 상태 off -> on으로 변경 시
+        func offToOn(){
+            UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+                guard let self = self else {return}
+                
+                // 권한 허용 시
+                if settings.authorizationStatus  == .authorized || settings.authorizationStatus == .provisional{
+                    DispatchQueue.main.async {
+                        self.viewModel.updateSwitchBool(condition: cell.titleLabel.text!, switchBool: cell.alarmSwitch.isOn)
+                        self.viewModel.makeLocalNotification(title: cell.titleLabel.text!, days:                 cell.getSelectedDaysStringArray())
+                    }
+                }
+                
+                //권한 없을 시
+                else{
+                    DispatchQueue.main.async {
+                        makeAlertAboutAuthorization()
+                        cell.alarmSwitch.isOn = false
+                    }
+                }
+            }
+        }
+        
+        // 스위치 상태 on -> off로 변경 시 (스위치가 on이므로 권한이 있음, 따라서 권한을 확인 하지않아도 됨)
+        func onToOff(){
+            DispatchQueue.main.async {
+                self.viewModel.updateSwitchBool(condition: cell.titleLabel.text!, switchBool: cell.alarmSwitch.isOn)
+                self.viewModel.deleteNotification(title: cell.titleLabel.text!, days:                 cell.getSelectedDaysStringArray())
+            }
+        }
+        
+        // 권한 알림 alert 생성
+        func makeAlertAboutAuthorization(){
+            let message = """
+            알림 권한이 필요합니다.
+            (설정 -> 알림 -> 어플 알림 허용)
+            """
+            let alert =  UIAlertController(title: "안내", message: message, preferredStyle: .alert)
+            let alertDeleteBtn = UIAlertAction(title: "Cancel", style: .destructive) { _ in }
+            alert.addAction(alertDeleteBtn)
+            self.present(alert, animated: true)
+        }
     }
 }
 

@@ -22,16 +22,30 @@ class RoutineTableViewCell: UITableViewCell {
     
     @IBOutlet weak var alarmSwitch: UISwitch!
 
-    @IBAction func switchAction(_ sender: Any) {
-        if alarmSwitch.isOn{
-            viewModel.updateSwitchBool(condition: titleLabel.text!, switchBool: alarmSwitch.isOn)
-            viewModel.makeLocalNotification(title: titleLabel.text!, days: notificationDays)
-        }
-        else{
-            viewModel.updateSwitchBool(condition: titleLabel.text!, switchBool: alarmSwitch.isOn)
-            viewModel.deleteNotification(title: titleLabel.text!, days: notificationDays)
-        }
-    }
+//    @IBAction func switchAction(_ sender: Any) {
+            
+//        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+//
+//            guard let self = self else {return}
+//            // 권한 허용 시
+//            if settings.authorizationStatus  == .authorized || settings.authorizationStatus == .provisional{
+//                print("권한 설정 됨")
+//                if self.alarmSwitch.isOn{
+//                    self.viewModel.updateSwitchBool(condition: self.titleLabel.text!, switchBool: self.alarmSwitch.isOn)
+//                    self.viewModel.makeLocalNotification(title: self.titleLabel.text!, days: self.notificationDays)
+//                }
+//                else{
+//                    self.viewModel.updateSwitchBool(condition: self.titleLabel.text!, switchBool: self.alarmSwitch.isOn)
+//                    self.viewModel.deleteNotification(title: self.titleLabel.text!, days: self.notificationDays)
+//                }
+//            }
+//            else{
+//                print("권한 설정 x")
+////                self.viewModel.checkAuthorization.onNext(true)
+//            }
+//        }
+        
+//    }
     var mondayBool: Bool?
     var tuesdayBool: Bool?
     var wednesdayBool: Bool?
@@ -90,8 +104,8 @@ extension RoutineTableViewCell {
             label.layer.cornerRadius = 7
         }
     }
-    func getNotificationDays() -> [String]{
+    func getSelectedDaysStringArray() -> [String]{
         return notificationDays
     }
-    
 }
+

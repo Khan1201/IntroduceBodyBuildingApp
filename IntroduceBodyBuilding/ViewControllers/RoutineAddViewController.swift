@@ -165,6 +165,7 @@ class RoutineAddViewController: UIViewController {
         super.viewDidLoad()
         bindPickerView()
         bindUIFromTableCellSelection()
+        checkAuthorization()
     }
 }
 
@@ -176,15 +177,17 @@ extension RoutineAddViewController {
         pickerView.dataSource = nil
         
         
+        // routineVC의 cell 선택으로 호출 시
         viewModel.dataFromTableCell.fromTableCellSelectionBool
             .subscribe { [weak self] bool in
                 guard let fromTableCellSelectionBool = bool.element else {return}
-                
-                // 루틴 페이지에서 호출하면 routineViewModel의 observable로 바인딩
+            
                 if fromTableCellSelectionBool{
+                    // routineVC 데이터 바인딩
                     bindPickerViewData(data: self?.routineViewModel.routineAddObservable ?? BehaviorSubject(value: []))
                 }
                 else{
+                    // routineAddVC 데이터 바인딩
                     bindPickerViewData(data: self?.viewModel.routineAddObservable ?? BehaviorSubject(value: []))
                 }
             }.disposed(by: disposeBag)
@@ -362,3 +365,51 @@ extension RoutineAddViewController{
     }
 }
 
+//MARK: - 알림 스위치 상태 변화 구독.  알림 스위치 off -> on 일 시, 권한 여부 체크
+
+extension RoutineAddViewController{
+    
+    func checkAuthorization(){
+        noticeSwitch.rx.controlEvent(.valueChanged)
+            .bind { [weak self] _ in
+                guard let self = self else {return}
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    
+                    // 권한 없을 시
+                    if !(settings.authorizationStatus  == .authorized || settings.authorizationStatus == .provisional){
+                        DispatchQueue.main.async {
+                            self.noticeSwitch.isOn = false
+                            let message = " 알림 권한이 필요합니다.\n (설정 -> 알림 -> 어플 알림 허용)"
+                            showToast(message: message)
+                        }
+                    }
+                }
+            }.disposed(by: disposeBag)
+        
+        func showToast(message : String, font: UIFont = UIFont.systemFont(ofSize: 10.0)) {
+            let toastLabel = UILabel()
+            toastLabel.backgroundColor = .systemRed
+            toastLabel.textColor = UIColor.white
+            toastLabel.font = font
+            toastLabel.textAlignment = .center;
+            toastLabel.text = message
+            toastLabel.alpha = 1.0
+            toastLabel.numberOfLines = 0
+            toastLabel.layer.cornerRadius = 5;
+            toastLabel.clipsToBounds  =  true
+            self.view.addSubview(toastLabel)
+            
+            toastLabel.snp.makeConstraints { make in
+                
+                make.left.equalTo(noticeSwitch.snp.right).offset(-15)
+                make.top.equalTo(weekNoticeLabel.snp.bottom).offset(10)
+                make.bottom.equalTo(embeddedView.snp.bottom).offset(-15)
+            }
+            UIView.animate(withDuration: 7, delay: 0.3, options: .curveLinear, animations: {
+                toastLabel.alpha = 0.0
+            }, completion: {(isCompleted) in
+                toastLabel.removeFromSuperview()
+            })
+        }
+    }
+}

@@ -11,6 +11,7 @@ class RoutineViewModel{
     // 셀 인덱스에 맞는 routineAddVC 데이터 바인딩 위해
     lazy var routineAddObservable = BehaviorSubject<[RoutineVCModel.Fields]>(value: [])
     lazy var fromAddRoutineInDetailVC = BehaviorSubject<Bool>(value: false)  // detailVC의 루틴 등록 버튼으로 접근 확인
+    lazy var checkAuthorization = PublishSubject<Bool>()
 
     init(){
         readCoreData()
@@ -122,8 +123,8 @@ extension RoutineViewModel{
                     var dateComponents = DateComponents()
                     dateComponents.calendar = Calendar.current
                     dateComponents.weekday = weekDay
-                    dateComponents.hour = 0
-                    dateComponents.minute = 21
+                    dateComponents.hour = 20
+                    dateComponents.minute = 8
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     let request = UNNotificationRequest(identifier: "\(title): \(identifier)",
                                                         content: notificationContent,

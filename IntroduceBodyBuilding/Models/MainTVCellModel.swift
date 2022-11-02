@@ -10,7 +10,6 @@ struct MainTVCellModel: Codable {
         var description: String = ""
         var recommend: String = ""
         var division: String = ""
-        var image: String = ""
     }
     
     struct StringValue: Codable { //firestore api 형식에 맞게 key name set
@@ -32,7 +31,7 @@ struct MainTVCellModel: Codable {
         case fields
     }
     enum FieldKeys: String, CodingKey{
-        case title, week, description, recommend, division, image
+        case title, week, description, recommend, division
     }
 }
 
@@ -50,8 +49,6 @@ extension MainTVCellModel {
             fields.description = try fieldKeys.decode(StringValue.self, forKey: .description).value
             fields.recommend = try fieldKeys.decode(StringValue.self, forKey: .recommend).value
             fields.division = try fieldKeys.decode(StringValue.self, forKey: .division).value
-            fields.image = try fieldKeys.decode(StringValue.self, forKey: .image).value
-
             documents.append(fields)
         }
     }
