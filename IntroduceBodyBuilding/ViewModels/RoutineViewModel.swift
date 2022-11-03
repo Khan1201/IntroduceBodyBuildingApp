@@ -123,8 +123,8 @@ extension RoutineViewModel{
                     var dateComponents = DateComponents()
                     dateComponents.calendar = Calendar.current
                     dateComponents.weekday = weekDay
-                    dateComponents.hour = 20
-                    dateComponents.minute = 8
+                    dateComponents.hour = 17
+                    dateComponents.minute = 38
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     let request = UNNotificationRequest(identifier: "\(title): \(identifier)",
                                                         content: notificationContent,

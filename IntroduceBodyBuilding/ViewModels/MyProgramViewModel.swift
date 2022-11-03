@@ -6,11 +6,11 @@ import RxSwift
 class MyProgramViewModel {
     static var coreData = [MyProgram]()
     
-    let bodyBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
+    let bodyBuildingObservable = BehaviorSubject<[MyProgram]>(value: [MyProgram()])
     let powerBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
     let powerLiftingObservable = BehaviorSubject<[MyProgram]>(value: [])
     let fromDetailVCRoutineAddButton = PublishSubject<Bool>()
-
+    
     init(){
         readCoreData()
         bindingCoreData(to: bodyBuildingObservable, division: "bodybuilding")
@@ -55,7 +55,7 @@ extension MyProgramViewModel{
                         }
                     }
                     if titleCount == divisionModel.count{ //카운트가 해당 모델 개수와 같을 시 (중복이 없을때) 데이터 삽입
-                        divisionModel.append(coreData)
+                        divisionModel.append(coreData)          
                     }
                 }
             }

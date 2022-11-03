@@ -9,6 +9,14 @@ class MyProgramViewController: UIViewController {
     let myProgramViewModel = MyProgramViewModel()
     let detailViewModel = DetailViewModel()
     
+    @IBOutlet weak var bodyBuildingDivisionView: UIView!
+    @IBOutlet weak var powerBuildingDivisionView: UIView!
+    @IBOutlet weak var powerLiftingDivisionView: UIView!
+    
+    @IBOutlet weak var bodyBuildingLabel: UILabel!
+    @IBOutlet weak var powerBuildingLabel: UILabel!
+    @IBOutlet weak var powerLiftingLabel: UILabel!
+    
     @IBOutlet weak var BBCollectionView: UICollectionView!
     @IBOutlet weak var PBCollectionView: UICollectionView!
     @IBOutlet weak var PLCollectionView: UICollectionView!
@@ -17,6 +25,7 @@ class MyProgramViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        reactUIFromEmptyData()
         navigationSet()
         bindCollectionView()
         fromDetailAddButton()
@@ -74,7 +83,6 @@ extension MyProgramViewController {
             
             myProgramViewModel.bodyBuildingObservable
                 .bind(to: BBCollectionView.rx.items(cellIdentifier: "BBCollectionViewCell",cellType: BBCollectionViewCell.self)) { (index, element, cell) in
-                    print(element)
                     cell.BBTitleLabel.text = element.title
                     cell.BBimageView.image = UIImage(named: element.title ?? "")
                     self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.bodyBuildingObservable, division: "bodybuilding")
@@ -176,7 +184,7 @@ extension MyProgramViewController{
     }
 }
 
-//MARK: - myProgramVC > detailVC의 루틴 등록 버튼 구독
+//MARK: - myProgramVC > detailVC의 루틴 등록 버튼 클릭 구독
 
 extension MyProgramViewController{
     
@@ -192,11 +200,99 @@ extension MyProgramViewController{
     }
 }
 
-//extension MyProgramViewController{
-//
-//    func setEmptyUI(data: MyProgram){
-//        if data == ""{
-//
-//        }
-//    }
-//}
+//MARK: - 해당 VC의 데이터가 Empty -> UI 변경
+
+extension MyProgramViewController{
+    func reactUIFromEmptyData(){
+        setUIAfterCheckData()
+        
+        // 종류별 운동 데이터에 데이터가 존재하지 않을 시, UI 변경
+        func setUIAfterCheckData(){
+            myProgramViewModel.bodyBuildingObservable
+                .subscribe { [weak self] data in
+                    guard let data = data.element else {return}
+                    if data == []{
+                        setUIInsteadOfCollectionView(index: 0)
+                    }
+                    else{
+                        self?.BBCollectionView.isHidden = false
+                    }
+                }.disposed(by: disposeBag)
+            
+            myProgramViewModel.powerBuildingObservable
+                .subscribe { [weak self] data in
+                    guard let data = data.element else {return}
+                    if data == []{
+                        setUIInsteadOfCollectionView(index: 1)
+                    }
+                    else{
+                        self?.PBCollectionView.isHidden = false
+                    }
+                }.disposed(by: disposeBag)
+            
+            myProgramViewModel.powerLiftingObservable
+                .subscribe { [weak self] data in
+                    guard let data = data.element else {return}
+                    if data == []{
+                        setUIInsteadOfCollectionView(index: 2)
+                    }
+                    else{
+                        self?.PLCollectionView.isHidden = false
+                    }
+                    
+                }.disposed(by: disposeBag)
+        }
+        
+        // emptyBoolArray 토대로 UI Set, index == collectionView 순서에 해당
+        func setUIInsteadOfCollectionView(index: Int){
+            
+            var emptyImageVIew: UIImageView{
+                let emptyImageView = UIImageView()
+                emptyImageView.image = UIImage(named: "box")
+                emptyImageView.alpha = 0.5
+                emptyImageView.contentMode = .scaleToFill
+                return emptyImageView
+            }
+            var emptyLabel: UILabel{
+                let emptyLabel = UILabel()
+                emptyLabel.text = "운동 프로그램을 추가 해보세요"
+                emptyLabel.textColor = .systemGray2
+                emptyLabel.font = .systemFont(ofSize: 15)
+                return emptyLabel
+            }
+            
+            switch index{
+            case 0:
+                BBCollectionView.isHidden = true
+                makeConstraint(emptyImageVIew, emptyLabel, top: bodyBuildingLabel, bottom: bodyBuildingDivisionView)
+            case 1:
+                PBCollectionView.isHidden = true
+                makeConstraint(emptyImageVIew, emptyLabel, top: powerBuildingLabel, bottom: powerBuildingDivisionView)
+            case 2:
+                PLCollectionView.isHidden = true
+                makeConstraint(emptyImageVIew, emptyLabel, top: powerLiftingLabel, bottom: powerLiftingDivisionView)
+            default:
+                print("empty 확인 불가")
+            }
+            
+        }
+        
+        // UI Constraint 조정
+        func makeConstraint(_ imageView: UIImageView, _ label: UILabel, top: UILabel, bottom: UIView) {
+            view.addSubview(imageView)
+            view.addSubview(label)
+            
+            imageView.snp.makeConstraints { make in
+                make.width.equalTo(130)
+                make.centerX.equalToSuperview()
+                make.top.equalTo(top.snp.bottom).offset(25)
+                make.bottom.equalTo(bottom.snp.top).offset(-75)
+            }
+            label.snp.makeConstraints { make in
+                make.top.equalTo(imageView.snp.bottom).offset(10)
+                make.centerX.equalToSuperview()
+            }
+        }
+    }
+}
+

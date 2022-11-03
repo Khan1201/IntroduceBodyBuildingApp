@@ -10,16 +10,17 @@ class MainViewController: UIViewController{
     @IBOutlet weak var mainTableView: UITableView!
     
     let disposeBag = DisposeBag()
-    private var mainViewModel = MainTableViewModel()
-    private var detailViewModel = DetailViewModel()
+    let mainViewModel = MainTableViewModel()
+    let detailViewModel = DetailViewModel()
     
     //MARK: - viewDidLoad()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        receivedNotification()
         makeNavigationBar()
         addCellCilckEvent()
-        self.bindTableView(isFilterd: false)
+        bindTableView(isFilterd: false)
         requestNotificationAuthorization()
         makePlusButton()
         hideKeyboardWhenTappedAround()
@@ -237,4 +238,33 @@ extension MainViewController {
         }
     }
 }
+//MARK: - 알림 클릭 시, 해당 알림 내용의 프로그램 title 바인딩 -> detailVC로 이동
 
+extension MainViewController{
+    
+    func receivedNotification(){
+        
+        // 알림 클릭 구독
+        mainViewModel.receivedNotification
+            .filter({ $0 != "" })
+            .subscribe { [weak self] receivedTitle in
+                
+                // detailVC의 전체 데이터 불러옴
+                self?.detailViewModel.detailViewObservable
+                    .filter({ $0 != [] })
+                    .subscribe { [weak self] detailVCDatas in
+                        guard let detailVCDatas = detailVCDatas.element else {return}
+                        guard let detailVC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
+                        
+                        // 전체 데이터 배열을 순환하여 해당 조건에 맞게 접근 후 이동
+                        for detailVCData in detailVCDatas{
+                            if receivedTitle == detailVCData.title{
+                                detailVC.viewModel.detailVCIndexObservable
+                                    .onNext(detailVCData)
+                                self?.navigationController?.pushViewController(detailVC, animated: true)
+                            }
+                        }
+                    }.disposed(by: self?.disposeBag ?? DisposeBag())
+            }.disposed(by: disposeBag)
+    }
+}

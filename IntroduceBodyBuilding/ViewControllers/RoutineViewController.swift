@@ -7,6 +7,21 @@ class RoutineViewController: UIViewController {
     var viewModel = RoutineViewModel()
     var disposeBag = DisposeBag()
     
+    var emptyImageVIew: UIImageView {
+        let emptyImageView = UIImageView()
+        emptyImageView.image = UIImage(named: "box")
+        emptyImageView.alpha = 0.5
+        emptyImageView.contentMode = .scaleToFill
+        return emptyImageView
+    }
+    var emptyLabel: UILabel{
+        let emptyLabel = UILabel()
+        emptyLabel.text = "루틴을 추가 해보세요"
+        emptyLabel.textColor = .systemGray2
+        emptyLabel.font = .systemFont(ofSize: 15)
+        return emptyLabel
+    }
+    
     @IBOutlet weak var routineTableView: UITableView!{
         didSet{
             routineTableView.rowHeight = 120
@@ -23,10 +38,10 @@ class RoutineViewController: UIViewController {
         checkMove()
         bindTableView()
         navigationSet()
+        reactUIFromEmptyData()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         // 테이블 뷰 리로드
         do{
             viewModel.routineObservable.onNext(try RoutineViewModel().routineObservable.value())
@@ -35,7 +50,6 @@ class RoutineViewController: UIViewController {
             print("Reload error: \(error)")
         }
     }
-
 }
 //MARK: - Navigation 세팅
 
@@ -91,7 +105,7 @@ extension RoutineViewController{
                 cell.titleLabel.text = element.title
                 cell.divisionLabel.text = element.divisionString
                 cell.divisionImageView.image = UIImage(named: element.divisionImage ?? "")
-
+                
                 cell.mondayBool = element.monday
                 cell.tuesdayBool = element.tuesday
                 cell.wednesdayBool = element.wednesday
@@ -287,6 +301,7 @@ extension RoutineViewController{
                     DispatchQueue.main.async {
                         self.viewModel.updateSwitchBool(condition: cell.titleLabel.text!, switchBool: cell.alarmSwitch.isOn)
                         self.viewModel.makeLocalNotification(title: cell.titleLabel.text!, days:                 cell.getSelectedDaysStringArray())
+                        self.showToast(message: "AM 07:00에 알림이 발생합니다.")
                     }
                 }
                 
@@ -321,4 +336,59 @@ extension RoutineViewController{
         }
     }
 }
+//MARK: - 해당 VC의 데이터가 Empty -> UI 변경
 
+extension RoutineViewController{
+    func reactUIFromEmptyData(){
+        
+        var imageView = self.emptyImageVIew
+        var label = self.emptyLabel
+        
+        setUIAfterCheckData()
+        
+        // 종류별 운동 데이터에 데이터가 존재하지 않을 시, UI 변경
+        func setUIAfterCheckData(){
+            viewModel.routineObservable
+                .subscribe { [weak self] data in
+                    guard let data = data.element else {return}
+                    
+                    // 데이터 없을 시
+                    if data == []{
+                        setUIInsteadOfTableView()
+                    }
+                    
+                    //데이터 존재 시
+                    else{
+                        imageView.isHidden = true
+                        label.isHidden = true
+                        self?.routineTableView.isHidden = false
+                    }
+                }.disposed(by: disposeBag)
+            
+        }
+        
+        // TableView 대신 UI 생성
+        func setUIInsteadOfTableView(){
+            self.routineTableView.isHidden = true
+            makeConstraint(imageView, label)
+        }
+        
+        // UI Constraint 조정
+        func makeConstraint(_ imageView: UIImageView, _ label: UILabel) {
+            imageView.isHidden = false
+            label.isHidden = false
+            view.addSubview(imageView)
+            view.addSubview(label)
+            
+            imageView.snp.makeConstraints { make in
+                make.width.equalTo(130)
+                make.centerX.equalToSuperview()
+                make.centerY.equalToSuperview()
+            }
+            label.snp.makeConstraints { make in
+                make.top.equalTo(imageView.snp.bottom).offset(10)
+                make.centerX.equalToSuperview()
+            }
+        }
+    }
+}

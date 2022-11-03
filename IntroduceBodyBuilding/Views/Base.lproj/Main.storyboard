@@ -34,7 +34,7 @@
         <!--Main View Controller-->
         <scene sceneID="uDL-V4-WY9">
             <objects>
-                <viewController storyboardIdentifier="Main" id="cqL-Zn-ecw" customClass="MainViewController" customModule="IntroduceBodyBuilding" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" id="cqL-Zn-ecw" customClass="MainViewController" customModule="IntroduceBodyBuilding" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="V6h-Fc-00i">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -619,11 +619,19 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="24D-c3-eoX" userLabel="DivisionLine">
+                                <rect key="frame" x="20" y="733.5" width="384" height="0.5"/>
+                                <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.29999999999999999" id="3sX-iw-NbE"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Q1M-xJ-MQo"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Q1M-xJ-MQo" firstAttribute="trailing" secondItem="47a-KD-ied" secondAttribute="trailing" id="0tP-4L-WRL"/>
+                            <constraint firstItem="Q1M-xJ-MQo" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="z2h-B4-7SI" secondAttribute="trailing" symbolic="YES" id="1YY-GH-ax5"/>
                             <constraint firstItem="47a-KD-ied" firstAttribute="leading" secondItem="dte-1W-pKr" secondAttribute="leading" id="69p-Pf-bv1"/>
                             <constraint firstItem="qU1-2U-G7U" firstAttribute="leading" secondItem="dte-1W-pKr" secondAttribute="leading" id="7j9-Ad-k3C"/>
                             <constraint firstItem="qSE-ds-6if" firstAttribute="leading" secondItem="47a-KD-ied" secondAttribute="leading" id="7mE-pd-uwA"/>
@@ -634,11 +642,16 @@
                             <constraint firstItem="dte-1W-pKr" firstAttribute="leading" secondItem="Q1M-xJ-MQo" secondAttribute="leading" constant="20" id="Gv0-kf-bKl"/>
                             <constraint firstItem="DaK-3L-6j1" firstAttribute="top" secondItem="qU1-2U-G7U" secondAttribute="bottom" constant="10" id="M0u-Mn-i2Y"/>
                             <constraint firstItem="37Y-E3-TeE" firstAttribute="top" secondItem="z2h-B4-7SI" secondAttribute="bottom" constant="10" id="M1X-sD-rxV"/>
+                            <constraint firstItem="Q1M-xJ-MQo" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qU1-2U-G7U" secondAttribute="trailing" symbolic="YES" id="P8P-Yo-fHn"/>
                             <constraint firstItem="z2h-B4-7SI" firstAttribute="top" secondItem="Qfc-2C-6xt" secondAttribute="bottom" constant="15" id="V0J-Mw-cpF"/>
                             <constraint firstItem="qU1-2U-G7U" firstAttribute="top" secondItem="qSE-ds-6if" secondAttribute="bottom" constant="15" id="V56-JI-Pax"/>
+                            <constraint firstItem="Q1M-xJ-MQo" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dte-1W-pKr" secondAttribute="trailing" symbolic="YES" id="VG8-zF-Rxl"/>
                             <constraint firstItem="z2h-B4-7SI" firstAttribute="leading" secondItem="dte-1W-pKr" secondAttribute="leading" id="ZQW-Ag-Pqf"/>
+                            <constraint firstItem="24D-c3-eoX" firstAttribute="trailing" secondItem="qSE-ds-6if" secondAttribute="trailing" id="a9Z-AS-oVu"/>
                             <constraint firstItem="Qfc-2C-6xt" firstAttribute="trailing" secondItem="qSE-ds-6if" secondAttribute="trailing" id="d3c-3O-aLU"/>
+                            <constraint firstItem="24D-c3-eoX" firstAttribute="leading" secondItem="qSE-ds-6if" secondAttribute="leading" id="fBv-fn-zIw"/>
                             <constraint firstItem="Q1M-xJ-MQo" firstAttribute="trailing" secondItem="DaK-3L-6j1" secondAttribute="trailing" id="fw3-as-Q1a"/>
+                            <constraint firstItem="24D-c3-eoX" firstAttribute="top" secondItem="37Y-E3-TeE" secondAttribute="bottom" constant="15" id="gtK-YQ-E3M"/>
                             <constraint firstItem="Qfc-2C-6xt" firstAttribute="leading" secondItem="qSE-ds-6if" secondAttribute="leading" id="pze-49-Tog"/>
                             <constraint firstItem="Q1M-xJ-MQo" firstAttribute="trailing" secondItem="37Y-E3-TeE" secondAttribute="trailing" id="x1Q-ap-9Pr"/>
                             <constraint firstItem="47a-KD-ied" firstAttribute="top" secondItem="dte-1W-pKr" secondAttribute="bottom" constant="10" id="xnH-Qw-qAo"/>
@@ -651,6 +664,12 @@
                         <outlet property="BBCollectionView" destination="47a-KD-ied" id="wvQ-Yd-mlL"/>
                         <outlet property="PBCollectionView" destination="DaK-3L-6j1" id="O3M-i9-Nv3"/>
                         <outlet property="PLCollectionView" destination="37Y-E3-TeE" id="euw-7F-JNW"/>
+                        <outlet property="bodyBuildingDivisionView" destination="qSE-ds-6if" id="Vqz-eS-zQ3"/>
+                        <outlet property="bodyBuildingLabel" destination="dte-1W-pKr" id="j33-LX-8up"/>
+                        <outlet property="powerBuildingDivisionView" destination="Qfc-2C-6xt" id="DMI-uP-J6R"/>
+                        <outlet property="powerBuildingLabel" destination="qU1-2U-G7U" id="rjl-NA-lmU"/>
+                        <outlet property="powerLiftingDivisionView" destination="24D-c3-eoX" id="T6C-Gv-OxN"/>
+                        <outlet property="powerLiftingLabel" destination="z2h-B4-7SI" id="3Ll-Lg-kKq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fAU-Na-9bw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -92,7 +92,7 @@ class DetailViewController: UIViewController {
         self.present(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
-        viewModel.fromMyProgramVC // myProgramVC 호출한지 구독,
+        viewModel.fromMyProgramVC // myProgramVC에서 호출한지 구독,
             .subscribe { [weak self] bool in
                 if let bool = bool.element{
                     
