@@ -15,7 +15,7 @@ class DetailViewModel {
     lazy var fromDetailVCRoutineAddButton = PublishSubject<Bool>()
     
     // webViewVC에 전달할 string
-    lazy var url = BehaviorSubject<String>(value: "")
+    lazy var url = ""
     
     init() {
         makeDetailVCData()

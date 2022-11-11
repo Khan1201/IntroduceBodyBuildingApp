@@ -3,6 +3,8 @@ import CoreData
 import RxSwift
 import RxCocoa
 import QuickLook
+import SafariServices
+
 
 class DetailViewController: UIViewController {
     
@@ -26,7 +28,7 @@ class DetailViewController: UIViewController {
             routineTableView.estimatedRowHeight = 150
             routineTableView.layer.masksToBounds = true
             routineTableView.layer.cornerRadius = 15
-            routineTableView.separatorColor = .black
+            routineTableView.separatorColor = .label
         }
     }
     @IBOutlet weak var allRoutineButton: UIButton!{
@@ -78,18 +80,21 @@ class DetailViewController: UIViewController {
     }
     @IBAction func allRoutineButtonAction(_ sender: UIButton) {
         
-        guard let webVC = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
-        webVC.routineTitle = titleLabel.text ?? "not exist"
-        viewModel.url
-            .filter({
-                $0 != ""
-            })
-            .subscribe { url in
-                webVC.url = url.element ?? "not exist"
-            }.dispose()
-        webVC.modalPresentationStyle = .fullScreen
-        self.present(webVC, animated: true)
+        let url = URL(string: viewModel.url)
+                let safariViewController = SFSafariViewController(url: url!)
+                present(safariViewController, animated: true)
+//        guard let webVC = UIStoryboard(name: "Main", bundle: nil)
+//            .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
+//        webVC.routineTitle = titleLabel.text ?? "not exist"
+//        viewModel.url
+//            .filter({
+//                $0 != ""
+//            })
+//            .subscribe { url in
+//                webVC.url = url.element ?? "not exist"
+//            }.dispose()
+//        webVC.modalPresentationStyle = .fullScreen
+//        self.present(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
         viewModel.fromMyProgramVC // myProgramVC에서 호출한지 구독,
@@ -143,7 +148,7 @@ extension DetailViewController {
                 self?.titleLabel.text = data.element?.title ?? "not exist"
                 self?.descriptionLabel.text = data.element?.description ?? "not exist"
                 self?.imageView.image = UIImage(named: data.element?.image ?? "not exist")
-                self?.viewModel.url.onNext(data.element?.url ?? "not exist")
+                self?.viewModel.url = data.element?.url ?? ""
                 self?.authorLabel.text = data.element?.author ?? "not exist"
                 
                 var tempArray:[(String, String)] = []
@@ -170,7 +175,6 @@ extension DetailViewController {
         viewModel.tableViewObservable
             .bind(to: self.routineTableView.rx.items(cellIdentifier: "DetailTableViewCell", cellType: DetailTableViewCell.self)){ (index, element, cell) in
                 
-                cell.backgroundColor = .systemGray6
                 cell.selectionStyle = .none
                 
                 cell.dayLabel.text = "Day \(element.0)"

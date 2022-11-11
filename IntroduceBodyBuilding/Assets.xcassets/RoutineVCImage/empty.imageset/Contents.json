@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "empty.png",
+      "filename" : "empty-folder.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "empty 1.png",
+      "filename" : "empty-folder 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -48,8 +48,5 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "localizable" : true
   }
 }

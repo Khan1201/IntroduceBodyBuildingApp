@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         sleep(2)
         FirebaseApp.configure()
+        
+        checkAppFirstrunOrUpdateStatus()
         UNUserNotificationCenter.current().delegate = self
         return true
     }
@@ -109,6 +111,22 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.alert, .badge, .sound])
+    }
+}
+extension AppDelegate{
+    func checkAppFirstrunOrUpdateStatus() {
+        
+       
+        
+        let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let versionOfLastRun = UserDefaults.standard.object(forKey: "VersionOfLastRun") as? String
+        if versionOfLastRun == nil {
+                    print("최초실행")
+        } else if versionOfLastRun != currentVersion {
+                print("업데이트")
+        }
+        UserDefaults.standard.set(currentVersion, forKey: "VersionOfLastRun")
+        UserDefaults.standard.synchronize()
     }
 }
 

@@ -3,8 +3,6 @@ import UIKit
 import UserNotifications
 
 class RoutineTableViewCell: UITableViewCell {
-    lazy var viewModel = RoutineViewModel()
-    
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var divisionLabel: UILabel!
@@ -21,31 +19,6 @@ class RoutineTableViewCell: UITableViewCell {
     @IBOutlet weak var fridayLabel: UILabel!
     
     @IBOutlet weak var alarmSwitch: UISwitch!
-
-//    @IBAction func switchAction(_ sender: Any) {
-            
-//        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
-//
-//            guard let self = self else {return}
-//            // 권한 허용 시
-//            if settings.authorizationStatus  == .authorized || settings.authorizationStatus == .provisional{
-//                print("권한 설정 됨")
-//                if self.alarmSwitch.isOn{
-//                    self.viewModel.updateSwitchBool(condition: self.titleLabel.text!, switchBool: self.alarmSwitch.isOn)
-//                    self.viewModel.makeLocalNotification(title: self.titleLabel.text!, days: self.notificationDays)
-//                }
-//                else{
-//                    self.viewModel.updateSwitchBool(condition: self.titleLabel.text!, switchBool: self.alarmSwitch.isOn)
-//                    self.viewModel.deleteNotification(title: self.titleLabel.text!, days: self.notificationDays)
-//                }
-//            }
-//            else{
-//                print("권한 설정 x")
-////                self.viewModel.checkAuthorization.onNext(true)
-//            }
-//        }
-        
-//    }
     var mondayBool: Bool?
     var tuesdayBool: Bool?
     var wednesdayBool: Bool?
@@ -55,7 +28,7 @@ class RoutineTableViewCell: UITableViewCell {
     var notificationDays: [String] = []
     
     override func awakeFromNib() {
-        super.awakeFromNib()        
+        super.awakeFromNib()
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

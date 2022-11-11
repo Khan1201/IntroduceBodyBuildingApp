@@ -24,6 +24,7 @@
 		BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */; };
 		BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */; };
 		BCA5B9FB28AFB7AC00F04AFB /* DetailVCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */; };
+		BCC0C4B5291B9CD70084069A /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC0C4B4291B9CD70084069A /* HalfModalPresentationController.swift */; };
 		BCC4E05828E2C0680061EAA9 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */; };
 		BCCDAC9528AB7DAC004C41BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */; };
 		BCCDAC9728AB7DAC004C41BD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDAC9628AB7DAC004C41BD /* SceneDelegate.swift */; };
@@ -34,6 +35,7 @@
 		BCCDACAC28AB7E35004C41BD /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDACAA28AB7E35004C41BD /* MainTableViewCell.swift */; };
 		BCCDACAD28AB7E35004C41BD /* MainTVCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCDACAB28AB7E35004C41BD /* MainTVCellModel.swift */; };
 		BCCDACAF28AB8233004C41BD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */; };
+		BCDC21BC291B619D0002F90B /* FirstExcuteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDC21BB291B619D0002F90B /* FirstExcuteViewController.swift */; };
 		BCE0480B28EF26DB00F39CCC /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */; };
 		BCE9D80528DC0D0E00EA5A95 /* MainTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE9D80428DC0D0E00EA5A95 /* MainTableViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -57,6 +59,7 @@
 		BC855BF928B79F63005C4870 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewController.swift; sourceTree = "<group>"; };
 		BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVCModel.swift; sourceTree = "<group>"; };
+		BCC0C4B4291B9CD70084069A /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfModalPresentationController.swift; sourceTree = "<group>"; };
 		BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		BCCDAC9128AB7DAC004C41BD /* IntroduceBodyBuilding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntroduceBodyBuilding.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCCDAC9428AB7DAC004C41BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +72,7 @@
 		BCCDACAA28AB7E35004C41BD /* MainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		BCCDACAB28AB7E35004C41BD /* MainTVCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTVCellModel.swift; sourceTree = "<group>"; };
 		BCCDACAE28AB8233004C41BD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BCDC21BB291B619D0002F90B /* FirstExcuteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstExcuteViewController.swift; sourceTree = "<group>"; };
 		BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		BCE9D80428DC0D0E00EA5A95 /* MainTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewModel.swift; sourceTree = "<group>"; };
 		C7A93F4028C84E0831FB752B /* Pods_IntroduceBodyBuilding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntroduceBodyBuilding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,12 +112,14 @@
 		BC1BDDCC28E5599700238C60 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				BCDC21BB291B619D0002F90B /* FirstExcuteViewController.swift */,
 				BCCDAC9828AB7DAC004C41BD /* MainViewController.swift */,
 				BC074A7B28AF9E3700EA3D3D /* DetailViewController.swift */,
 				BC123C2628F3269D003AE914 /* WebViewController.swift */,
 				BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */,
 				BC3B72AA28ED935E00C8F40E /* RoutineViewController.swift */,
 				BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */,
+				BCC0C4B4291B9CD70084069A /* HalfModalPresentationController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -170,9 +176,9 @@
 			isa = PBXGroup;
 			children = (
 				BCCDACAA28AB7E35004C41BD /* MainTableViewCell.swift */,
+				BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */,
 				BC1BDDD128E5A02C00238C60 /* MyProgramViewCell.swift */,
 				BC3B72AE28ED995400C8F40E /* RoutineTableViewCell.swift */,
-				BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */,
 				BC68A58828EC57A100D4C02F /* DropCell.swift */,
 				BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */,
 				BC68A58928EC57A100D4C02F /* DropCell.xib */,
@@ -318,6 +324,7 @@
 				BCCDACAC28AB7E35004C41BD /* MainTableViewCell.swift in Sources */,
 				BC3B72AB28ED935E00C8F40E /* RoutineViewController.swift in Sources */,
 				BCCDAC9528AB7DAC004C41BD /* AppDelegate.swift in Sources */,
+				BCC0C4B5291B9CD70084069A /* HalfModalPresentationController.swift in Sources */,
 				BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */,
 				BC074A7D28AF9E3700EA3D3D /* DetailViewController.swift in Sources */,
 				BCE0480B28EF26DB00F39CCC /* DetailTableViewCell.swift in Sources */,
@@ -330,6 +337,7 @@
 				BCC4E05828E2C0680061EAA9 /* DetailViewModel.swift in Sources */,
 				BC3B72AF28ED995400C8F40E /* RoutineTableViewCell.swift in Sources */,
 				BCA5B9FB28AFB7AC00F04AFB /* DetailVCModel.swift in Sources */,
+				BCDC21BC291B619D0002F90B /* FirstExcuteViewController.swift in Sources */,
 				BC3B72B128ED9BF400C8F40E /* RoutineViewModel.swift in Sources */,
 				BC6A22B528F80AB200D12797 /* RoutineAddViewController.swift in Sources */,
 			);

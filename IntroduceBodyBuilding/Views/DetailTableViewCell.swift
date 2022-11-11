@@ -22,4 +22,10 @@ class DetailTableViewCell: UITableViewCell{
             routinLabel.attributedText = attrString
         }
     }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.backgroundColor = .systemGray6
+    }
+    
 }

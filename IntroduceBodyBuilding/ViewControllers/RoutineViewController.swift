@@ -9,7 +9,7 @@ class RoutineViewController: UIViewController {
     
     var emptyImageVIew: UIImageView {
         let emptyImageView = UIImageView()
-        emptyImageView.image = UIImage(named: "box")
+        emptyImageView.image = UIImage(named: "empty")
         emptyImageView.alpha = 0.5
         emptyImageView.contentMode = .scaleToFill
         return emptyImageView
@@ -341,8 +341,8 @@ extension RoutineViewController{
 extension RoutineViewController{
     func reactUIFromEmptyData(){
         
-        var imageView = self.emptyImageVIew
-        var label = self.emptyLabel
+        let imageView = self.emptyImageVIew
+        let label = self.emptyLabel
         
         setUIAfterCheckData()
         
@@ -381,7 +381,7 @@ extension RoutineViewController{
             view.addSubview(label)
             
             imageView.snp.makeConstraints { make in
-                make.width.equalTo(130)
+                make.width.height.equalTo(150)
                 make.centerX.equalToSuperview()
                 make.centerY.equalToSuperview()
             }

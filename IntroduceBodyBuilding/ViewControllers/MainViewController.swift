@@ -18,12 +18,14 @@ class MainViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         receivedNotification()
+        detectFirstExecution()
         makeNavigationBar()
         addCellCilckEvent()
         bindTableView(isFilterd: false)
         requestNotificationAuthorization()
         makePlusButton()
         hideKeyboardWhenTappedAround()
+//        test()
     }
 }
 
@@ -268,3 +270,118 @@ extension MainViewController{
             }.disposed(by: disposeBag)
     }
 }
+extension MainViewController{
+    func detectFirstExecution(){
+        
+        let firstVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstExcuteViewController")
+        firstVC.modalPresentationStyle = .custom
+        firstVC.transitioningDelegate = self
+        self.present(firstVC, animated: true)
+    }
+}
+extension MainViewController: UIViewControllerTransitioningDelegate{
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController?{
+        return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+
+
+//extension MainViewController{
+//    func test(){
+//
+//        mainTableView.alpha = 0.3
+//
+//        lazy var pageControl = {
+//            let page = UIPageControl()
+//            page.numberOfPages = 3
+//            page.currentPage = 0
+//            page.pageIndicatorTintColor = .black
+//            page.currentPageIndicatorTintColor = .lightGray
+//            return page
+//        }()
+//
+//
+//        lazy var noticeImage = {
+//            let image = UIImageView(image: UIImage(named: "BodyBuilding"))
+//            return image
+//        }()
+//
+//
+//        lazy var testView = {
+//            let view = UIView()
+//            view.backgroundColor = .label
+//            view.layer.cornerRadius = 10
+//            view.alpha = 1
+//            return view
+//        }()
+//
+//        lazy var cancelButton = {
+//            let button = UIButton()
+//            button.setTitle("확인", for: .normal)
+//            button.backgroundColor = .blue
+//            button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+//            button.layer.masksToBounds = true
+//            button.layer.cornerRadius = 10
+//            return button
+//        }()
+//
+//        testView.addSubview(noticeImage)
+//        testView.addSubview(pageControl)
+//        testView.addSubview(cancelButton)
+//
+//        view.addSubview(testView)
+//
+//        setWidthHeight()
+//        setConstraints()
+//        cancelButton.rx.tap
+//            .bind { _ in
+//                testView.removeFromSuperview()
+//            }.disposed(by: disposeBag)
+//
+//        func setWidthHeight(){
+//            testView.snp.makeConstraints { make in
+//                make.width.equalTo(300)
+//                make.height.equalTo(450)
+//            }
+//        }
+//
+//
+//        func setConstraints(){
+//
+//            noticeImage.snp.makeConstraints { make in
+//                make.top.equalToSuperview().offset(30)
+//                make.left.equalToSuperview().offset(30)
+//                make.right.equalToSuperview().offset(-30)
+//                make.bottom.equalToSuperview().offset(-90)
+//            }
+//            pageControl.snp.makeConstraints { make in
+//                make.top.equalTo(noticeImage.snp.bottom).offset(10)
+//            }
+//
+//            cancelButton.snp.makeConstraints { make in
+//                make.bottom.equalToSuperview().offset(-10)
+//                make.left.equalToSuperview().offset(30)
+//                make.right.equalToSuperview().offset(-20)
+//             }
+//
+//
+//             testView.snp.makeConstraints { make in
+//                 make.centerY.equalToSuperview()
+//                 make.centerX.equalToSuperview()
+//             }
+//        }
+//
+//
+//    }
+//}
+//extension MainViewController{
+//    func detectFirstExecution(){
+//        mainViewModel.firstExecution
+//            .filter { $0 == false}
+//            .subscribe { _ in
+//                print("최초 실행 성공")
+//                self.test()
+//            }.disposed(by: disposeBag)
+//    }
+//}
