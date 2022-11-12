@@ -1,66 +1,25 @@
-//
-//  FirstExcuteViewController.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/11/09.
-//
-
 import UIKit
+import RxSwift
 
 class FirstExcuteViewController: UIViewController {
     
-    @IBOutlet var allEmbeddedView: UIView!
-    @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {
-        if sender.direction == .right{
-            index -= 1
-            pageControl.currentPage = index
-            imageView.image = UIImage(named: imageNames[index])
-//            noticeLabel.text = notice[index]
-            
-            if index == 0{
-                noticeLabel.text = notice1
-            }
-            else if index == 1{
-                noticeLabel.text = notice2
-            }
-            else{
-                noticeLabel.text = notice3
-            }
-            
-            
-        }
-        if sender.direction == .left{
-            index += 1
-            pageControl.currentPage = index
-            imageView.image = UIImage(named: imageNames[index])
-//            noticeLabel.text = notice[index]
-            
-            if index == 0{
-                noticeLabel.text = notice1
-            }
-            else if index == 1{
-                noticeLabel.text = notice2
-            }
-            else{
-                noticeLabel.text = notice3
-            }
-        }
-    }
+    let viewModel = FirstExcuteViewModel()
     
+    //MARK: - IBOutlet
+    
+    @IBOutlet weak var imageViewNoticeViewEmbeddedView: UIView!
+
     @IBOutlet var gestureStart: UISwipeGestureRecognizer!
-    
-    
     @IBOutlet weak var imageViewEmbeddedView: UIView!{
         didSet{
             imageViewEmbeddedView.layer.cornerRadius = 15
         }
     }
     @IBOutlet weak var imageView: UIImageView!
-    
-    
     @IBOutlet weak var noticeLabelEmbeddedView: UIView!{
         didSet{
             noticeLabelEmbeddedView.layer.cornerRadius = 10
+            noticeLabel.text = viewModel.notice1
         }
     }
     
@@ -69,66 +28,85 @@ class FirstExcuteViewController: UIViewController {
             let attrString = NSMutableAttributedString(string: noticeLabel.text!)
             let paragraphStyle = NSMutableParagraphStyle()
             
-            noticeLabel.lineBreakMode = .byWordWrapping
-            noticeLabel.numberOfLines = 0
+            paragraphStyle.alignment = .center
             paragraphStyle.lineSpacing = 20
             attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
             noticeLabel.attributedText = attrString
         }
     }
-    
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var okButton: UIButton!{
         didSet{
             okButton.layer.cornerRadius = 10
         }
     }
-    var index: Int = 0
-    let imageNames: [String] = ["firstExecution1", "firstExecution2", "firstExecution3"]
-    let notice: [String] = ["해당 프로그램을 열람 해보세요.", "자주보는 프로그램을 등록해보세요.", "루틴을 등록하여 알람을 받아보세요."]
     
-    let notice1: String =
-    """
-    해당 프로그램을
-    등록 해보세요.
-    """
-    let notice2: String =
-    """
-    자주보는 프로그램을
-    등록 해보세요.
-    """
-    let notice3: String =
-    """
-    루틴을 등록하여
-    알람을 받아보세요.
-    """
- 
+    //MARK: - IBAction
 
+    @IBAction func okButtonAction(_ sender: Any) {
+        print("클릭")
+        self.dismiss(animated: true)
+    }
+    @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {
+        addGesture()
+        
+        //제스처 추가
+        func addGesture(){
+            if sender.direction == .right{
+                if viewModel.index == 0{
+                    return
+                }
+                setDirection("right")
+            }
+            else if sender.direction == .left{
+                if viewModel.index == 2{
+                    return
+                }
+                setDirection("left")
+            }
+            
+            // 제스처 방향에 따른 UI 수정
+            func setDirection(_ direction: String){
+                if direction == "left"{
+                    viewModel.index += 1
+                }
+                else if direction == "right"{
+                    viewModel.index -= 1
+                }
+                pageControl.currentPage = viewModel.index
+                imageView.image = UIImage(named: viewModel.imageNames[viewModel.index])
+                
+                if viewModel.index == 0{
+                    noticeLabel.text = viewModel.notice1
+                }
+                else if viewModel.index == 1{
+                    noticeLabel.text = viewModel.notice2
+                }
+                else{
+                    noticeLabel.text = viewModel.notice3
+                }
+            }
+        }
+    }
+    
+    //MARK: - viewDidLoad()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-
-        let rr = UISwipeGestureRecognizer(target: self, action: #selector(swipeGesture(_:)))
-        rr.direction = .right
-        self.allEmbeddedView.addGestureRecognizer(rr)
-        let ll = UISwipeGestureRecognizer(target: self, action: #selector(swipeGesture(_:)))
-        rr.direction = .left
-        self.allEmbeddedView.addGestureRecognizer(ll)
+        addGestureAfterSetDirection()
     }
 }
 
-//extension FirstExcuteViewController {
-//    func tapGesture(){
-//        imageView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(<#T##@objc method#>)))
-//    }
-//    func tap(){
-//
-//    }
-//}
+//MARK: - 제스처 방향 설정 및 해당 뷰에 추가
 
-//extension FirstExcuteViewController: UIScrollViewDelegate{
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//            pageControl.currentPage = Int(floor(scrollView.contentOffset.x / UIScreen.main.bounds.width))
-//        }
-//}
+extension FirstExcuteViewController{
+    func addGestureAfterSetDirection(){
+        let rightGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeGesture(_:)))
+        rightGesture.direction = .right
+        self.imageViewNoticeViewEmbeddedView.addGestureRecognizer(rightGesture)
+        
+        let leftGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeGesture(_:)))
+        leftGesture.direction = .left
+        self.imageViewNoticeViewEmbeddedView.addGestureRecognizer(leftGesture)
+    }
+}

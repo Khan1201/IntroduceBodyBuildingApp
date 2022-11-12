@@ -23,6 +23,7 @@
 		BC6A22B528F80AB200D12797 /* RoutineAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */; };
 		BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */; };
 		BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */; };
+		BC9FF497291FD21300426F31 /* FirstExcuteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9FF496291FD21300426F31 /* FirstExcuteViewModel.swift */; };
 		BCA5B9FB28AFB7AC00F04AFB /* DetailVCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */; };
 		BCC0C4B5291B9CD70084069A /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC0C4B4291B9CD70084069A /* HalfModalPresentationController.swift */; };
 		BCC4E05828E2C0680061EAA9 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */; };
@@ -58,6 +59,7 @@
 		BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineAddViewController.swift; sourceTree = "<group>"; };
 		BC855BF928B79F63005C4870 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewController.swift; sourceTree = "<group>"; };
+		BC9FF496291FD21300426F31 /* FirstExcuteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstExcuteViewModel.swift; sourceTree = "<group>"; };
 		BCA5B9FA28AFB7AC00F04AFB /* DetailVCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVCModel.swift; sourceTree = "<group>"; };
 		BCC0C4B4291B9CD70084069A /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfModalPresentationController.swift; sourceTree = "<group>"; };
 		BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		BCE9D80128DC0C6D00EA5A95 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				BC9FF496291FD21300426F31 /* FirstExcuteViewModel.swift */,
 				BCE9D80428DC0D0E00EA5A95 /* MainTableViewModel.swift */,
 				BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */,
 				BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */,
@@ -321,6 +324,7 @@
 				BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */,
 				BCE9D80528DC0D0E00EA5A95 /* MainTableViewModel.swift in Sources */,
 				BCCDAC9928AB7DAC004C41BD /* MainViewController.swift in Sources */,
+				BC9FF497291FD21300426F31 /* FirstExcuteViewModel.swift in Sources */,
 				BCCDACAC28AB7E35004C41BD /* MainTableViewCell.swift in Sources */,
 				BC3B72AB28ED935E00C8F40E /* RoutineViewController.swift in Sources */,
 				BCCDAC9528AB7DAC004C41BD /* AppDelegate.swift in Sources */,
