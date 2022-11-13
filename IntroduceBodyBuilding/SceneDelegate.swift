@@ -10,13 +10,17 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
-
+    var sendOnlyScene: UIScene? // notification didReceive에서 사용할 Scene
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+//        checkAppFirstrunOrUpdateStatus(scene: scene)
         guard let _ = (scene as? UIWindowScene) else { return }
+        sendOnlyScene = scene
+        UNUserNotificationCenter.current().delegate = self
+        checkAppFirstrunOrUpdateStatus(scene: scene)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -49,4 +53,53 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
+//MARK: - 앱 최초 설치 감지, 최초 설치 -> 최초 설치 VC present
 
+extension SceneDelegate{
+    func checkAppFirstrunOrUpdateStatus(scene: UIScene) {
+        
+        let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let versionOfLastRun = UserDefaults.standard.object(forKey: "VersionOfLastRun") as? String
+        if versionOfLastRun == nil {
+            setRootVC(scene)
+        } else if versionOfLastRun != currentVersion {
+        }
+        UserDefaults.standard.set(currentVersion, forKey: "VersionOfLastRun")
+        UserDefaults.standard.synchronize()
+    }
+    func setRootVC(_ scene: UIScene){
+        if let windowScene = scene as? UIWindowScene{
+            let window = UIWindow(windowScene: windowScene)
+            guard let firstVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else {return}
+            firstVC.mainViewModel.firstExecution.onNext(true)
+            let nav = UINavigationController(rootViewController: firstVC)
+            window.rootViewController = nav
+            self.window = window
+            window.makeKeyAndVisible()
+        }
+    }
+}
+//MARK: - 알림 수신 후 클릭 시 해당 VC로 바로 이동
+
+extension SceneDelegate: UNUserNotificationCenterDelegate{
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        // 알림 내용의 프로그램명 가져오기
+        var body = response.notification.request.content.body
+        let startIndex: String.Index = body.index(body.startIndex, offsetBy: 7)
+        body = String(body[startIndex...])
+        
+        if let windowScene = sendOnlyScene as? UIWindowScene{
+            let window = UIWindow(windowScene: windowScene)
+            guard let firstVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else {return}
+            firstVC.mainViewModel.receivedNotification.onNext(body)
+            let nav = UINavigationController(rootViewController: firstVC)
+            window.rootViewController = nav
+            self.window = window
+            window.makeKeyAndVisible()
+        }
+        completionHandler()
+    }
+}

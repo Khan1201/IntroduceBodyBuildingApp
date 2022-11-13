@@ -19,8 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         sleep(2)
         FirebaseApp.configure()
-        
-        checkAppFirstrunOrUpdateStatus()
         UNUserNotificationCenter.current().delegate = self
         return true
     }
@@ -87,25 +85,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
 
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse,
-                                withCompletionHandler completionHandler: @escaping () -> Void) {
-        // 알림 내용의 프로그램명 가져오기
-        var body = response.notification.request.content.body
-        let startIndex: String.Index = body.index(body.startIndex, offsetBy: 7)
-        body = String(body[startIndex...])
-        
-        // 앱 실행 시 첫번째로 열리는 VC
-        guard let rootViewController = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController else {return}
-        guard let navController = rootViewController as? UINavigationController else {return}
-
-        // 이동할 VC
-        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else {return}
-        vc.mainViewModel.receivedNotification.onNext(body)
-        navController.pushViewController(vc, animated: true)
-   
-        completionHandler()
-    }
+//    func userNotificationCenter(_ center: UNUserNotificationCenter,
+//                                didReceive response: UNNotificationResponse,
+//                                withCompletionHandler completionHandler: @escaping () -> Void) {
+//        // 알림 내용의 프로그램명 가져오기
+//        var body = response.notification.request.content.body
+//        let startIndex: String.Index = body.index(body.startIndex, offsetBy: 7)
+//        body = String(body[startIndex...])
+//
+//        // 앱 실행 시 첫번째로 열리는 VC
+//        guard let rootViewController = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController else {return}
+//        guard let navController = rootViewController as? UINavigationController else {return}
+//
+//        // 이동할 VC
+//        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else {return}
+//        vc.mainViewModel.receivedNotification.onNext(body)
+//        navController.pushViewController(vc, animated: true)
+//
+//        completionHandler()
+//    }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
@@ -113,20 +111,3 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler([.alert, .badge, .sound])
     }
 }
-extension AppDelegate{
-    func checkAppFirstrunOrUpdateStatus() {
-        
-       
-        
-        let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-        let versionOfLastRun = UserDefaults.standard.object(forKey: "VersionOfLastRun") as? String
-        if versionOfLastRun == nil {
-                    print("최초실행")
-        } else if versionOfLastRun != currentVersion {
-                print("업데이트")
-        }
-        UserDefaults.standard.set(currentVersion, forKey: "VersionOfLastRun")
-        UserDefaults.standard.synchronize()
-    }
-}
-

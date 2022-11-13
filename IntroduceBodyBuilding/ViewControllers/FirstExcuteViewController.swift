@@ -44,7 +44,6 @@ class FirstExcuteViewController: UIViewController {
     //MARK: - IBAction
 
     @IBAction func okButtonAction(_ sender: Any) {
-        print("클릭")
         self.dismiss(animated: true)
     }
     @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {

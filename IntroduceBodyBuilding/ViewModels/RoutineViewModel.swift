@@ -108,8 +108,6 @@ extension RoutineViewModel{
                     case "수": return 4
                     case "목": return 5
                     case "금": return 6
-                    case "토": return 7
-                    case "일": return 8
                     default: print("잘못된 Notification Days")
                         return 0
                     }
@@ -122,9 +120,9 @@ extension RoutineViewModel{
                 if weekDay != 0 {
                     var dateComponents = DateComponents()
                     dateComponents.calendar = Calendar.current
-                    dateComponents.weekday = weekDay
-                    dateComponents.hour = 17
-                    dateComponents.minute = 38
+                    dateComponents.weekday = 1
+                    dateComponents.hour = 23
+                    dateComponents.minute = 51
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     let request = UNNotificationRequest(identifier: "\(title): \(identifier)",
                                                         content: notificationContent,
