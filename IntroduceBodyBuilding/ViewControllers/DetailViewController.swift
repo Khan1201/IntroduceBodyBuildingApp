@@ -79,22 +79,71 @@ class DetailViewController: UIViewController {
         self.presentingViewController?.dismiss(animated: true)
     }
     @IBAction func allRoutineButtonAction(_ sender: UIButton) {
+        let googleSheets = "googlesheets://" // 구글 시트에 대한 URL Scheme
+        let googleSheetsURL = NSURL(string: googleSheets) //URL 인스턴스를 만들어 주는 단계
         
-        let url = URL(string: viewModel.url)
-                let safariViewController = SFSafariViewController(url: url!)
-                present(safariViewController, animated: true)
-//        guard let webVC = UIStoryboard(name: "Main", bundle: nil)
-//            .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
-//        webVC.routineTitle = titleLabel.text ?? "not exist"
-//        viewModel.url
-//            .filter({
-//                $0 != ""
-//            })
-//            .subscribe { url in
-//                webVC.url = url.element ?? "not exist"
-//            }.dispose()
-//        webVC.modalPresentationStyle = .fullScreen
-//        self.present(webVC, animated: true)
+        //canOpenURL(_:) 메소드를 통해서 URL 체계를 처리하는 데 앱을 사용할 수 있는지 여부를 확인('스프레드 시트'가 설치되어 있을 경우)
+        if (UIApplication.shared.canOpenURL(googleSheetsURL! as URL)) {
+            
+            guard let firstVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstExcuteViewController") as? FirstExcuteViewController else {return}
+            
+            firstVC.viewModel.detectFirstExecution = false // excutionGuide에 대한 VC 설정
+            
+            // excutionGuide dismiss 후 '전체 루틴 보기' 실행 위하여
+            firstVC.viewModel.fromExecutionGuide
+                .filter { $0 == true}
+                .bind { [weak self] _ in
+                    let url = URL(string: "https://docs.google.com/uc?export=download&id=19CzZUj_n1mGfHFN82ioH_W8U91IbHtYO")
+                    let safariViewController = SFSafariViewController(url: url!)
+                    self?.present(safariViewController, animated: true)
+                }.disposed(by: disposeBag)
+            
+            firstVC.modalPresentationStyle = .custom
+            firstVC.transitioningDelegate = self
+            self.present(firstVC, animated: true)
+        }
+
+        //사용 불가능한 URLScheme일 때('스프레드 시트'가 설치되지 않았을 경우)
+        else {
+            print("No installed.")
+            let storeId =  "itms-apps://itunes.apple.com/app/id842849113"
+            if let storeURL = URL(string: storeId), UIApplication.shared.canOpenURL(storeURL){
+                makeAlertAboutAppStore(title: "안내", message: "전체 루틴을 열기위해 '스프레드시트' 앱이 필요합니다. 앱 스토어로 이동 하시겠습니까 ?", storeURL: storeURL)
+            }
+        }
+        func makeAlertAboutAppStore(title: String, message: String, storeURL: URL){
+            let alert =  UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(CancelButton())
+                alert.addAction(OKButton())
+            self.present(alert, animated: true, completion: nil) // 화면에 출력
+            
+            func OKButton() -> UIAlertAction { //OKButton Click -> 보관함 이동
+                let alertSuccessBtn = UIAlertAction(title: "OK", style: .default) { _ in
+                    UIApplication.shared.open(storeURL, options: [:], completionHandler: nil)
+                }
+                return alertSuccessBtn
+            }
+            func CancelButton() -> UIAlertAction {
+                let alertDeleteBtn = UIAlertAction(title: "Cancel", style: .destructive) { _ in } //.destructive -> 글씨 빨갛게
+                return alertDeleteBtn
+            }
+        }
+        //        let url = URL(string: viewModel.url)
+        //                let safariViewController = SFSafariViewController(url: url!)
+        //                present(safariViewController, animated: true)
+        
+        //        guard let webVC = UIStoryboard(name: "Main", bundle: nil)
+        //            .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
+        //        webVC.routineTitle = titleLabel.text ?? "not exist"
+        //        viewModel.url
+        //            .filter({
+        //                $0 != ""
+        //            })
+        //            .subscribe { url in
+        //                webVC.url = url.element ?? "not exist"
+        //            }.dispose()
+        //        webVC.modalPresentationStyle = .fullScreen
+        //        self.present(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
         viewModel.fromMyProgramVC // myProgramVC에서 호출한지 구독,
@@ -314,6 +363,11 @@ extension DetailViewController{
                 self?.addButton.isEnabled = !trueBool
                 self?.addRoutineButton.isEnabled = trueBool
             }.disposed(by: disposeBag)
+    }
+}
+extension DetailViewController: UIViewControllerTransitioningDelegate{
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController?{
+        return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
 

@@ -147,6 +147,7 @@
                         <outlet property="noticeLabelEmbeddedView" destination="pgD-Ft-cq0" id="UzG-FH-X5J"/>
                         <outlet property="okButton" destination="gIi-Zk-NQV" id="Iz2-jd-HWT"/>
                         <outlet property="pageControl" destination="gQv-xv-env" id="tqb-uY-9vE"/>
+                        <outlet property="titleLabel" destination="uDJ-Au-BxD" id="Xog-yU-te2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YGS-PD-7f4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -1,17 +1,12 @@
 import UIKit
 import RxSwift
 
-class FirstExcuteViewController: UIViewController {
+class ExecutionGuideViewController: UIViewController {
     
-    let viewModel = FirstExcuteViewModel()
+    let viewModel = ExecutionGuideViewModel()
     
     //MARK: - IBOutlet
     
-    @IBOutlet weak var titleLabel: UILabel!{
-        didSet{
-            titleLabel.text = viewModel.title
-        }
-    }
     @IBOutlet weak var imageViewNoticeViewEmbeddedView: UIView!
 
     @IBOutlet var gestureStart: UISwipeGestureRecognizer!
@@ -24,12 +19,7 @@ class FirstExcuteViewController: UIViewController {
     @IBOutlet weak var noticeLabelEmbeddedView: UIView!{
         didSet{
             noticeLabelEmbeddedView.layer.cornerRadius = 10
-            if viewModel.detectFirstExecution{
-                noticeLabel.text = viewModel.firstExcuteNotice1
-            }
-            else{
-                noticeLabel.text = viewModel.executionGuideNotice1
-            }
+            noticeLabel.text = viewModel.notice1
         }
     }
     
@@ -54,14 +44,7 @@ class FirstExcuteViewController: UIViewController {
     //MARK: - IBAction
 
     @IBAction func okButtonAction(_ sender: Any) {
-        if viewModel.detectFirstExecution{
-            self.dismiss(animated: true)
-        }
-        else{
-            self.dismiss(animated: true) {
-                self.viewModel.fromExecutionGuide.onNext(true)
-            }
-        }
+        self.dismiss(animated: true)
     }
     @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {
         addGesture()
@@ -90,26 +73,16 @@ class FirstExcuteViewController: UIViewController {
                     viewModel.index -= 1
                 }
                 pageControl.currentPage = viewModel.index
-                if viewModel.detectFirstExecution{
-                    insertDivisionData(imageArray: viewModel.firstExcuteimageNamesArray, notice1: viewModel.firstExcuteNotice1, notice2: viewModel.firstExcuteNotice2, notice3: viewModel.firstExcuteNotice3)
+                imageView.image = UIImage(named: viewModel.imageNames[viewModel.index])
+                
+                if viewModel.index == 0{
+                    noticeLabel.text = viewModel.notice1
+                }
+                else if viewModel.index == 1{
+                    noticeLabel.text = viewModel.notice2
                 }
                 else{
-                    insertDivisionData(imageArray: viewModel.executionGuideImageNamesArray, notice1: viewModel.executionGuideNotice1, notice2: viewModel.executionGuideNotice2, notice3: viewModel.executionGuideNotice3)
-                }
-        
-                // viewModel.detectFirstExecution의 결과에 따른 데이터 삽입 (최초 실행 VC or 전체 루틴보기 가이드 VC)
-                func insertDivisionData(imageArray: [String], notice1: String, notice2: String, notice3: String){
-                    imageView.image = UIImage(named: imageArray[viewModel.index])
-                    
-                    if viewModel.index == 0{
-                        noticeLabel.text = notice1
-                    }
-                    else if viewModel.index == 1{
-                        noticeLabel.text = notice2
-                    }
-                    else{
-                        noticeLabel.text = notice3
-                    }
+                    noticeLabel.text = viewModel.notice3
                 }
             }
         }
@@ -125,7 +98,7 @@ class FirstExcuteViewController: UIViewController {
 
 //MARK: - 제스처 방향 설정 및 해당 뷰에 추가
 
-extension FirstExcuteViewController{
+extension ExecutionGuideViewController{
     func addGestureAfterSetDirection(){
         let rightGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeGesture(_:)))
         rightGesture.direction = .right

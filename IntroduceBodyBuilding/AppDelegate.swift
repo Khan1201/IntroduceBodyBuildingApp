@@ -83,28 +83,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 extension AppDelegate: UNUserNotificationCenterDelegate {
-
-    
-//    func userNotificationCenter(_ center: UNUserNotificationCenter,
-//                                didReceive response: UNNotificationResponse,
-//                                withCompletionHandler completionHandler: @escaping () -> Void) {
-//        // 알림 내용의 프로그램명 가져오기
-//        var body = response.notification.request.content.body
-//        let startIndex: String.Index = body.index(body.startIndex, offsetBy: 7)
-//        body = String(body[startIndex...])
-//
-//        // 앱 실행 시 첫번째로 열리는 VC
-//        guard let rootViewController = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController else {return}
-//        guard let navController = rootViewController as? UINavigationController else {return}
-//
-//        // 이동할 VC
-//        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else {return}
-//        vc.mainViewModel.receivedNotification.onNext(body)
-//        navController.pushViewController(vc, animated: true)
-//
-//        completionHandler()
-//    }
-
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

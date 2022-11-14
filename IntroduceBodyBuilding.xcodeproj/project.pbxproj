@@ -21,6 +21,7 @@
 		BC68A58A28EC57A100D4C02F /* DropCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC68A58828EC57A100D4C02F /* DropCell.swift */; };
 		BC68A58B28EC57A100D4C02F /* DropCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC68A58928EC57A100D4C02F /* DropCell.xib */; };
 		BC6A22B528F80AB200D12797 /* RoutineAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */; };
+		BC725268292237BE0017C5CF /* ExecutionGuideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC725267292237BE0017C5CF /* ExecutionGuideViewModel.swift */; };
 		BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC855BF828B79F63005C4870 /* CoreData.xcdatamodeld */; };
 		BC855C0028B7B754005C4870 /* MyProgramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */; };
 		BC9FF497291FD21300426F31 /* FirstExcuteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9FF496291FD21300426F31 /* FirstExcuteViewModel.swift */; };
@@ -57,6 +58,7 @@
 		BC68A58828EC57A100D4C02F /* DropCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropCell.swift; sourceTree = "<group>"; };
 		BC68A58928EC57A100D4C02F /* DropCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DropCell.xib; sourceTree = "<group>"; };
 		BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineAddViewController.swift; sourceTree = "<group>"; };
+		BC725267292237BE0017C5CF /* ExecutionGuideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionGuideViewModel.swift; sourceTree = "<group>"; };
 		BC855BF928B79F63005C4870 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewController.swift; sourceTree = "<group>"; };
 		BC9FF496291FD21300426F31 /* FirstExcuteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstExcuteViewModel.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				BC9FF496291FD21300426F31 /* FirstExcuteViewModel.swift */,
+				BC725267292237BE0017C5CF /* ExecutionGuideViewModel.swift */,
 				BCE9D80428DC0D0E00EA5A95 /* MainTableViewModel.swift */,
 				BCC4E05728E2C0680061EAA9 /* DetailViewModel.swift */,
 				BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */,
@@ -322,6 +325,7 @@
 				BC07ED5928F94C330064B82A /* RoutineVCModel.swift in Sources */,
 				BC123C2728F3269D003AE914 /* WebViewController.swift in Sources */,
 				BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */,
+				BC725268292237BE0017C5CF /* ExecutionGuideViewModel.swift in Sources */,
 				BCE9D80528DC0D0E00EA5A95 /* MainTableViewModel.swift in Sources */,
 				BCCDAC9928AB7DAC004C41BD /* MainViewController.swift in Sources */,
 				BC9FF497291FD21300426F31 /* FirstExcuteViewModel.swift in Sources */,

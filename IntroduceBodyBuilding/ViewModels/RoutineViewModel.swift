@@ -120,9 +120,8 @@ extension RoutineViewModel{
                 if weekDay != 0 {
                     var dateComponents = DateComponents()
                     dateComponents.calendar = Calendar.current
-                    dateComponents.weekday = 1
-                    dateComponents.hour = 23
-                    dateComponents.minute = 51
+                    dateComponents.weekday = weekDay
+                    dateComponents.hour = 7
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     let request = UNNotificationRequest(identifier: "\(title): \(identifier)",
                                                         content: notificationContent,

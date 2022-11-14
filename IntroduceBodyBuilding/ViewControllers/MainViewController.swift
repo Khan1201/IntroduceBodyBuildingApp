@@ -276,7 +276,6 @@ extension MainViewController{
         mainViewModel.firstExecution
             .filter { $0 == true}
             .subscribe { _ in
-                print("필터링")
                 let firstVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstExcuteViewController")
                 firstVC.modalPresentationStyle = .custom
                 firstVC.transitioningDelegate = self
@@ -289,14 +288,3 @@ extension MainViewController: UIViewControllerTransitioningDelegate{
         return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
-
-//extension MainViewController{
-//    func detectFirstExecution(){
-//        mainViewModel.firstExecution
-//            .filter { $0 == false}
-//            .subscribe { _ in
-//                print("최초 실행 성공")
-//                self.test()
-//            }.disposed(by: disposeBag)
-//    }
-//}
