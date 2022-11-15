@@ -21,7 +21,9 @@ class MainViewController: UIViewController{
         detectFirstExecution()
         makeNavigationBar()
         addCellCilckEvent()
-        bindTableView(isFilterd: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+            self.bindTableView(isFilterd: false)
+        }
         requestNotificationAuthorization()
         makePlusButton()
         hideKeyboardWhenTappedAround()
@@ -270,6 +272,9 @@ extension MainViewController{
             }.disposed(by: disposeBag)
     }
 }
+
+//MARK: - 최초 실행 감지, 최초 실행 -> 최초 실행 VC 제공
+
 extension MainViewController{
     func detectFirstExecution(){
         

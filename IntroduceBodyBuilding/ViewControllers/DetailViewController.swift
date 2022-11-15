@@ -78,6 +78,26 @@ class DetailViewController: UIViewController {
     @IBAction func goBackButtonAction(_ sender: Any) {
         self.presentingViewController?.dismiss(animated: true)
     }
+    
+    
+    @IBAction func rmButtonAction(_ sender: Any) {
+        
+        let rowCount = routineTableView.numberOfRows(inSection: 0)
+        lazy var tableViewData:[(String, String)] = [("","")]
+
+        self.viewModel.tableViewObservable
+            .subscribe { data in
+                tableViewData = data.element ?? [("","")]
+            }.dispose()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+            for row in 0..<rowCount{
+                tableViewData[row].1 = "수정"
+            }
+            self.viewModel.tableViewObservable.onNext(tableViewData)
+        }
+    }
+    
     @IBAction func allRoutineButtonAction(_ sender: UIButton) {
         let googleSheets = "googlesheets://" // 구글 시트에 대한 URL Scheme
         let googleSheetsURL = NSURL(string: googleSheets) //URL 인스턴스를 만들어 주는 단계
@@ -128,22 +148,6 @@ class DetailViewController: UIViewController {
                 return alertDeleteBtn
             }
         }
-        //        let url = URL(string: viewModel.url)
-        //                let safariViewController = SFSafariViewController(url: url!)
-        //                present(safariViewController, animated: true)
-        
-        //        guard let webVC = UIStoryboard(name: "Main", bundle: nil)
-        //            .instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
-        //        webVC.routineTitle = titleLabel.text ?? "not exist"
-        //        viewModel.url
-        //            .filter({
-        //                $0 != ""
-        //            })
-        //            .subscribe { url in
-        //                webVC.url = url.element ?? "not exist"
-        //            }.dispose()
-        //        webVC.modalPresentationStyle = .fullScreen
-        //        self.present(webVC, animated: true)
     }
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
         viewModel.fromMyProgramVC // myProgramVC에서 호출한지 구독,
@@ -167,7 +171,23 @@ class DetailViewController: UIViewController {
             }.dispose()
     }
     @IBAction func basketButtonAction(_ sender: UIButton) {
-        approachCoreData() //CoreData에 접근
+        
+        //CoreData에 접근
+        viewModel.detailVCIndexObservable
+            .filter({ data in
+                data.title != ""
+            })
+            .subscribe { [weak self] data in
+                var tempData: DetailVCModel.Fields = DetailVCModel.Fields()
+                tempData.title = data.element?.title ?? "not exist"
+                tempData.image = data.element?.image ?? "not exist"
+                tempData.description = data.element?.description ?? "not exist"
+                
+                // duplicated ON -> 중복에 관한 alert dialog 생성, duplicated OFF ->  중복 X에 관한 alert dialog 생성
+                if let duplicated = self?.viewModel.returnDuplicatedBoolAfterSaveData(data: tempData){
+                    duplicated ? self?.makeAlertDialog(duplicated: true) : self?.makeAlertDialog(duplicated: false)
+                }
+            }.disposed(by: disposeBag)
     }
     //MARK: - viewDidLoad(), viewDidAppear()
     
@@ -222,13 +242,19 @@ extension DetailViewController {
     private func bindTableViewInView(){
         
         viewModel.tableViewObservable
-            .bind(to: self.routineTableView.rx.items(cellIdentifier: "DetailTableViewCell", cellType: DetailTableViewCell.self)){ (index, element, cell) in
-                
+            .bind(to: self.routineTableView.rx.items(cellIdentifier: "DetailTableViewCell", cellType: DetailTableViewCell.self)){(index, element, cell) in
+            
                 cell.selectionStyle = .none
                 
                 cell.dayLabel.text = "Day \(element.0)"
                 cell.routinLabel.text = element.1.replacingOccurrences(of: "\\n", with: "\n") //FireStroe Json 데이터 줄 바꿈
                 cell.numberImageView.image = UIImage(systemName: "\(element.0).square")
+                
+                cell.routinLabel.bold(targetString: "스쿼트")
+//
+//                cell.routinLabel.attributedText = NSMutableAttributedString()
+//                    .bold(string: "벤치프레스", fontSize: 20, cellText: cell.routinLabel.text!)
+////                    .lineSpacing(cell.routinLabel.text!)
             }.disposed(by: disposeBag)
     }
 }
@@ -266,73 +292,6 @@ extension DetailViewController {
                 let alertDeleteBtn = UIAlertAction(title: "Cancel", style: .destructive) { _ in } //.destructive -> 글씨 빨갛게
                 return alertDeleteBtn
             }
-        }
-    }
-}
-//MARK: - CoreData에 접근
-
-extension DetailViewController {
-    
-    private func approachCoreData(){
-        do{
-            let myProgramObject = try getObject() //CoreData Entity인 MyProgram 정의
-            MyProgramViewModel.coreData.isEmpty ? //CoreData에 데이터가 없을 시 -> 데이터 삽입, 데이터가 있을 시 -> 중복체크 후 데이터 삽입
-            insertData(in: myProgramObject) : insertDataAfterDuplicatedCheck(in: myProgramObject)
-        }
-        catch{
-            print("coreData Error: \(error)")
-        }
-        
-        //CoreData 오브젝트 get
-        func getObject() throws -> NSManagedObject{
-            let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-            guard let myProgramEntity = NSEntityDescription.entity(forEntityName: "MyProgram", in: viewContext) else{
-                throw setDataError.EntityNotExist } //CoreData entity 정의
-            let myProgramObject = NSManagedObject(entity: myProgramEntity, insertInto: viewContext)
-            return myProgramObject
-        }
-        
-        // CoreData에 데이터 삽입
-        func insertData(in object: NSManagedObject) {
-            let myProgram = object as! MyProgram
-            //MyProgram entity 존재 시, unwrapping 후 coreData에 데이터 insert
-            viewModel.detailVCIndexObservable
-                .subscribe { data in
-                    myProgram.title = data.element?.title //
-                    myProgram.image = data.element?.image
-                    myProgram.description_ = data.element?.description
-                    myProgram.division = data.element?.image //bodybuilding, powerbuilding, powerlifting 의 구분자 역활
-                }.disposed(by: disposeBag)
-            
-            makeAlertDialog(duplicated: false) //보관함으로 이동 alert
-            do{
-                try (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext.save() //insert 적용
-            }
-            catch{
-                print("save error: \(error)")
-            }
-        }
-        
-        // 데이터 중복체크 후 CoreData에 데이터 삽입
-        func insertDataAfterDuplicatedCheck(in myProgramObject: NSManagedObject){
-            _ = MyProgramViewModel() //선언과 동시에 MyProgramViewModel.coreData 최신화
-            var count = 0
-            for data in MyProgramViewModel.coreData{
-                if (data.title == titleLabel.text){ //중복시 중복 다이얼로그 생성
-                    makeAlertDialog(duplicated: true)
-                }
-                else{
-                    count += 1
-                    if count == MyProgramViewModel.coreData.count{ //전체 순회하였을 시(중복이 없을 시) coreData에 데이터 삽입
-                        insertData(in: myProgramObject)
-                    }
-                }
-            }
-        }
-        
-        //오류 정의
-        enum setDataError: Error{
-            case EntityNotExist
         }
     }
 }

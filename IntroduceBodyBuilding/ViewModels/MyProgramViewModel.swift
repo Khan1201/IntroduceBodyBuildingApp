@@ -6,16 +6,16 @@ import RxSwift
 class MyProgramViewModel {
     static var coreData = [MyProgram]()
     
-    let bodyBuildingObservable = BehaviorSubject<[MyProgram]>(value: [MyProgram()])
+    let bodyBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
     let powerBuildingObservable = BehaviorSubject<[MyProgram]>(value: [])
     let powerLiftingObservable = BehaviorSubject<[MyProgram]>(value: [])
     let fromDetailVCRoutineAddButton = PublishSubject<Bool>()
     
     init(){
         readCoreData()
-        bindingCoreData(to: bodyBuildingObservable, division: "bodybuilding")
-        bindingCoreData(to: powerBuildingObservable, division: "powerbuilding")
-        bindingCoreData(to: powerLiftingObservable, division: "powerlifting")
+        bindingCoreData(to: bodyBuildingObservable, division: "BodyBuilding")
+        bindingCoreData(to: powerBuildingObservable, division: "PowerBuilding")
+        bindingCoreData(to: powerLiftingObservable, division: "PowerLifting")
     }
 }
 
@@ -30,7 +30,7 @@ extension MyProgramViewModel{
         do{
             MyProgramViewModel.coreData = try context.fetch(fetchRequest)
         }catch{
-            print(error)
+            print("coreData 에러 : \(error)")
         }
     }
 }

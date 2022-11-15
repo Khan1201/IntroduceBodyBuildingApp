@@ -47,29 +47,10 @@ extension MyProgramViewController {
         self.navigationItem.setRightBarButton(navigationItem.rightBarButtonItem, animated: true)
         
         // 홈 버튼 클릭 이벤트
-//        self.navigationItem.rightBarButtonItem?.rx.tap
-//            .bind { _ in
-//                self.navigationController?.popToRootViewController(animated: true)
-//
-//            }.disposed(by: disposeBag)
         self.navigationItem.rightBarButtonItem?.rx.tap
             .bind { _ in
-                let kakaoTalk = "googlesheets://"
-                        //URL 인스턴스를 만들어 주는 단계
-                        let kakaoTalkURL = NSURL(string: kakaoTalk)
-                        
-                        
-                        //canOpenURL(_:) 메소드를 통해서 URL 체계를 처리하는 데 앱을 사용할 수 있는지 여부를 확인
-                        if (UIApplication.shared.canOpenURL(kakaoTalkURL! as URL)) {
-                    
-                            //open(_:options:completionHandler:) 메소드를 호출해서 카카오톡 앱 열기
-                            UIApplication.shared.open(kakaoTalkURL! as URL)
-                        }
-                        //사용 불가능한 URLScheme일 때(카카오톡이 설치되지 않았을 경우)
-                        else {
-                            print("No kakaotalk installed.")
-                        }
-                
+                self.navigationController?.popToRootViewController(animated: true)
+
             }.disposed(by: disposeBag)
     }
 }

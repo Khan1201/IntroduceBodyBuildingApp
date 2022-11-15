@@ -31,11 +31,7 @@ class HalfModalPresentationController: UIPresentationController {
         CGRect(origin: CGPoint(x: 0,
                                y: self.containerView!.frame.height - self.containerView!.frame.height / 1.5),
                size: CGSize(width: self.containerView!.frame.width,
-                            height: (self.presentedView?.frame.height)!))
-//        CGRect(origin: CGPoint(x: 0,
-//                               y: self.containerView!.frame.height / 4 * 2),
-//               size: CGSize(width: self.containerView!.frame.width,
-//                            height: (self.presentedView?.frame.height)!))
+                            height: self.presentedView!.frame.height))
     }
     
     override func presentationTransitionWillBegin() {

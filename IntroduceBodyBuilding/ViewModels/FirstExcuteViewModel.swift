@@ -5,18 +5,31 @@ class FirstExcuteViewModel {
     
     lazy var detectFirstExecution = true
     lazy var fromExecutionGuide: BehaviorSubject<Bool> = BehaviorSubject(value: false)
-
+    
     var index = 0
-    var title: String {
+    var initialTitle: String {
         var temp: String
         if detectFirstExecution{
             temp = "시작하기"
         }
         else{
-            temp = "실행 가이드"
+            temp = "실행 가이드(출처: LiftVault.com)"
         }
         return temp
     }
+    var initialImageName: String{
+        var temp: String
+        if detectFirstExecution{
+            temp = firstExcuteimageNamesArray[0]
+        }
+        else{
+            temp = executionGuideImageNamesArray[0]
+        }
+        return temp
+    }
+    
+    
+    
     lazy var firstExcuteimageNamesArray: [String] = ["firstExecution1", "firstExecution2", "firstExecution3"]
     lazy var firstExcuteNotice1: String =
     """
@@ -54,5 +67,5 @@ class FirstExcuteViewModel {
     '스프레드 시트'를
     선택하세요.
     """
-
+    
 }

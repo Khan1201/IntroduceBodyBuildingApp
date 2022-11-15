@@ -2,14 +2,13 @@ import UIKit
 import RxSwift
 
 class FirstExcuteViewController: UIViewController {
-    
     let viewModel = FirstExcuteViewModel()
     
     //MARK: - IBOutlet
     
     @IBOutlet weak var titleLabel: UILabel!{
         didSet{
-            titleLabel.text = viewModel.title
+            titleLabel.text = viewModel.initialTitle
         }
     }
     @IBOutlet weak var imageViewNoticeViewEmbeddedView: UIView!
@@ -20,7 +19,11 @@ class FirstExcuteViewController: UIViewController {
             imageViewEmbeddedView.layer.cornerRadius = 15
         }
     }
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!{
+        didSet{
+            imageView.image = UIImage(named: viewModel.initialImageName)
+        }
+    }
     @IBOutlet weak var noticeLabelEmbeddedView: UIView!{
         didSet{
             noticeLabelEmbeddedView.layer.cornerRadius = 10
@@ -43,7 +46,7 @@ class FirstExcuteViewController: UIViewController {
             attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
             noticeLabel.attributedText = attrString
         }
-    }
+    } 
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var okButton: UIButton!{
         didSet{
