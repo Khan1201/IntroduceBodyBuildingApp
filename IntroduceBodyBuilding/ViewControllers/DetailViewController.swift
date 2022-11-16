@@ -250,11 +250,7 @@ extension DetailViewController {
                 cell.routinLabel.text = element.1.replacingOccurrences(of: "\\n", with: "\n") //FireStroe Json 데이터 줄 바꿈
                 cell.numberImageView.image = UIImage(systemName: "\(element.0).square")
                 
-                cell.routinLabel.bold(targetString: "스쿼트")
-//
-//                cell.routinLabel.attributedText = NSMutableAttributedString()
-//                    .bold(string: "벤치프레스", fontSize: 20, cellText: cell.routinLabel.text!)
-////                    .lineSpacing(cell.routinLabel.text!)
+                cell.routinLabel.bold()
             }.disposed(by: disposeBag)
     }
 }

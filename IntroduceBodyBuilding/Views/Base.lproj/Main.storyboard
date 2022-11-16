@@ -97,8 +97,8 @@
                                     <constraint firstItem="pgD-Ft-cq0" firstAttribute="leading" secondItem="jQt-rz-eNb" secondAttribute="leading" constant="-10" id="p50-9d-bWE"/>
                                 </constraints>
                             </view>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="gQv-xv-env">
-                                <rect key="frame" x="150" y="427" width="117" height="26"/>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="4" translatesAutoresizingMaskIntoConstraints="NO" id="gQv-xv-env">
+                                <rect key="frame" x="141.5" y="427" width="134.5" height="26"/>
                                 <color key="pageIndicatorTintColor" systemColor="systemGray5Color"/>
                                 <color key="currentPageIndicatorTintColor" systemColor="systemGray2Color"/>
                             </pageControl>
@@ -145,6 +145,7 @@
                         <outlet property="imageViewNoticeViewEmbeddedView" destination="K7V-hP-gsv" id="QV6-K7-cLV"/>
                         <outlet property="noticeLabel" destination="0Ue-cX-qTc" id="4xT-33-me2"/>
                         <outlet property="noticeLabelEmbeddedView" destination="pgD-Ft-cq0" id="UzG-FH-X5J"/>
+                        <outlet property="noticeLabelImage" destination="jQt-rz-eNb" id="TFc-Ba-yTJ"/>
                         <outlet property="okButton" destination="gIi-Zk-NQV" id="Iz2-jd-HWT"/>
                         <outlet property="pageControl" destination="gQv-xv-env" id="tqb-uY-9vE"/>
                         <outlet property="titleLabel" destination="uDJ-Au-BxD" id="Xog-yU-te2"/>
@@ -987,13 +988,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출처 : LiftVault.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nh-hn-Wb3">
-                                <rect key="frame" x="131" y="53" width="152" height="20.5"/>
+                                <rect key="frame" x="131" y="53" width="152" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1WN-Jw-uCR">
-                                <rect key="frame" x="106" y="53.5" width="20" height="19.5"/>
+                                <rect key="frame" x="106" y="53.5" width="20" height="20"/>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <imageReference key="image" image="safari" catalog="system" symbolScale="medium"/>
                             </imageView>
@@ -1011,7 +1012,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QNd-js-60G">
-                                <rect key="frame" x="0.0" y="83.5" width="414" height="1.5"/>
+                                <rect key="frame" x="0.0" y="84" width="414" height="1.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1.5" id="LlO-Sf-g2e"/>
