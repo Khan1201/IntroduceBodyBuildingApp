@@ -13,7 +13,7 @@ class FirstExcuteViewModel {
             temp = "시작하기"
         }
         else{
-            temp = "실행 가이드(출처: LiftVault.com)"
+            temp = "실행 가이드"
         }
         return temp
     }

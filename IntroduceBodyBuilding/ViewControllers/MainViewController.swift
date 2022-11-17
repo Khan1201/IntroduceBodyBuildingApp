@@ -26,8 +26,7 @@ class MainViewController: UIViewController{
         }
         requestNotificationAuthorization()
         makePlusButton()
-        hideKeyboardWhenTappedAround()
-//        test()
+        self.hideKeyboard()
     }
 }
 
@@ -68,7 +67,6 @@ extension MainViewController: UISearchResultsUpdating{
     //SearchBar에 입력 시 실시간으로 결과 반영
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text?.uppercased() else {return}
-        
         mainViewModel.tableViewObservable
             .map({ datas in
                 var tempArray: [MainTVCellModel.Fields] = []
@@ -87,19 +85,6 @@ extension MainViewController: UISearchResultsUpdating{
                 }
             }.disposed(by: disposeBag)
     }
-}
-//MARK: - 검색 활성화 후 주변 클릭 시 키보드 내리기
-
-extension MainViewController {
-    private func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MainViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        mainTableView.keyboardDismissMode = .onDrag
-        view.addGestureRecognizer(tap)
-        
-    }
-    @objc func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)    }
 }
 
 //MARK: - 셀 클릭 이벤트 (한번만 선언위해 바깥으로 빼놓음)

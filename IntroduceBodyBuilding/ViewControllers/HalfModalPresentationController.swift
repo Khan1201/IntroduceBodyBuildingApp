@@ -10,21 +10,21 @@ import UIKit
 class HalfModalPresentationController: UIPresentationController {
     
     let blurEffectView: UIVisualEffectView!
-    var tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer()
+//    var tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer()
     var check: Bool = false
     
     override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
         let blurEffect = UIBlurEffect(style: .dark)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
         super.init(presentedViewController: presentedViewController, presenting: presentedViewController)
-        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissController))
+//        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissController))
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.blurEffectView.isUserInteractionEnabled = true
-        self.blurEffectView.addGestureRecognizer(tapGestureRecognizer)
+//        self.blurEffectView.isUserInteractionEnabled = true
+//        self.blurEffectView.addGestureRecognizer(tapGestureRecognizer)
     }
-    @objc func dismissController() {
-        self.presentedViewController.dismiss(animated: true, completion: nil)
-    }
+//    @objc func dismissController() {
+//        self.presentedViewController.dismiss(animated: true, completion: nil)
+//    }
 
     
     override var frameOfPresentedViewInContainerView: CGRect {
