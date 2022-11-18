@@ -13,6 +13,7 @@ class DetailViewController: UIViewController {
     
     //MARK: - @IBOutlet
     
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var goBackButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
@@ -20,21 +21,6 @@ class DetailViewController: UIViewController {
         didSet{
             imageView.layer.masksToBounds = true
             imageView.layer.cornerRadius = 10
-        }
-    }
-    @IBOutlet weak var routineTableView: UITableView!{
-        didSet{
-            routineTableView.rowHeight = UITableView.automaticDimension
-            routineTableView.estimatedRowHeight = 150
-            routineTableView.layer.masksToBounds = true
-            routineTableView.layer.cornerRadius = 15
-            routineTableView.separatorColor = .label
-        }
-    }
-    @IBOutlet weak var allRoutineButton: UIButton!{
-        didSet{
-            allRoutineButton.layer.masksToBounds = true
-            allRoutineButton.layer.cornerRadius = 10
         }
     }
     @IBOutlet weak var descriptionLabel: UILabel!{
@@ -58,31 +44,94 @@ class DetailViewController: UIViewController {
     }
     @IBOutlet weak var authorLabel: UILabel!
     
-    
-    @IBOutlet weak var addRoutineButton: UIButton!{
+    @IBOutlet weak var weightApplyButton: UIButton!{
         didSet{
-            addRoutineButton.setTitle("루틴등록", for: .normal)
-            addRoutineButton.layer.masksToBounds = true
-            addRoutineButton.layer.cornerRadius = 15
+            weightApplyButton.layer.masksToBounds = true
+            weightApplyButton.layer.cornerRadius = 10
         }
     }
+    
+    
+    @IBOutlet weak var noticeAllEmbeddedView: UIView!{
+        didSet{
+            noticeAllEmbeddedView.layer.cornerRadius = 10
+            noticeAllEmbeddedView.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.6).cgColor
+            noticeAllEmbeddedView.layer.borderWidth = 2.0
+            self.contentView.sendSubviewToBack(noticeAllEmbeddedView)
+        }
+    }
+    @IBOutlet weak var noticeLabel: UILabel!{
+        didSet{
+            noticeLabel.text =
+            """
+            안녕하세요 안녕하세요 안녕하세요
+            안녕하세요 안녕하세요 안녕하세요
+            안녕하세요 안녕하세요 안녕하세요
+            """
+            let attrString = NSMutableAttributedString(string: noticeLabel.text!)
+            let paragraphStyle = NSMutableParagraphStyle()
+            
+            paragraphStyle.lineSpacing = 5
+            attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+            noticeLabel.attributedText = attrString
+        }
+    }
+    @IBOutlet weak var noticeMemoTextView: UITextView!{
+        didSet{
+            noticeMemoTextView.layer.cornerRadius = 10
+            noticeMemoTextView.layer.borderWidth = 1.5
+            noticeMemoTextView.layer.borderColor = UIColor.systemGray5.cgColor
+            noticeMemoTextView.rx.didEndEditing
+                .subscribe { _ in
+                    print("저장")
+                }
+                .disposed(by: disposeBag)
+        }
+    }
+    
+    
+    @IBOutlet weak var routineTableView: UITableView!{
+        didSet{
+            routineTableView.rowHeight = UITableView.automaticDimension
+            routineTableView.estimatedRowHeight = 150
+            routineTableView.layer.masksToBounds = true
+            routineTableView.layer.cornerRadius = 15
+            routineTableView.separatorColor = .label
+        }
+    }
+    @IBOutlet weak var allRoutineButton: UIButton!{
+        didSet{
+            allRoutineButton.layer.masksToBounds = true
+            allRoutineButton.layer.cornerRadius = 10
+        }
+    }
+    
+    // 루틴등록 버튼
+    @IBOutlet weak var addRoutineButton: UIButton!{
+        didSet{
+//            addRoutineButton.setTitle("루틴등록", for: .normal)
+            addRoutineButton.layer.masksToBounds = true
+            addRoutineButton.layer.cornerRadius = 10
+        }
+    }
+    // 보관함 추가 버튼
     @IBOutlet weak var addButton: UIButton!{
         didSet{
             addButton.layer.masksToBounds = true
-            addButton.layer.cornerRadius = 15
+            addButton.layer.cornerRadius = 10
         }
     }
     
     //MARK: - @IBAction
     
+    
+    
     @IBAction func goBackButtonAction(_ sender: Any) {
         self.presentingViewController?.dismiss(animated: true)
     }
-    
-    
-    @IBAction func rmButtonAction(_ sender: Any) {
+    @IBAction func weightApplyButtonAction(_ sender: Any) {
         
-        let rowCount = routineTableView.numberOfRows(inSection: 0)
+        let rowCount =  routineTableView.numberOfRows(inSection: 0)
         lazy var tableViewData:[(String, String)] = [("","")]
 
         self.viewModel.tableViewObservable
@@ -196,7 +245,7 @@ class DetailViewController: UIViewController {
         fromVC()
         bindView()
         bindTableViewInView()
-        
+        self.hideKeyboard()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)

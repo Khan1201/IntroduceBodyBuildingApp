@@ -1,12 +1,35 @@
 import Foundation
 import RxSwift
+import RxCocoa
 
 class FirstExcuteViewModel {
     
-    lazy var detectFirstExecution = true
+    // 전체루틴보기 VC에 사용
     lazy var fromExecutionGuide: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     
-    var index = 0
+    // 최초실행 VC에 사용
+    lazy var benchPressObservable: BehaviorRelay<String> = BehaviorRelay(value: "")
+    lazy var deadLiftObservable: BehaviorRelay<String> = BehaviorRelay(value: "")
+    lazy var squatObservable: BehaviorRelay<String> = BehaviorRelay(value: "")
+    lazy var completionObservable: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+
+    lazy var isValid: Observable<Bool> = {
+        return Observable.combineLatest(benchPressObservable, deadLiftObservable, squatObservable)
+            .map { benchPress, deadLift, squat in
+                return !benchPress.isEmpty && !deadLift.isEmpty && !squat.isEmpty
+            }
+    }()
+    
+    // 둘 다 공통으로 사용
+    lazy var detectFirstExecution = true
+    var currentIndex = 0
+    var firstExcuteMaxIndex: Int{
+        return firstExcuteimageNamesArray.count - 1 + 1 // index화 -> 새로운 UI를 위해 +1 적용
+    }
+    var executionGuideMaxIndex: Int{
+        return executionGuideImageNamesArray.count - 1
+    }
+    
     var initialTitle: String {
         var temp: String
         if detectFirstExecution{
@@ -27,8 +50,6 @@ class FirstExcuteViewModel {
         }
         return temp
     }
-    
-    
     
     lazy var firstExcuteimageNamesArray: [String] = ["firstExecution1", "firstExecution2", "firstExecution3"]
     lazy var firstExcuteNotice1: String =
@@ -67,5 +88,4 @@ class FirstExcuteViewModel {
     '스프레드 시트'를
     선택하세요.
     """
-    
 }

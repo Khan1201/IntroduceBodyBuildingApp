@@ -6,9 +6,10 @@ import Then
 
 class FirstExcuteViewController: UIViewController {
     let viewModel = FirstExcuteViewModel()
+    var disposeBag = DisposeBag()
     
-    let lastPageAllEmbeddedView = UIView()
-    let benchPressTextField = UITextField().then {
+    lazy var lastPageAllEmbeddedView = UIView()
+    lazy var benchPressTextField = UITextField().then {
         $0.layer.cornerRadius = 5
         $0.layer.borderColor = UIColor.label.cgColor
         $0.layer.borderWidth = 1.5
@@ -16,8 +17,9 @@ class FirstExcuteViewController: UIViewController {
         $0.textAlignment = .center
         $0.placeholder = "ex) 100"
         $0.keyboardType = .numberPad
+        $0.returnKeyType = .done
     }
-    let deadLiftTextField = UITextField().then {
+    lazy var deadLiftTextField = UITextField().then {
         $0.layer.cornerRadius = 5
         $0.layer.borderColor = UIColor.label.cgColor
         $0.layer.borderWidth = 1.5
@@ -25,8 +27,9 @@ class FirstExcuteViewController: UIViewController {
         $0.textAlignment = .center
         $0.placeholder = "ex) 160"
         $0.keyboardType = .numberPad
+        $0.returnKeyType = .done
     }
-    let squatTextField = UITextField().then {
+    lazy var squatTextField = UITextField().then {
         $0.layer.cornerRadius = 5
         $0.layer.borderColor = UIColor.label.cgColor
         $0.layer.borderWidth = 1.5
@@ -34,19 +37,7 @@ class FirstExcuteViewController: UIViewController {
         $0.textAlignment = .center
         $0.placeholder = "ex) 150"
         $0.keyboardType = .numberPad
-    }
-    
-    
-    func makeInputLabel(placeHolder: String) -> UITextField{
-        let textField = UITextField()
-        textField.layer.cornerRadius = 5
-        textField.layer.borderColor = UIColor.label.cgColor
-        textField.layer.borderWidth = 1.5
-        textField.font = .systemFont(ofSize: 11)
-        textField.textAlignment = .center
-        textField.placeholder = placeHolder
-        textField.keyboardType = .numberPad
-        return textField
+        $0.returnKeyType = .done
     }
     
     //MARK: - IBOutlet
@@ -89,7 +80,7 @@ class FirstExcuteViewController: UIViewController {
             let paragraphStyle = NSMutableParagraphStyle()
             
             paragraphStyle.alignment = .center
-            paragraphStyle.lineSpacing = 30
+            paragraphStyle.lineSpacing = 20
             attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
             noticeLabel.attributedText = attrString
         }
@@ -114,16 +105,26 @@ class FirstExcuteViewController: UIViewController {
     
     @IBAction func okButtonAction(_ sender: Any) {
         if viewModel.detectFirstExecution{
-            if viewModel.index != 3{ // 해당 VC의 pageControl 최대 index = 3
+            if viewModel.currentIndex <= viewModel.firstExcuteMaxIndex - 1{ // 해당 VC의 pageControl 최대 currentIndex = 3
                 setGestureDirectionEvent("left")
             }
             else{
-                self.dismiss(animated: true)
+                viewModel.isValid
+                    .filter { $0 == true}
+                    .bind { _ in
+                        UserDefaults.standard.set(Int(self.benchPressTextField.text!)!, forKey: "benchPress")
+                        UserDefaults.standard.set(Int(self.deadLiftTextField.text!)!, forKey: "deadLift")
+                        UserDefaults.standard.set(Int(self.squatTextField.text!)!, forKey: "squat")
+                        self.presentingViewController?.dismiss(animated: true)
+                        self.dismiss(animated: true) {
+                            self.viewModel.completionObservable.onNext(true)
+                        }
+                    }.dispose()
             }
         }
         
         else{
-            if viewModel.index != 2{ // 해당 VC의 pageControl 최대 index = 2
+            if viewModel.currentIndex <= viewModel.executionGuideMaxIndex - 1{ // 해당 VC의 pageControl 최대 currentIndex = 2
                 setGestureDirectionEvent("left")
             }
             else{
@@ -136,13 +137,13 @@ class FirstExcuteViewController: UIViewController {
     @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {
         addGestureEvent(sender: sender)
     }
-    
     //MARK: - viewDidLoad()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         if viewModel.detectFirstExecution{
             drawInputUI()
+            bindTextFieldData()
         }
         addGestureAfterSetDirection()
         self.hideKeyboard()
@@ -169,7 +170,7 @@ extension FirstExcuteViewController{
     //제스처 추가
     func addGestureEvent(sender: UISwipeGestureRecognizer){
         if sender.direction == .right{
-            if viewModel.index == 0{
+            if viewModel.currentIndex == 0{
                 return
             }
             setGestureDirectionEvent("right")
@@ -177,12 +178,12 @@ extension FirstExcuteViewController{
         else if sender.direction == .left{
             
             if viewModel.detectFirstExecution{
-                if viewModel.index == 3{
+                if viewModel.currentIndex == 3{
                     return
                 }
             }
             else{
-                if viewModel.index == 2{
+                if viewModel.currentIndex == 2{
                     return
                 }
             }
@@ -196,21 +197,21 @@ extension FirstExcuteViewController{
     func setGestureDirectionEvent(_ direction: String){
         // 제스처 방향에 따른 UI 수정
         if direction == "left"{
-            viewModel.index += 1
+            viewModel.currentIndex += 1
         }
         else if direction == "right"{
-            viewModel.index -= 1
+            viewModel.currentIndex -= 1
         }
-        pageControl.currentPage = viewModel.index
+        pageControl.currentPage = viewModel.currentIndex
         
-        // 최초실행 VC의 총 페이지 = 4 (index = 0 ~ 3), 전체루틴 VC의 총 페이지 = 3 (index = 0 ~ 2)
+        // 최초실행 VC의 총 페이지 = 4 (currentIndex = 0 ~ 3), 전체루틴 VC의 총 페이지 = 3 (currentIndex = 0 ~ 2)
         if viewModel.detectFirstExecution{
             insertDivisionData(imageArray: viewModel.firstExcuteimageNamesArray,
                                notice1: viewModel.firstExcuteNotice1,
                                notice2: viewModel.firstExcuteNotice2,
                                notice3: viewModel.firstExcuteNotice3)
             modifyUIHidden()
-            setButtonTitle(maxIndex: 3)
+            setButtonTitleAndAlpha(maxIndex: viewModel.firstExcuteMaxIndex) // 마지막 page에 새로운 UI 생성
             
         }
         else{
@@ -218,20 +219,20 @@ extension FirstExcuteViewController{
                                notice1: viewModel.executionGuideNotice1,
                                notice2: viewModel.executionGuideNotice2,
                                notice3: viewModel.executionGuideNotice3)
-            setButtonTitle(maxIndex: 2)
+            setButtonTitleAndAlpha(maxIndex: viewModel.executionGuideMaxIndex)
         }
         
         // viewModel.detectFirstExecution의 결과에 따른 데이터 삽입 (최초 실행 VC or 전체 루틴보기 가이드 VC)
         func insertDivisionData(imageArray: [String], notice1: String, notice2: String, notice3: String){
             
-            // viewModel.index에 따른 UI 수정
-            if viewModel.index == 0{
+            // viewModel.index에 따른 UI 수정 (notice1, 2, 3 변수들이 Array에 들어가질 않아서 이렇게 로직 작성)
+            if viewModel.currentIndex == 0{
                 modifyUIData(imageArray[0], notice1)
             }
-            else if viewModel.index == 1{
+            else if viewModel.currentIndex == 1{
                 modifyUIData(imageArray[1], notice2)
             }
-            else if viewModel.index == 2{
+            else if viewModel.currentIndex == 2{
                 modifyUIData(imageArray[2], notice3)
                 
             }
@@ -239,14 +240,14 @@ extension FirstExcuteViewController{
                 return
             }
             
-            //index 0 ~ 2 (마지막이 아닐때) 기존 뷰 수정
+            //currentIndex 0 ~ 2 (마지막이 아닐때) 기존 뷰 수정
             func modifyUIData(_ imageString: String, _ notice: String){
                 imageView.image = UIImage(named: imageString)
                 noticeLabel.text = notice
             }
         }
         func modifyUIHidden(){
-            if viewModel.index <= 2{
+            if viewModel.currentIndex <= (viewModel.firstExcuteMaxIndex) - 1 {
                 lastPageAllEmbeddedView.isHidden = true
                 makeVisibleExistingUI()
             }
@@ -266,15 +267,22 @@ extension FirstExcuteViewController{
                 self.noticeLabelEmbeddedView.isHidden = true
             }
         }
-        func setButtonTitle(maxIndex: Int){
-            if viewModel.index <= maxIndex - 1 {
+        func setButtonTitleAndAlpha(maxIndex: Int){
+            if viewModel.currentIndex <= maxIndex - 1 {
                 okButton.setTitle("다음", for: .normal)
+                okButton.alpha = 1
             }
             else{
                 okButton.setTitle("확인", for: .normal)
+                
+                if viewModel.detectFirstExecution{
+                    viewModel.isValid
+                        .map { $0 ? 1 : 0.3}
+                        .bind(to: okButton.rx.alpha)
+                        .disposed(by: disposeBag)
+                }
             }
         }
-        
     }
 }
 
@@ -336,7 +344,7 @@ extension FirstExcuteViewController{
                 make.left.equalToSuperview()
             }
             divisionLineView.snp.makeConstraints { make in
-                make.top.equalTo(inputTitleLabel.snp.bottom).offset(15)
+                make.top.equalTo(inputTitleLabel.snp.bottom).offset(8)
                 make.left.equalToSuperview()
                 make.right.equalToSuperview()
                 make.height.equalTo(0.5)
@@ -377,5 +385,26 @@ extension FirstExcuteViewController{
                 make.width.equalTo(90)
             }
         }
+    }
+}
+
+//MARK: - 1RM 입력 텍스트필드 데이터 -> observable 바인딩
+
+extension FirstExcuteViewController{
+    func bindTextFieldData(){
+        benchPressTextField.rx.text
+            .orEmpty
+            .bind(to: viewModel.benchPressObservable)
+            .disposed(by: disposeBag)
+        
+        deadLiftTextField.rx.text
+            .orEmpty
+            .bind(to: viewModel.deadLiftObservable)
+            .disposed(by: disposeBag)
+        
+        squatTextField.rx.text
+            .orEmpty
+            .bind(to: viewModel.squatObservable)
+            .disposed(by: disposeBag)
     }
 }

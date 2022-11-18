@@ -265,12 +265,51 @@ extension MainViewController{
         
         mainViewModel.firstExecution
             .filter { $0 == true}
-            .subscribe { _ in
-                let firstVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstExcuteViewController")
+            .subscribe { [weak self] _ in
+                guard let firstVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstExcuteViewController") as? FirstExcuteViewController else {return}
                 firstVC.modalPresentationStyle = .custom
                 firstVC.transitioningDelegate = self
-                self.present(firstVC, animated: true)
+                firstVC.viewModel.completionObservable
+                    .filter { $0 == true}
+                    .subscribe { _ in
+                        print("토스트 출력")
+                        self?.showToast()
+                    }.disposed(by: self?.disposeBag ?? DisposeBag())
+                self?.present(firstVC, animated: true)
             }.dispose()
+    }
+    
+    //최초 실행 Toast 출력
+    func showToast(font: UIFont = UIFont.systemFont(ofSize: 13.0)) {
+        //        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 84, y: self.view.frame.size.height-100, width: 170, height: 30))
+        let toastLabel = UILabel()
+        let message =
+        """
+        (+) 버튼 -> 1RM 탭에서
+        1RM 재설정 가능합니다.
+        """
+        toastLabel.backgroundColor = .systemGray
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.numberOfLines = 2
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 5
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 10, delay: 0.5, options: .transitionCurlDown, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+        
+        toastLabel.snp.makeConstraints { make in
+            make.height.equalTo(40)
+            make.width.equalTo(180)
+            make.bottom.equalToSuperview().offset(-100)
+            make.centerX.equalToSuperview()
+        }
     }
 }
 extension MainViewController: UIViewControllerTransitioningDelegate{

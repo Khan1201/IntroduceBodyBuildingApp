@@ -276,7 +276,7 @@ extension RoutineViewController{
         toastLabel.layer.cornerRadius = 10;
         toastLabel.clipsToBounds  =  true
         self.view.addSubview(toastLabel)
-        UIView.animate(withDuration: 8, delay: 0.3, options: .curveLinear, animations: {
+        UIView.animate(withDuration: 8, delay: 0.3, options: .transitionCurlDown, animations: {
             toastLabel.alpha = 0.0
         }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()
