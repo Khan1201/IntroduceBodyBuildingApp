@@ -88,6 +88,5 @@ extension MyProgramViewModel{
         } catch {
             print("fetch error: \(error)")
         }
-        bindingCoreData(to: divisonModel, division: division) //삭제 후 데이터 리바인딩
     }
 }

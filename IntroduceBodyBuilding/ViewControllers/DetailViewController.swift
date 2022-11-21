@@ -55,7 +55,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var noticeAllEmbeddedView: UIView!{
         didSet{
             noticeAllEmbeddedView.layer.cornerRadius = 10
-            noticeAllEmbeddedView.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.6).cgColor
+            noticeAllEmbeddedView.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.6).cgColor
             noticeAllEmbeddedView.layer.borderWidth = 2.0
             self.contentView.sendSubviewToBack(noticeAllEmbeddedView)
         }
@@ -64,16 +64,17 @@ class DetailViewController: UIViewController {
         didSet{
             noticeLabel.text =
             """
-            안녕하세요 안녕하세요 안녕하세요
-            안녕하세요 안녕하세요 안녕하세요
-            안녕하세요 안녕하세요 안녕하세요
+            모든 루틴은 세트 x 횟수 입니다.
+            -----------------------------------
+            무게가 없는 것은 해당 반복횟수를
+            수행 할 수 있는 개인의 무게입니다.
+            -----------------------------------
+            AMRAP = 최대 수행가능한 반복 횟수
+            -----------------------------------
+            메모는 모든 프로그램에 공유됩니다.
             """
-            let attrString = NSMutableAttributedString(string: noticeLabel.text!)
-            let paragraphStyle = NSMutableParagraphStyle()
             
-            paragraphStyle.lineSpacing = 5
-            attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
-            noticeLabel.attributedText = attrString
+            noticeLabel.lineColorAndLineSpacing(spacing: 5)
         }
     }
     @IBOutlet weak var noticeMemoTextView: UITextView!{
@@ -81,9 +82,11 @@ class DetailViewController: UIViewController {
             noticeMemoTextView.layer.cornerRadius = 10
             noticeMemoTextView.layer.borderWidth = 1.5
             noticeMemoTextView.layer.borderColor = UIColor.systemGray5.cgColor
+            noticeMemoTextView.text = UserDefaults.standard.string(forKey: "memo")
             noticeMemoTextView.rx.didEndEditing
-                .subscribe { _ in
+                .subscribe { [weak self] _ in
                     print("저장")
+                    UserDefaults.standard.set(self?.noticeMemoTextView.text, forKey: "memo")
                 }
                 .disposed(by: disposeBag)
         }
@@ -123,9 +126,7 @@ class DetailViewController: UIViewController {
     }
     
     //MARK: - @IBAction
-    
-    
-    
+
     @IBAction func goBackButtonAction(_ sender: Any) {
         self.presentingViewController?.dismiss(animated: true)
     }
@@ -141,9 +142,10 @@ class DetailViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
             for row in 0..<rowCount{
-                tableViewData[row].1 = "수정"
+                tableViewData[row].1 = self.convertPercent(text: tableViewData[row].1)
             }
             self.viewModel.tableViewObservable.onNext(tableViewData)
+            self.showToast()
         }
     }
     
@@ -372,6 +374,39 @@ extension DetailViewController{
 extension DetailViewController: UIViewControllerTransitioningDelegate{
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController?{
         return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+//MARK: - 1RM 클릭 시 제공 toast
+
+extension DetailViewController{
+    func showToast(font: UIFont = UIFont.systemFont(ofSize: 13.0)) {
+        //        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 84, y: self.view.frame.size.height-100, width: 170, height: 30))
+        let toastLabel = UILabel()
+        let message = "1RM 적용 완료 !"
+
+        toastLabel.backgroundColor = .systemTeal
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.numberOfLines = 2
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 10, delay: 0.5, options: .transitionCurlDown, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+        
+        toastLabel.snp.makeConstraints { make in
+            make.height.equalTo(40)
+            make.width.equalTo(130)
+            make.bottom.equalToSuperview().offset(-100)
+            make.centerX.equalToSuperview()
+        }
     }
 }
 

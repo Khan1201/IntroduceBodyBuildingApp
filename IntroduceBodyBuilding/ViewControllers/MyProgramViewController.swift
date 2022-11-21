@@ -85,21 +85,21 @@ extension MyProgramViewController {
                 .bind(to: BBCollectionView.rx.items(cellIdentifier: "BBCollectionViewCell",cellType: BBCollectionViewCell.self)) { (index, element, cell) in
                     cell.BBTitleLabel.text = element.title
                     cell.BBimageView.image = UIImage(named: element.title ?? "")
-                    self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.bodyBuildingObservable, division: "bodybuilding")
+                    self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.bodyBuildingObservable, division: "BodyBuilding")
                 }.disposed(by: disposeBag)
             
             myProgramViewModel.powerBuildingObservable
                 .bind(to: PBCollectionView.rx.items(cellIdentifier: "PBCollectionViewCell",cellType: PBCollectionViewCell.self)) { (index, element, cell) in
                     cell.PBTitleLabel.text = element.title
                     cell.PBimageView.image = UIImage(named: element.title ?? "")
-                    self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.powerBuildingObservable, division: "powerbuilding")
+                    self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.powerBuildingObservable, division: "PowerBuilding")
                 }.disposed(by: disposeBag)
             
             myProgramViewModel.powerLiftingObservable
                 .bind(to: PLCollectionView.rx.items(cellIdentifier: "PLCollectionViewCell",cellType: PLCollectionViewCell.self)) { (index, element, cell) in
                     cell.PLTitleLabel.text = element.title
                     cell.PLimageView.image = UIImage(named: element.title ?? "")
-                    self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.powerLiftingObservable, division: "powerlifting")
+                    self.makeDeleteButton(in: cell, deleteCondition: element.title ?? "", target: self.myProgramViewModel.powerLiftingObservable, division: "PowerLifting")
                 }.disposed(by: disposeBag)
         }
         
@@ -176,9 +176,9 @@ extension MyProgramViewController{
         //데이터 삭제 이벤트, division은 삭제 후 구분된 Observable에 새로운 데이터 next 위해
         func addCilckEvent(){
             closeButton.rx.tap.bind { [weak self] in
-                if let self = self{
-                    self.myProgramViewModel.deleteCoreData(to: target, deleteCondition: deleteCondition, division: division)
-                }
+                self?.myProgramViewModel.deleteCoreData(to: target, deleteCondition: deleteCondition, division: division)
+                self?.myProgramViewModel.bindingCoreData(to: target, division: division)
+                
             }.disposed(by: disposeBag)
         }
     }
