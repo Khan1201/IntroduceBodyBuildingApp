@@ -97,12 +97,12 @@ extension UIViewController {
     }
 }
 
-//MARK: - 알림 권한 alert
+//MARK: - foreground에서의 알림 전송
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert, .badge, .sound])
+        completionHandler([.alert, .sound])
     }
 }

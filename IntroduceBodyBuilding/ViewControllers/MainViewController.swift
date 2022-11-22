@@ -24,7 +24,6 @@ class MainViewController: UIViewController{
         DispatchQueue.main.asyncAfter(deadline: .now() + 1){
             self.bindTableView(isFilterd: false)
         }
-        requestNotificationAuthorization()
         makePlusButton()
         self.hideKeyboard()
     }
@@ -214,13 +213,14 @@ extension MainViewController {
         }
     }
 }
-//MARK: - 로컬 푸쉬 알림 허용 알림
+//MARK: - 로컬 푸쉬 알림 권한 요청
 
 extension MainViewController {
     func requestNotificationAuthorization() {
-        let authOptions = UNAuthorizationOptions(arrayLiteral: .alert, .badge, .sound)
+        let authOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
         
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { success, error in
+      
             if let error = error {
                 print("Error: \(error)")
             }
@@ -271,42 +271,43 @@ extension MainViewController{
                 firstVC.transitioningDelegate = self
                 firstVC.viewModel.completionObservable
                     .filter { $0 == true}
-                    .subscribe { _ in
-                        print("토스트 출력")
-                        self?.showToast()
+                    .subscribe { [weak self] _ in
+                            self?.requestNotificationAuthorization() // 로컬 푸쉬 알림 권한 요청
+                        
+                            let message =
+                            """
+                            (+) 버튼 -> 1RM 탭에서
+                            1RM 재설정 가능합니다.
+                            """
+                            self?.showToast(message: message)
                     }.disposed(by: self?.disposeBag ?? DisposeBag())
                 self?.present(firstVC, animated: true)
             }.dispose()
     }
     
     //최초 실행 Toast 출력
-    func showToast(font: UIFont = UIFont.systemFont(ofSize: 13.0)) {
+    func showToast(font: UIFont = UIFont.systemFont(ofSize: 13, weight: .bold), message: String) {
         //        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 84, y: self.view.frame.size.height-100, width: 170, height: 30))
         let toastLabel = UILabel()
-        let message =
-        """
-        (+) 버튼 -> 1RM 탭에서
-        1RM 재설정 가능합니다.
-        """
-        toastLabel.backgroundColor = .systemGray
+        toastLabel.backgroundColor = .systemBlue
         toastLabel.textColor = UIColor.white
         toastLabel.font = font
         toastLabel.numberOfLines = 2
         toastLabel.textAlignment = .center;
         toastLabel.text = message
         toastLabel.alpha = 1.0
-        toastLabel.layer.cornerRadius = 5
+        toastLabel.layer.cornerRadius = 10
         toastLabel.clipsToBounds  =  true
         self.view.addSubview(toastLabel)
-        UIView.animate(withDuration: 10, delay: 0.5, options: .transitionCurlDown, animations: {
+        UIView.animate(withDuration: 12, delay: 0.5, options: .transitionCurlDown, animations: {
             toastLabel.alpha = 0.0
         }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()
         })
         
         toastLabel.snp.makeConstraints { make in
-            make.height.equalTo(40)
-            make.width.equalTo(180)
+            make.height.equalTo(50)
+            make.width.equalTo(200)
             make.bottom.equalToSuperview().offset(-100)
             make.centerX.equalToSuperview()
         }

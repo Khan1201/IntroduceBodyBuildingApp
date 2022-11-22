@@ -51,20 +51,29 @@ class FirstExcuteViewModel {
         return temp
     }
     
-    lazy var firstExcuteimageNamesArray: [String] = ["firstExecution1", "firstExecution2", "firstExecution3"]
+    lazy var firstExcuteimageNamesArray: [String] =
+    ["firstExecution1", "firstExecution2", "firstExecution3", "firstExecution4"]
+    
     lazy var firstExcuteNotice1: String =
     """
-    해당 프로그램을
-    등록 해보세요.
+    다양한 프로그램을
+    즐겨 보세요.
     """
     
     lazy var firstExcuteNotice2: String =
+    """
+    자신의 1RM을
+    적용하고
+    메모 해보세요.
+    """
+    
+    lazy var firstExcuteNotice3: String =
     """
     자주보는 프로그램을
     등록 해보세요.
     """
     
-    lazy var firstExcuteNotice3: String =
+    lazy var firstExcuteNotice4: String =
     """
     루틴을 등록하여
     알람을 받아보세요.

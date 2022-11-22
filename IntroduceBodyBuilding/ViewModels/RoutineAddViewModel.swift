@@ -9,6 +9,9 @@ class RoutineAddViewModel {
     lazy var dataFromTableCell = DataFromTableCell()
     lazy var uiData = UIData()
     
+    // DataFromTableCell 및 UIData 공동으로 사용
+    var datePickerObservable: BehaviorSubject = BehaviorSubject(value: "오전 7:00")
+    
     struct DataFromTableCell{
         var fromTableCellSelectionBool = BehaviorSubject<Bool>(value: false)
         var fromTableCellSelectedDaysIntArray: [String] = []
@@ -83,12 +86,12 @@ extension RoutineAddViewModel{
     }
 }
 
-//MARK: - 루틴 추가 버튼으로 VC호출 -> 저장 시 해당 메소드 실행(coreData에 데이터 추가)
+//MARK: - 루틴 추가 버튼으로 VC호출 -> 저장 시 해당 메소드 실행(CoreData에 데이터 추가)
 
 extension RoutineAddViewModel{
     
-    // 저장 후 중복체크 bool return 함. true -> 중복이므로 alert 띄움, false -> coreData 삽입 (루틴 페이지에 등록)
-    func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], recommend: String, week: String, weekCount: String,switchBool: Bool, selectedDays: Int) -> Bool{
+    // 저장 후 중복체크 bool return 함. true -> 데이터 삽입 X, false -> CoreData 삽입 (루틴 페이지에 등록)
+    func returnDuplicatedBoolAfterSaveData(title: String, imageName: String, divisionName: String, dayBools: [Bool], recommend: String, week: String, weekCount: String, switchBool: Bool, selectedDays: Int) -> Bool{
         
         var duplicated: Bool = false // 중복 체크 bool
         duplicated = checkDuplicated()

@@ -12,7 +12,7 @@ class RoutineViewModel{
     lazy var routineAddObservable = BehaviorSubject<[RoutineVCModel.Fields]>(value: [])
     lazy var fromAddRoutineInDetailVC = BehaviorSubject<Bool>(value: false)  // detailVC의 루틴 등록 버튼으로 접근 확인
     lazy var checkAuthorization = PublishSubject<Bool>()
-
+    
     init(){
         readCoreData()
     }
@@ -90,7 +90,7 @@ extension RoutineViewModel{
 //MARK: - 로컬 notification 생성
 
 extension RoutineViewModel{
-    func makeLocalNotification(title: String, days: [String]) {
+    func makeLocalNotification(title: String, days: [String], time: String = "오전 7:00") {
         let notificationContent = UNMutableNotificationContent()
         
         notificationContent.title = "오늘은 운동하는 날 !"
@@ -121,7 +121,9 @@ extension RoutineViewModel{
                     var dateComponents = DateComponents()
                     dateComponents.calendar = Calendar.current
                     dateComponents.weekday = weekDay
-                    dateComponents.hour = 7
+                    dateComponents.hour = convertHour(time: time)
+                    dateComponents.minute = convertMinute(time: time)
+                    
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     let request = UNNotificationRequest(identifier: "\(title): \(identifier)",
                                                         content: notificationContent,
@@ -135,21 +137,56 @@ extension RoutineViewModel{
                 else {
                     return
                 }
+                
+                func convertHour(time: String) -> Int {
+                    let intTimeFirstIndex = time.index(time.startIndex, offsetBy: 3)
+                    let intTime = String(time[intTimeFirstIndex...])
+                    var hour: Int = 0
+                    print(time)
+                    if time.contains("오후"){
+                        if intTime.count == 5 { // ex) 오후 11:10
+                            hour = Int(intTime.prefix(2)) ?? 0
+                        }
+                        else if intTime.count == 4{ // ex) 오후 7:10
+                            hour = (Int(intTime.prefix(1)) ?? 0) + 12
+                        }
+                    }
+                    
+                    else{
+                        if intTime.count == 5 { // ex) 오전 11:10
+                            hour = Int(intTime.prefix(2)) ?? 0
+                            if hour == 12{
+                                hour = 0
+                            }
+                        }
+                        else if intTime.count == 4{ // ex) 오전 7:10
+                            hour = Int(intTime.prefix(1)) ?? 0
+                        }
+                    }
+                    print("hour: \(hour)")
+                    return hour
+                }
+                
+                func convertMinute(time: String) -> Int{
+                    let intTimeFirstIndex = time.index(time.startIndex, offsetBy: 3)
+                    let intTime = String(time[intTimeFirstIndex...])
+                    let minute: Substring = intTime.suffix(2)
+                    print("minute: \(Int(minute) ?? 0)")
+                    return Int(minute) ?? 0
+                }
             }
         }
     }
 }
-
-//MARK: - 로컬 notification 삭제
-
-extension RoutineViewModel{
-    func deleteNotification(title: String, days: [String]){
-        var identifiers: [String] = []
-        for (index, _) in days.enumerated(){
-            //배열 접근  -> 배열 index 값 get
-            identifiers.append("\(title): \(index)")
+    //MARK: - 로컬 notification 삭제
+    
+    extension RoutineViewModel{
+        func deleteNotification(title: String, days: [String]){
+            var identifiers: [String] = []
+            for (index, _) in days.enumerated(){
+                //배열 접근  -> 배열 index 값 get
+                identifiers.append("\(title): \(index)")
+            }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
         }
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
     }
-}
-

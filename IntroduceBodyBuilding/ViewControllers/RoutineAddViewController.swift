@@ -36,6 +36,9 @@ class RoutineAddViewController: UIViewController {
     @IBOutlet weak var totalPeriodTextField: UITextField!
     @IBOutlet weak var weekNoticeLabel: UILabel!
     @IBOutlet weak var noticeSwitch: UISwitch!
+    @IBOutlet weak var datePicker: UIDatePicker!
+    
+    // 밑 2개는 루틴 VC 셀에서 호출 시 보임
     @IBOutlet weak var viewRoutineButton: UIButton!{
         didSet{
             setCornerRadius(viewRoutineButton, radius: 10)
@@ -60,6 +63,14 @@ class RoutineAddViewController: UIViewController {
         // 호출한 VC check
         viewModel.dataFromTableCell.fromTableCellSelectionBool
             .subscribe { [weak self] bool in
+                var alarmTime: String = ""
+                self?.viewModel.datePickerObservable
+                    .subscribe { data in
+                        if let data = data.element{
+                            alarmTime = data
+                        }
+                    }.dispose()
+                
                 guard let fromTableCellSelectionBool = bool.element else {return} // tableCell에서의 호출 구독
                 guard let switchBool = self?.noticeSwitch.isOn else {return}
                 guard let title = self?.programTextField.text! else {return}
@@ -76,7 +87,7 @@ class RoutineAddViewController: UIViewController {
                     // 스위치 on일 시, notification 추가
                     if switchBool{
                         self?.routineViewModel.deleteNotification(title: title, days: selectedDaysIntArray)
-                        self?.routineViewModel.makeLocalNotification(title: title, days: selectedDaysStringArray)
+                        self?.routineViewModel.makeLocalNotification(title: title, days: selectedDaysStringArray, time: alarmTime)
                     }
                     else{
                         self?.routineViewModel.deleteNotification(title: title, days: selectedDaysIntArray)
@@ -90,6 +101,8 @@ class RoutineAddViewController: UIViewController {
                 
                 // 루틴 추가 버튼으로 호출 되었을 시
                 else{
+                    
+                    
                     guard let title = self?.programTextField.text! else {return}
                     guard let imageName = self?.viewModel.getDivisionIconName(self?.divisionTextField.text! ?? "") else {return}
                     guard let divisionName = self?.divisionTextField.text! else {return}
@@ -100,8 +113,9 @@ class RoutineAddViewController: UIViewController {
                     guard let switchBool = self?.noticeSwitch.isOn else {return}
                     guard let selectedDaysInt = self?.viewModel.uiData.selectedDayCount else {return}
                     guard let selectedDaysStringArray = self?.viewModel.uiData.selectedDaysStringArray else {return}
+
                     
-                    // coredata 접근 후 중복 state bool return. 중복이 아니면, 데이터 저장 함
+                    // coredata 접근 후 중복 state bool return. 중복 O -> 데이터 저장 X, 중복 X -> 데이터 저장
                     guard let duplicated = self?.viewModel.returnDuplicatedBoolAfterSaveData(title: title, imageName: imageName, divisionName: divisionName, dayBools: selectedDaysBoolArray, recommend: recommend, week: totalWeek, weekCount: String(oneWeekCount), switchBool: switchBool, selectedDays: selectedDaysInt) else {return}
                     
                     if duplicated{
@@ -110,7 +124,7 @@ class RoutineAddViewController: UIViewController {
                     else{
                          // 알림 스위치 on -> 해당 프로그램 notification 등록
                         if switchBool{
-                            self?.routineViewModel.makeLocalNotification(title: title, days: selectedDaysStringArray)
+                            self?.routineViewModel.makeLocalNotification(title: title, days: selectedDaysStringArray, time: alarmTime)
                         }
                         self?.presentingViewController?.dismiss(animated: true){
                             if switchBool{
@@ -166,6 +180,15 @@ class RoutineAddViewController: UIViewController {
         bindPickerView()
         bindUIFromTableCellSelection()
         checkAuthorization()
+        datePicker.rx.value.changed
+            .subscribe { time in
+                let timeFormatter = DateFormatter()
+                timeFormatter.timeStyle = DateFormatter.Style.short
+
+                var strDate = timeFormatter.string(from: self.datePicker.date)
+                self.viewModel.datePickerObservable.onNext(strDate)
+            }
+        
     }
 }
 
@@ -401,11 +424,11 @@ extension RoutineAddViewController{
             
             toastLabel.snp.makeConstraints { make in
                 
-                make.left.equalTo(noticeSwitch.snp.right).offset(-15)
+                make.left.equalTo(noticeSwitch.snp.right).offset(35)
                 make.top.equalTo(weekNoticeLabel.snp.bottom).offset(10)
                 make.bottom.equalTo(embeddedView.snp.bottom).offset(-15)
             }
-            UIView.animate(withDuration: 7, delay: 0.3, options: .curveLinear, animations: {
+            UIView.animate(withDuration: 10, delay: 0.3, options: .curveLinear, animations: {
                 toastLabel.alpha = 0.0
             }, completion: {(isCompleted) in
                 toastLabel.removeFromSuperview()

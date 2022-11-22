@@ -265,7 +265,7 @@ extension RoutineViewController {
 //MARK: - routineAddVC -> routineVC으로 dismiss 시, toast 메세지 출력
 
 extension RoutineViewController{
-    func showToast(message : String, font: UIFont = UIFont.systemFont(ofSize: 11.0)) {
+    func showToast(message : String, font: UIFont = UIFont.systemFont(ofSize: 11, weight: .bold)) {
         let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 84, y: self.view.frame.size.height-100, width: 170, height: 30))
         toastLabel.backgroundColor = .systemGray
         toastLabel.textColor = UIColor.white

@@ -42,6 +42,7 @@ class FirstExcuteViewController: UIViewController {
     
     //MARK: - IBOutlet
     
+    @IBOutlet weak var goBackButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!{
         didSet{
             titleLabel.text = viewModel.initialTitle
@@ -88,10 +89,10 @@ class FirstExcuteViewController: UIViewController {
     @IBOutlet weak var pageControl: UIPageControl!{
         didSet{
             if viewModel.detectFirstExecution{
-                pageControl.numberOfPages = 4
+                pageControl.numberOfPages = viewModel.firstExcuteMaxIndex + 1
             }
             else{
-                pageControl.numberOfPages = 3
+                pageControl.numberOfPages = viewModel.executionGuideMaxIndex
             }
         }
     }
@@ -115,6 +116,11 @@ class FirstExcuteViewController: UIViewController {
                         UserDefaults.standard.set(Int(self.benchPressTextField.text!)!, forKey: "benchPress")
                         UserDefaults.standard.set(Int(self.deadLiftTextField.text!)!, forKey: "deadLift")
                         UserDefaults.standard.set(Int(self.squatTextField.text!)!, forKey: "squat")
+                        
+                        // 현재 버전 저장 (1RM 받지 못하면 항상 최초실행 VC 띄움)
+                        let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+                        UserDefaults.standard.set(currentVersion, forKey: "VersionOfLastRun")
+
                         self.presentingViewController?.dismiss(animated: true)
                         self.dismiss(animated: true) {
                             self.viewModel.completionObservable.onNext(true)
@@ -144,6 +150,9 @@ class FirstExcuteViewController: UIViewController {
         if viewModel.detectFirstExecution{
             drawInputUI()
             bindTextFieldData()
+        }
+        else{
+            goBackButton.isHidden = false
         }
         addGestureAfterSetDirection()
         self.hideKeyboard()
@@ -178,12 +187,12 @@ extension FirstExcuteViewController{
         else if sender.direction == .left{
             
             if viewModel.detectFirstExecution{
-                if viewModel.currentIndex == 3{
+                if viewModel.currentIndex == viewModel.firstExcuteMaxIndex{
                     return
                 }
             }
             else{
-                if viewModel.currentIndex == 2{
+                if viewModel.currentIndex == viewModel.executionGuideMaxIndex{
                     return
                 }
             }
@@ -204,7 +213,7 @@ extension FirstExcuteViewController{
         }
         pageControl.currentPage = viewModel.currentIndex
         
-        // 최초실행 VC의 총 페이지 = 4 (currentIndex = 0 ~ 3), 전체루틴 VC의 총 페이지 = 3 (currentIndex = 0 ~ 2)
+        // 최초실행 VC의 총 페이지 = 5 (currentIndex = 0 ~ 4), 전체루틴 VC의 총 페이지 = 3 (currentIndex = 0 ~ 2)
         if viewModel.detectFirstExecution{
             insertDivisionData(imageArray: viewModel.firstExcuteimageNamesArray,
                                notice1: viewModel.firstExcuteNotice1,
@@ -212,7 +221,6 @@ extension FirstExcuteViewController{
                                notice3: viewModel.firstExcuteNotice3)
             modifyUIHidden()
             setButtonTitleAndAlpha(maxIndex: viewModel.firstExcuteMaxIndex) // 마지막 page에 새로운 UI 생성
-            
         }
         else{
             insertDivisionData(imageArray: viewModel.executionGuideImageNamesArray,
@@ -223,7 +231,8 @@ extension FirstExcuteViewController{
         }
         
         // viewModel.detectFirstExecution의 결과에 따른 데이터 삽입 (최초 실행 VC or 전체 루틴보기 가이드 VC)
-        func insertDivisionData(imageArray: [String], notice1: String, notice2: String, notice3: String){
+        func insertDivisionData(imageArray: [String], notice1: String, notice2: String, notice3: String
+                                ,notice4: String = viewModel.firstExcuteNotice4){
             
             // viewModel.index에 따른 UI 수정 (notice1, 2, 3 변수들이 Array에 들어가질 않아서 이렇게 로직 작성)
             if viewModel.currentIndex == 0{
@@ -234,7 +243,9 @@ extension FirstExcuteViewController{
             }
             else if viewModel.currentIndex == 2{
                 modifyUIData(imageArray[2], notice3)
-                
+            }
+            else if viewModel.currentIndex == 3{
+                modifyUIData(imageArray[3], notice4)
             }
             else{
                 return

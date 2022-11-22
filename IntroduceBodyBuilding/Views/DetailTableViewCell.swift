@@ -172,7 +172,7 @@ extension DetailViewController{
                 
                 let appliedMaxWeight = Float(UserDefaults.standard.integer(forKey: type)) * convertedPercent
                 let finalMaxWeight = roundInteger(Int(appliedMaxWeight)) // % 적용후의 무게 -> 반올림 적용
-                lastLineText = lastLineText.replacingOccurrences(of: replaceNumber, with: String(finalMaxWeight) + " ")
+                lastLineText = lastLineText.replacingOccurrences(of: replaceNumber, with: " " + String(finalMaxWeight))
                 resultText += lastLineText
             }
         }

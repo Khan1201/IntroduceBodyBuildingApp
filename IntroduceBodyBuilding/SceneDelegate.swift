@@ -64,8 +64,7 @@ extension SceneDelegate{
             setRootVC(scene)
         } else if versionOfLastRun != currentVersion {
         }
-        UserDefaults.standard.set(currentVersion, forKey: "VersionOfLastRun")
-        UserDefaults.standard.synchronize()
+//        UserDefaults.standard.synchronize()
     }
     func setRootVC(_ scene: UIScene){
         if let windowScene = scene as? UIWindowScene{

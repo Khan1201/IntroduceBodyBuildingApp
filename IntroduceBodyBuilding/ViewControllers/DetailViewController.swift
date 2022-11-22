@@ -114,14 +114,14 @@ class DetailViewController: UIViewController {
         didSet{
 //            addRoutineButton.setTitle("루틴등록", for: .normal)
             addRoutineButton.layer.masksToBounds = true
-            addRoutineButton.layer.cornerRadius = 10
+            addRoutineButton.layer.cornerRadius = 12
         }
     }
     // 보관함 추가 버튼
     @IBOutlet weak var addButton: UIButton!{
         didSet{
             addButton.layer.masksToBounds = true
-            addButton.layer.cornerRadius = 10
+            addButton.layer.cornerRadius = 12
         }
     }
     
@@ -146,6 +146,7 @@ class DetailViewController: UIViewController {
             }
             self.viewModel.tableViewObservable.onNext(tableViewData)
             self.showToast()
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: (self.scrollView.contentSize.height) - (self.scrollView.bounds.height)), animated: true)
         }
     }
     
@@ -380,7 +381,7 @@ extension DetailViewController: UIViewControllerTransitioningDelegate{
 //MARK: - 1RM 클릭 시 제공 toast
 
 extension DetailViewController{
-    func showToast(font: UIFont = UIFont.systemFont(ofSize: 13.0)) {
+    func showToast(font: UIFont = UIFont.systemFont(ofSize: 13, weight: .bold)) {
         //        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 84, y: self.view.frame.size.height-100, width: 170, height: 30))
         let toastLabel = UILabel()
         let message = "1RM 적용 완료 !"
