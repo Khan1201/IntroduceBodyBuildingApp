@@ -124,13 +124,13 @@ extension RoutineViewModel{
                     dateComponents.hour = convertHour(time: time)
                     dateComponents.minute = convertMinute(time: time)
                     
-                    // minute 0 or 5 -> 00 or 05로 변환
+                    // minute: '0' or '5' -> '00' or '05'로 변환
                     let modifiedMinuteDigit = changeMinuteDigit(minute: String(convertMinute(time: time)))
                     
-                    // 오전 7:00 -> 7:00 형태로 변환 후 userDefaults에 영구적으로 저장
+                    // '오후 7:00' -> '19:00' 형태로 변환 후 userDefaults에 영구적으로 저장
                     let timeToString = String(convertHour(time: time)) + ":" + modifiedMinuteDigit
                     setTimeToUserDefaults(timeToString: timeToString, title: title) // title == identier
- 
+                    
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     let request = UNNotificationRequest(identifier: "\(title): \(identifier)",
                                                         content: notificationContent,
@@ -147,27 +147,43 @@ extension RoutineViewModel{
                 
                 // 오전 7:00 -> '7' 가져옴
                 func convertHour(time: String) -> Int {
-                    let intTimeFirstIndex = time.index(time.startIndex, offsetBy: 3)
-                    let intTime = String(time[intTimeFirstIndex...])
+                    var timeSubstring: Substring
                     var hour: Int = 0
-                    if time.contains("오후"){
-                        if intTime.count == 5 { // ex) 오후 11:10
-                            hour = Int(intTime.prefix(2)) ?? 0
-                        }
-                        else if intTime.count == 4{ // ex) 오후 7:10
-                            hour = (Int(intTime.prefix(1)) ?? 0) + 12
-                        }
-                    }
                     
-                    else{
-                        if intTime.count == 5 { // ex) 오전 11:10
-                            hour = Int(intTime.prefix(2)) ?? 0
-                            if hour == 12{
-                                hour = 0
+                    // ":" 가 있으면 convert 진행
+                    if let colonIndex = time.range(of: ":"){
+                        
+                        // '13:00'의 형태일 시 count == 8
+                        if time.count == 8 {
+                            let hourStartIndex = time.index(colonIndex.lowerBound, offsetBy: -2)
+                            let minuteEndIndex = time.index(colonIndex.upperBound, offsetBy: 1)
+                            timeSubstring = time[hourStartIndex...minuteEndIndex]
+                            hour = Int(timeSubstring.prefix(2)) ?? 0
+                            
+                            if time.contains("오후"){
+                                hour += 12
+                                
+                                if hour == 24{ // 오후 12시 -> 24시 X, 12시 O
+                                    hour = 12
+                                }
+                            }
+                            else{
+                                if hour == 12{ // 오전 12시 -> 0시
+                                    hour = 0
+                                }
                             }
                         }
-                        else if intTime.count == 4{ // ex) 오전 7:10
-                            hour = Int(intTime.prefix(1)) ?? 0
+                        
+                        // '5:00'의 형태일 시 count == 7
+                        else if time.count == 7 {
+                            let hourStartIndex = time.index(colonIndex.lowerBound, offsetBy: -1)
+                            let minuteEndIndex = time.index(colonIndex.upperBound, offsetBy: 1)
+                            timeSubstring = time[hourStartIndex...minuteEndIndex]
+                            hour = Int(timeSubstring.prefix(1)) ?? 0
+                            
+                            if time.contains("오후") {
+                                hour += 12
+                            }
                         }
                     }
                     return hour
@@ -175,16 +191,20 @@ extension RoutineViewModel{
                 
                 // 오전 7:30 -> '30' 가져옴
                 func convertMinute(time: String) -> Int{
-                    let intTimeFirstIndex = time.index(time.startIndex, offsetBy: 3)
-                    let intTime = String(time[intTimeFirstIndex...])
-                    let minute: Substring = intTime.suffix(2)
-                    return Int(minute) ?? 0
+                    var minuteSubstring:Substring = ""
+                    if let colonIndex = time.range(of: ":"){
+                        
+                        let minuteEndIndex = time.index(colonIndex.upperBound, offsetBy: 1)
+                        minuteSubstring = time[colonIndex.upperBound...minuteEndIndex]
+                    }
+                    return Int(minuteSubstring) ?? 0
                 }
                 
-                // minute 0 or 5 -> 00 or 05로 변환
+                // minute '0' or '5' -> '00' or '05'로 변환
                 func changeMinuteDigit(minute: String) -> String{
                     var modifiedMinute = minute
                     
+                    // minute 자릿수 변환
                     if minute == "0" && minute.count == 1{
                         modifiedMinute = "00"
                     }
@@ -195,7 +215,7 @@ extension RoutineViewModel{
                 }
                 
                 // 기존에 저장된 시간 있는지 확인 (nil이면 -> 첫 알림을 받는 것, nil이 아니면 -> 알림을 수정 하는 것)
-                // 저장 시 21:00 형태로 저장
+                // 저장 시 21:00 / 4:00 형태로 저장
                 func setTimeToUserDefaults(timeToString: String, title: String){
                     if let _ = UserDefaults.standard.string(forKey: "Time" + title) {
                         UserDefaults.standard.removeObject(forKey: "Time" + title)
@@ -209,16 +229,16 @@ extension RoutineViewModel{
         }
     }
 }
-    //MARK: - 로컬 notification 삭제
-    
-    extension RoutineViewModel{
-        func deleteNotification(title: String, days: [String]){
-            var identifiers: [String] = []
-            for (index, _) in days.enumerated(){
-                //배열 접근  -> 배열 index 값 get
-                identifiers.append("\(title): \(index)")
-            }
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
-            UserDefaults.standard.removeObject(forKey: "Time" + title)
+//MARK: - 로컬 notification 삭제
+
+extension RoutineViewModel{
+    func deleteNotification(title: String, days: [String]){
+        var identifiers: [String] = []
+        for (index, _) in days.enumerated(){
+            //배열 접근  -> 배열 index 값 get
+            identifiers.append("\(title): \(index)")
         }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        UserDefaults.standard.removeObject(forKey: "Time" + title)
     }
+}

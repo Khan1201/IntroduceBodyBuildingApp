@@ -1392,12 +1392,12 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <datePicker hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="JJq-kc-rO8">
-                                        <rect key="frame" x="175" y="343" width="130" height="30"/>
+                                        <rect key="frame" x="185" y="343" width="130" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="130" id="Egk-uk-wPS"/>
                                             <constraint firstAttribute="height" constant="30" id="m7X-cZ-clX"/>
                                         </constraints>
-                                        <locale key="locale" localeIdentifier="ko_KR"/>
+                                        <locale key="locale" localeIdentifier="ko"/>
                                     </datePicker>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -1433,13 +1433,13 @@
                                     <constraint firstItem="rl4-aj-oUg" firstAttribute="top" secondItem="mC8-q4-rlm" secondAttribute="bottom" constant="30" id="ba0-To-jya"/>
                                     <constraint firstItem="46B-s9-s9E" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rl4-aj-oUg" secondAttribute="trailing" constant="8" symbolic="YES" id="deX-eU-TZY"/>
                                     <constraint firstItem="EgB-4n-8g4" firstAttribute="top" secondItem="FOz-fO-Von" secondAttribute="bottom" constant="10" id="drn-Ak-iuL"/>
-                                    <constraint firstItem="JJq-kc-rO8" firstAttribute="leading" secondItem="smL-yT-7v1" secondAttribute="trailing" constant="20" id="dtK-H6-36c"/>
                                     <constraint firstItem="smL-yT-7v1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fKN-Qw-nJz" secondAttribute="trailing" constant="8" symbolic="YES" id="fEV-Je-W02"/>
                                     <constraint firstItem="8IN-wT-Z5n" firstAttribute="top" secondItem="v3z-go-Mh2" secondAttribute="bottom" constant="30" id="fKw-Dj-GgC"/>
                                     <constraint firstItem="de2-gt-kl2" firstAttribute="leading" secondItem="ZSR-6P-dpu" secondAttribute="leading" id="fcB-xx-Wdm"/>
                                     <constraint firstItem="ZSR-6P-dpu" firstAttribute="leading" secondItem="mC8-q4-rlm" secondAttribute="trailing" constant="30" id="gYq-Zq-n9T"/>
                                     <constraint firstItem="FOz-fO-Von" firstAttribute="leading" secondItem="ZSR-6P-dpu" secondAttribute="leading" id="guw-7r-PZR"/>
                                     <constraint firstAttribute="trailing" secondItem="ZSR-6P-dpu" secondAttribute="trailing" constant="20" id="kbN-qt-7uv"/>
+                                    <constraint firstItem="JJq-kc-rO8" firstAttribute="leading" secondItem="smL-yT-7v1" secondAttribute="trailing" constant="30" id="kc6-IL-1nZ"/>
                                     <constraint firstItem="aRF-aB-KNF" firstAttribute="top" secondItem="EGL-ul-oSn" secondAttribute="bottom" constant="2" id="l53-iq-7fh"/>
                                     <constraint firstItem="FOz-fO-Von" firstAttribute="top" secondItem="EGL-ul-oSn" secondAttribute="top" id="luS-T4-puw"/>
                                     <constraint firstItem="mC8-q4-rlm" firstAttribute="leading" secondItem="ySh-o9-sxx" secondAttribute="leading" constant="30" id="mAQ-ES-ug9"/>

@@ -311,15 +311,7 @@ extension RoutineViewController{
                                                              days: cell.getSelectedDaysStringArray(),
                                                              time: self.convertTimeToAmPm(title: title))
         
-                        // 해당 타이틀의 알람 존재시
-                        if UserDefaults.standard.string(forKey: "Time" + cell.titleLabel.text!) != nil {
-                            self.showToast(message: "\(self.convertTimeToAmPm(title: title)) 에 알림이 발생합니다.")
-                        }
-                        
-                        // 해당 타이틀의 알람 존재하지 않을 시, Default 시간 제공
-                        else{
-                            self.showToast(message: "07:00 에 알림이 발생합니다.")
-                        }
+                        self.showToast(message: "07:00 에 알림이 발생합니다.")
                     }
                 }
                 
@@ -336,8 +328,9 @@ extension RoutineViewController{
         // 스위치 상태 on -> off로 변경 시 (스위치가 on이므로 권한이 있음, 따라서 권한을 확인 하지않아도 됨)
         func onToOff(){
             DispatchQueue.main.async {
-                self.viewModel.updateSwitchBool(condition: cell.titleLabel.text!, switchBool: cell.alarmSwitch.isOn)
-                self.viewModel.deleteNotification(title: cell.titleLabel.text!, days:                 cell.getSelectedDaysStringArray())
+                let title = cell.titleLabel.text ?? ""
+                self.viewModel.updateSwitchBool(condition: title, switchBool: cell.alarmSwitch.isOn)
+                self.viewModel.deleteNotification(title: title, days: cell.getSelectedDaysStringArray())
             }
         }
         
@@ -382,7 +375,6 @@ extension RoutineViewController{
                         self?.routineTableView.isHidden = false
                     }
                 }.disposed(by: disposeBag)
-            
         }
         
         // TableView 대신 UI 생성
@@ -411,9 +403,9 @@ extension RoutineViewController{
     }
 }
 
+// MARK: - 해당 title의 기존 알람 시간 '21:00' 가져옴 -> 오전 / 오후에 맞게 변환 (기존 알람이 설정되지 않았을 시, 07:00 디폴트로 제공)
+
 extension RoutineViewController{
-    
-    // 해당 title의 기존 알람 시간 가져옴 -> 오전 / 오후에 맞게 변환 (기존 알람이 설정되지 않았을 시, 07:00 디폴트로 제공)
     func convertTimeToAmPm(title: String) -> String{
         var timeString = ""
         if let time = UserDefaults.standard.string(forKey: "Time" + title) {
@@ -430,8 +422,14 @@ extension RoutineViewController{
             }
             
             // 기존 time을 오전 오후로 구분, ex) 19:00 -> 오후 7:00
-            if hour > 12{
-                timeString = "오후 " + "\(hour - 12):\(minute)"
+            if hour >= 12{
+                
+                if hour == 12{
+                    timeString = "오후 " + "\(hour):\(minute)"
+                }
+                else{
+                    timeString = "오후 " + "\(hour - 12):\(minute)"
+                }
             }
             else{
                 timeString = "오전 " + "\(hour):\(minute)"

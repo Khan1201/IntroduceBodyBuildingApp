@@ -459,8 +459,11 @@ extension RoutineAddViewController {
             .subscribe { time in
                 let timeFormatter = DateFormatter()
                 timeFormatter.timeStyle = DateFormatter.Style.short
+                timeFormatter.amSymbol = "오전"
+                timeFormatter.pmSymbol = "오후"
                 let strDate = timeFormatter.string(from: self.datePicker.date)
                 
+                print(strDate)
                 self.viewModel.datePickerObservable.onNext(strDate)
             }.disposed(by: disposeBag)
     }
