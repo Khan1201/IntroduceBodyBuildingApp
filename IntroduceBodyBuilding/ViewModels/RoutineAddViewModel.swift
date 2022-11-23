@@ -5,7 +5,7 @@ import CoreData
 
 class RoutineAddViewModel {
     let routineAddObservable: BehaviorSubject<[RoutineVCModel.Fields]> = BehaviorSubject(value: []) //루틴 추가 뷰 data
-    lazy var switchStatefromRoutineAddVC = PublishSubject<Bool>() // 스위치 toggle 상태 감지 (toast 생성 위해)
+    lazy var alarmToastObservable = PublishSubject<String>() // 스위치 toggle 상태 감지 (toast 생성 위해)
     lazy var dataFromTableCell = DataFromTableCell()
     lazy var uiData = UIData()
     
@@ -73,8 +73,7 @@ extension RoutineAddViewModel{
             objectUpdate.setValue(dayBools[4], forKey: "friday")
             objectUpdate.setValue(switchBool, forKey: "alarmSwitch")
             objectUpdate.setValue(Int16(selectedDays), forKey: "selectedDays")
-            print("테스트 : \(dayBools)")
-            print("테스트 : \(selectedDays)")
+            
             do {
                 try managedContext.save()
             } catch {

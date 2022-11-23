@@ -64,12 +64,12 @@ class DetailViewController: UIViewController {
         didSet{
             noticeLabel.text =
             """
-            모든 루틴은 세트 x 횟수 입니다.
+            모든 루틴은 세트 x 횟수입니다.
             -----------------------------------
             무게가 없는 것은 해당 반복횟수를
             수행 할 수 있는 개인의 무게입니다.
             -----------------------------------
-            AMRAP = 최대 수행가능한 반복 횟수
+            AMRAP = 최대 수행 가능한 반복 횟수
             -----------------------------------
             메모는 모든 프로그램에 공유됩니다.
             """
@@ -85,7 +85,6 @@ class DetailViewController: UIViewController {
             noticeMemoTextView.text = UserDefaults.standard.string(forKey: "memo")
             noticeMemoTextView.rx.didEndEditing
                 .subscribe { [weak self] _ in
-                    print("저장")
                     UserDefaults.standard.set(self?.noticeMemoTextView.text, forKey: "memo")
                 }
                 .disposed(by: disposeBag)

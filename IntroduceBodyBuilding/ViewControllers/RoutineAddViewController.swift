@@ -63,6 +63,8 @@ class RoutineAddViewController: UIViewController {
         // 호출한 VC check
         viewModel.dataFromTableCell.fromTableCellSelectionBool
             .subscribe { [weak self] bool in
+                
+                // 알람 시간 가져옴
                 var alarmTime: String = ""
                 self?.viewModel.datePickerObservable
                     .subscribe { data in
@@ -94,15 +96,13 @@ class RoutineAddViewController: UIViewController {
                     }
                     self?.presentingViewController?.dismiss(animated: true){
                         if switchBool{
-                            self?.viewModel.switchStatefromRoutineAddVC.onNext(true)
+                            self?.viewModel.alarmToastObservable.onNext(title)
                         }
                     }
                 }
                 
                 // 루틴 추가 버튼으로 호출 되었을 시
                 else{
-                    
-                    
                     guard let title = self?.programTextField.text! else {return}
                     guard let imageName = self?.viewModel.getDivisionIconName(self?.divisionTextField.text! ?? "") else {return}
                     guard let divisionName = self?.divisionTextField.text! else {return}
@@ -128,7 +128,7 @@ class RoutineAddViewController: UIViewController {
                         }
                         self?.presentingViewController?.dismiss(animated: true){
                             if switchBool{
-                                self?.viewModel.switchStatefromRoutineAddVC.onNext(true) // dismiss 후 toast 출력위해
+                                self?.viewModel.alarmToastObservable.onNext(title) // dismiss 후 toast 출력위해
                             }
                         }
                     }
@@ -179,16 +179,8 @@ class RoutineAddViewController: UIViewController {
         super.viewDidLoad()
         bindPickerView()
         bindUIFromTableCellSelection()
-        checkAuthorization()
-        datePicker.rx.value.changed
-            .subscribe { time in
-                let timeFormatter = DateFormatter()
-                timeFormatter.timeStyle = DateFormatter.Style.short
-
-                var strDate = timeFormatter.string(from: self.datePicker.date)
-                self.viewModel.datePickerObservable.onNext(strDate)
-            }
-        
+        checkAuthorizationAtSwitch()
+        detectDatePickerChanged()
     }
 }
 
@@ -207,39 +199,39 @@ extension RoutineAddViewController {
             
                 if fromTableCellSelectionBool{
                     // routineVC 데이터 바인딩
-                    bindPickerViewData(data: self?.routineViewModel.routineAddObservable ?? BehaviorSubject(value: []))
+                    bindPickerViewData(divisionData: self?.routineViewModel.routineAddObservable ?? BehaviorSubject(value: []))
                 }
                 else{
                     // routineAddVC 데이터 바인딩
-                    bindPickerViewData(data: self?.viewModel.routineAddObservable ?? BehaviorSubject(value: []))
+                    bindPickerViewData(divisionData: self?.viewModel.routineAddObservable ?? BehaviorSubject(value: []))
                 }
             }.disposed(by: disposeBag)
         
-        func bindPickerViewData(data: BehaviorSubject<[RoutineVCModel.Fields]>){
-            data
+        func bindPickerViewData(divisionData: BehaviorSubject<[RoutineVCModel.Fields]>){
+            divisionData
                 .bind(to: pickerView.rx.itemTitles) { (_, element) in
                     return element.title
                 }.disposed(by: disposeBag)
             
-            addSelectEvent(data: data)
+            addSelectEvent(divisionData: divisionData)
         }
         
-        // 피커뷰 선택 이벤트, 초기 선택 값 세팅위해 (호출 페이지 구분)data 인자로 받아옴
-        func addSelectEvent(data: BehaviorSubject<[RoutineVCModel.Fields]>){
+        // 피커뷰 선택 이벤트, 초기 선택 값 세팅위해 (호출 페이지 구분 -> data 인자로 받아옴)
+        func addSelectEvent(divisionData: BehaviorSubject<[RoutineVCModel.Fields]>){
             
-            setInitialSelected()
+            setInitialSelected(divisionData: divisionData)
             
             // 선택 시 바인드
             pickerView.rx.modelSelected(RoutineVCModel.Fields.self)
-                .subscribe { [weak self] element in
+                .subscribe { [weak self] bindPickerIndexData in
                     if let self = self{
                         resetInitialState()
-                        self.programTextField.text = element[0].title
-                        self.divisionTextField.text = element[0].division
-                        self.targetTextField.text = element[0].recommend
-                        self.totalPeriodTextField.text = element[0].week
-                        self.weekNoticeLabel.text = "최대 \(element[0].weekCount)회 선택하세요 ! "
-                        self.viewModel.uiData.weekDayCount = Int(element[0].weekCount) ?? 0
+                        self.programTextField.text = bindPickerIndexData[0].title
+                        self.divisionTextField.text = bindPickerIndexData[0].division
+                        self.targetTextField.text = bindPickerIndexData[0].recommend
+                        self.totalPeriodTextField.text = bindPickerIndexData[0].week
+                        self.weekNoticeLabel.text = "최대 \(bindPickerIndexData[0].weekCount)회 선택하세요 ! "
+                        self.viewModel.uiData.weekDayCount = Int(bindPickerIndexData[0].weekCount) ?? 0
                     }
                 }.disposed(by: disposeBag)
             
@@ -256,8 +248,8 @@ extension RoutineAddViewController {
             }
             
             // 초기 선택값 설정
-            func setInitialSelected(){
-                data
+            func setInitialSelected(divisionData: BehaviorSubject<[RoutineVCModel.Fields]>){
+                divisionData
                     .filter({ //observable 초기값은 []이므로, 필터로 거르고 다음 값 얻음
                         $0 != []
                     })
@@ -271,7 +263,23 @@ extension RoutineAddViewController {
                                 fromTableCellSelectionBool ? setSelectedDaysFromTableCell() : resetInitialState()
                             }).dispose()
                         
-                        self?.noticeSwitch.isOn = self?.viewModel.dataFromTableCell.fromTableCellSwitchBool ?? false
+                        // table 셀에서의 switch 상태
+                        let fromTableCellSwitchBool =
+                        self?.viewModel.dataFromTableCell.fromTableCellSwitchBool ?? false
+                        
+                        self?.noticeSwitch.isOn = fromTableCellSwitchBool
+                        
+                        // table 셀에서의 switch 상태: On -> datePicker 제공 및 기존값 설정
+                        if fromTableCellSwitchBool {
+                            self?.datePicker.isHidden = !fromTableCellSwitchBool
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat =  "HH:mm"
+                            guard let savedTime = UserDefaults.standard.string(forKey: "Time" + element[0].title)
+                                else {return}
+                            guard let date = dateFormatter.date(from: savedTime) else {return}
+                            self?.datePicker.date = date
+                        }
+                            
                         self?.programTextField.text = element[0].title
                         self?.divisionTextField.text = element[0].division
                         self?.targetTextField.text = element[0].recommend
@@ -392,9 +400,9 @@ extension RoutineAddViewController{
 
 extension RoutineAddViewController{
     
-    func checkAuthorization(){
-        noticeSwitch.rx.controlEvent(.valueChanged)
-            .bind { [weak self] _ in
+    func checkAuthorizationAtSwitch(){
+        noticeSwitch.rx.value.changed
+            .bind { [weak self] bool in
                 guard let self = self else {return}
                 UNUserNotificationCenter.current().getNotificationSettings { settings in
                     
@@ -404,6 +412,11 @@ extension RoutineAddViewController{
                             self.noticeSwitch.isOn = false
                             let message = " 알림 권한이 필요합니다.\n (설정 -> 알림 -> 어플 알림 허용)"
                             showToast(message: message)
+                        }
+                    }
+                    else{
+                        DispatchQueue.main.async {
+                            self.datePicker.isHidden = !bool
                         }
                     }
                 }
@@ -426,7 +439,7 @@ extension RoutineAddViewController{
                 
                 make.left.equalTo(noticeSwitch.snp.right).offset(35)
                 make.top.equalTo(weekNoticeLabel.snp.bottom).offset(10)
-                make.bottom.equalTo(embeddedView.snp.bottom).offset(-15)
+                make.bottom.equalTo(embeddedView.snp.bottom).offset(-23)
             }
             UIView.animate(withDuration: 10, delay: 0.3, options: .curveLinear, animations: {
                 toastLabel.alpha = 0.0
@@ -434,5 +447,21 @@ extension RoutineAddViewController{
                 toastLabel.removeFromSuperview()
             })
         }
+    }
+}
+
+//MARK: - DatePicker 값 변경 구독
+
+extension RoutineAddViewController {
+   
+    func detectDatePickerChanged(){
+        datePicker.rx.value.changed
+            .subscribe { time in
+                let timeFormatter = DateFormatter()
+                timeFormatter.timeStyle = DateFormatter.Style.short
+                let strDate = timeFormatter.string(from: self.datePicker.date)
+                
+                self.viewModel.datePickerObservable.onNext(strDate)
+            }.disposed(by: disposeBag)
     }
 }

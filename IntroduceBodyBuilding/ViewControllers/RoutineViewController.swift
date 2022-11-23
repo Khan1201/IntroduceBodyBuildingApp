@@ -65,7 +65,7 @@ extension RoutineViewController {
         self.navigationItem.rightBarButtonItems = [plusButton, homeButton]
         self.navigationItem.setRightBarButtonItems(navigationItem.rightBarButtonItems, animated: true)
         
-        // + 버튼 클릭 이벤트
+        // 상단바의 + 버튼 클릭 이벤트
         self.navigationItem.rightBarButtonItems?[0].rx.tap
             .bind { [weak self] _ in
                 guard let self = self else {return}
@@ -74,8 +74,9 @@ extension RoutineViewController {
                 routineAddVC.viewModel.dataFromTableCell.fromTableCellSelectionBool.onNext(false)
                 
                 //RoutineAddVC로부터 알림 상태 on으로 dismiss 시, 시간 알림 toast 출력
-                routineAddVC.viewModel.switchStatefromRoutineAddVC.subscribe { _ in
-                    self.showToast(message: "AM 07:00에 알림이 발생합니다.")
+                routineAddVC.viewModel.alarmToastObservable.subscribe { title in
+                    guard let title = title.element else {return}
+                    self.showToast(message: "\(self.convertTimeToAmPm(title: title)) 에 알림이 발생합니다.")
                 }.disposed(by: self.disposeBag)
                 routineAddVC.modalPresentationStyle = .fullScreen //현재 VC의 viewWillAppear 호출 위해 .fullsceen으로 설정
                 self.present(routineAddVC, animated: true)
@@ -211,8 +212,9 @@ extension RoutineViewController{
                             routineAddVC.viewModel.uiData.selectedDaysStringArray = selectedDaysStringArray
                             
                             // RoutineAddVC로부터 알림 상태 on으로 dismiss 시, 시간 알림 toast 출력
-                            routineAddVC.viewModel.switchStatefromRoutineAddVC.subscribe { _ in
-                                self.showToast(message: "AM 07:00에 알림이 발생합니다.")
+                            routineAddVC.viewModel.alarmToastObservable.subscribe { title in
+                                guard let title = title.element else {return}
+                                self.showToast(message: "\(self.convertTimeToAmPm(title: title)) 에 알림이 발생합니다.")
                             }.disposed(by: self.disposeBag)
                             
                             routineAddVC.modalPresentationStyle = .fullScreen
@@ -252,9 +254,10 @@ extension RoutineViewController {
             .subscribe { [weak self]_ in
                 guard let self = self else {return}
                 guard let routineAddVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RoutineAddViewController") as? RoutineAddViewController else {return}
-                routineAddVC.viewModel.switchStatefromRoutineAddVC
-                    .subscribe { _ in
-                        self.showToast(message: "AM 07:00에 알림이 발생합니다.")
+                routineAddVC.viewModel.alarmToastObservable
+                    .subscribe { title in
+                        guard let title = title.element else {return}
+                        self.showToast(message: "\(self.convertTimeToAmPm(title: title)) 에 알림이 발생합니다.")
                     }.disposed(by: self.disposeBag)
                 routineAddVC.modalPresentationStyle = .fullScreen //현재 VC의 viewWillAppear 호출 위해 .fullsceen으로 설정
                 self.present(routineAddVC, animated: true)
@@ -262,7 +265,7 @@ extension RoutineViewController {
     }
 }
 
-//MARK: - routineAddVC -> routineVC으로 dismiss 시, toast 메세지 출력
+//MARK: - 알람시간에 대한 toast 메세지 출력
 
 extension RoutineViewController{
     func showToast(message : String, font: UIFont = UIFont.systemFont(ofSize: 11, weight: .bold)) {
@@ -284,7 +287,7 @@ extension RoutineViewController{
     }
 }
 
-//MARK: - 알림 스위치 상태 변화 -> 권한 체크 or CoreData 및 Nofitication 접근
+//MARK: - 셀에서의 알림 스위치 상태 변화 -> 권한 체크 or CoreData 및 Nofitication 접근
 
 extension RoutineViewController{
     func modifyNotificationAndCoreDataAfterCheckAuthorizaiton(cell: RoutineTableViewCell, switchState: Bool){
@@ -299,9 +302,24 @@ extension RoutineViewController{
                 // 권한 허용 시
                 if settings.authorizationStatus  == .authorized || settings.authorizationStatus == .provisional{
                     DispatchQueue.main.async {
-                        self.viewModel.updateSwitchBool(condition: cell.titleLabel.text!, switchBool: cell.alarmSwitch.isOn)
-                        self.viewModel.makeLocalNotification(title: cell.titleLabel.text!, days:                 cell.getSelectedDaysStringArray())
-                        self.showToast(message: "AM 07:00에 알림이 발생합니다.")
+                        let title = cell.titleLabel.text ?? ""
+
+                        self.viewModel.updateSwitchBool(condition: title,
+                                                        switchBool: cell.alarmSwitch.isOn)
+                        
+                        self.viewModel.makeLocalNotification(title: title,
+                                                             days: cell.getSelectedDaysStringArray(),
+                                                             time: self.convertTimeToAmPm(title: title))
+        
+                        // 해당 타이틀의 알람 존재시
+                        if UserDefaults.standard.string(forKey: "Time" + cell.titleLabel.text!) != nil {
+                            self.showToast(message: "\(self.convertTimeToAmPm(title: title)) 에 알림이 발생합니다.")
+                        }
+                        
+                        // 해당 타이틀의 알람 존재하지 않을 시, Default 시간 제공
+                        else{
+                            self.showToast(message: "07:00 에 알림이 발생합니다.")
+                        }
                     }
                 }
                 
@@ -390,5 +408,38 @@ extension RoutineViewController{
                 make.centerX.equalToSuperview()
             }
         }
+    }
+}
+
+extension RoutineViewController{
+    
+    // 해당 title의 기존 알람 시간 가져옴 -> 오전 / 오후에 맞게 변환 (기존 알람이 설정되지 않았을 시, 07:00 디폴트로 제공)
+    func convertTimeToAmPm(title: String) -> String{
+        var timeString = ""
+        if let time = UserDefaults.standard.string(forKey: "Time" + title) {
+                    
+            var hour = Int(time.prefix(2)) ?? 0 // > 12 비교하기 위해 Int로
+            let minute = time.suffix(2)
+            
+            // count 5 -> 19:00, count 4 -> 9:00
+            if time.count == 5{
+                hour = Int(time.prefix(2)) ?? 0
+            }
+            else{
+                hour = Int(time.prefix(1)) ?? 0
+            }
+            
+            // 기존 time을 오전 오후로 구분, ex) 19:00 -> 오후 7:00
+            if hour > 12{
+                timeString = "오후 " + "\(hour - 12):\(minute)"
+            }
+            else{
+                timeString = "오전 " + "\(hour):\(minute)"
+            }
+        }
+        else{
+           timeString = "오전 7:00"
+        }
+        return timeString
     }
 }

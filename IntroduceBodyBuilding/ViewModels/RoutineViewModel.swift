@@ -124,6 +124,13 @@ extension RoutineViewModel{
                     dateComponents.hour = convertHour(time: time)
                     dateComponents.minute = convertMinute(time: time)
                     
+                    // minute 0 or 5 -> 00 or 05로 변환
+                    let modifiedMinuteDigit = changeMinuteDigit(minute: String(convertMinute(time: time)))
+                    
+                    // 오전 7:00 -> 7:00 형태로 변환 후 userDefaults에 영구적으로 저장
+                    let timeToString = String(convertHour(time: time)) + ":" + modifiedMinuteDigit
+                    setTimeToUserDefaults(timeToString: timeToString, title: title) // title == identier
+ 
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     let request = UNNotificationRequest(identifier: "\(title): \(identifier)",
                                                         content: notificationContent,
@@ -138,11 +145,11 @@ extension RoutineViewModel{
                     return
                 }
                 
+                // 오전 7:00 -> '7' 가져옴
                 func convertHour(time: String) -> Int {
                     let intTimeFirstIndex = time.index(time.startIndex, offsetBy: 3)
                     let intTime = String(time[intTimeFirstIndex...])
                     var hour: Int = 0
-                    print(time)
                     if time.contains("오후"){
                         if intTime.count == 5 { // ex) 오후 11:10
                             hour = Int(intTime.prefix(2)) ?? 0
@@ -163,16 +170,40 @@ extension RoutineViewModel{
                             hour = Int(intTime.prefix(1)) ?? 0
                         }
                     }
-                    print("hour: \(hour)")
                     return hour
                 }
                 
+                // 오전 7:30 -> '30' 가져옴
                 func convertMinute(time: String) -> Int{
                     let intTimeFirstIndex = time.index(time.startIndex, offsetBy: 3)
                     let intTime = String(time[intTimeFirstIndex...])
                     let minute: Substring = intTime.suffix(2)
-                    print("minute: \(Int(minute) ?? 0)")
                     return Int(minute) ?? 0
+                }
+                
+                // minute 0 or 5 -> 00 or 05로 변환
+                func changeMinuteDigit(minute: String) -> String{
+                    var modifiedMinute = minute
+                    
+                    if minute == "0" && minute.count == 1{
+                        modifiedMinute = "00"
+                    }
+                    else if minute == "5" && minute.count == 1{
+                        modifiedMinute = "05"
+                    }
+                    return modifiedMinute
+                }
+                
+                // 기존에 저장된 시간 있는지 확인 (nil이면 -> 첫 알림을 받는 것, nil이 아니면 -> 알림을 수정 하는 것)
+                // 저장 시 21:00 형태로 저장
+                func setTimeToUserDefaults(timeToString: String, title: String){
+                    if let _ = UserDefaults.standard.string(forKey: "Time" + title) {
+                        UserDefaults.standard.removeObject(forKey: "Time" + title)
+                        UserDefaults.standard.set(timeToString, forKey: "Time" + title)
+                    }
+                    else{
+                        UserDefaults.standard.set(timeToString, forKey: "Time" + title)
+                    }
                 }
             }
         }
@@ -188,5 +219,6 @@ extension RoutineViewModel{
                 identifiers.append("\(title): \(index)")
             }
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+            UserDefaults.standard.removeObject(forKey: "Time" + title)
         }
     }
