@@ -1,30 +1,31 @@
-//
-//  HalfModalPresentationController.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/11/09.
-//
-
 import UIKit
 
 class HalfModalPresentationController: UIPresentationController {
     
     let blurEffectView: UIVisualEffectView!
-//    var tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer()
-    var check: Bool = false
+    
+    // ExcutionGuideVC로 호출 시 true, true -> tapGesture 추가
+    static var fromExcutionGuideVC: Bool = false
+    lazy var tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer()
     
     override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
         let blurEffect = UIBlurEffect(style: .dark)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
         super.init(presentedViewController: presentedViewController, presenting: presentedViewController)
-//        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissController))
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        self.blurEffectView.isUserInteractionEnabled = true
-//        self.blurEffectView.addGestureRecognizer(tapGestureRecognizer)
+
+        // ExcutionGuideVC로 호출 시 -> 주변 클릭으로 dismiss 가능, 최초실행VC로 호출 시 -> 주변 클릭으로 dismiss 불가
+        if HalfModalPresentationController.fromExcutionGuideVC{
+            tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissController))
+            self.blurEffectView.isUserInteractionEnabled = true
+            self.blurEffectView.addGestureRecognizer(tapGestureRecognizer)
+            HalfModalPresentationController.fromExcutionGuideVC = false
+        }
     }
-//    @objc func dismissController() {
-//        self.presentedViewController.dismiss(animated: true, completion: nil)
-//    }
+    @objc func dismissController() {
+        self.presentedViewController.dismiss(animated: true, completion: nil)
+    }
+
 
     
     override var frameOfPresentedViewInContainerView: CGRect {

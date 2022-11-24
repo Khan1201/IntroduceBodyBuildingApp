@@ -108,7 +108,7 @@ class DetailViewController: UIViewController {
         }
     }
     
-    // 루틴등록 버튼
+    // '루틴 등록' 버튼
     @IBOutlet weak var addRoutineButton: UIButton!{
         didSet{
 //            addRoutineButton.setTitle("루틴등록", for: .normal)
@@ -116,7 +116,7 @@ class DetailViewController: UIViewController {
             addRoutineButton.layer.cornerRadius = 12
         }
     }
-    // 보관함 추가 버튼
+    // '보관함 추가' 버튼
     @IBOutlet weak var addButton: UIButton!{
         didSet{
             addButton.layer.masksToBounds = true
@@ -126,9 +126,12 @@ class DetailViewController: UIViewController {
     
     //MARK: - @IBAction
 
+    // 'X' 버튼 액션 (RoutineVC or RoutineAddVC에서 호출 시 버튼 활성화)
     @IBAction func goBackButtonAction(_ sender: Any) {
         self.presentingViewController?.dismiss(animated: true)
     }
+    
+    // '1RM 적용' 버튼
     @IBAction func weightApplyButtonAction(_ sender: Any) {
         
         let rowCount =  routineTableView.numberOfRows(inSection: 0)
@@ -149,6 +152,7 @@ class DetailViewController: UIViewController {
         }
     }
     
+    // '루틴 전체보기' 버튼 액션
     @IBAction func allRoutineButtonAction(_ sender: UIButton) {
         let googleSheets = "googlesheets://" // 구글 시트에 대한 URL Scheme
         let googleSheetsURL = NSURL(string: googleSheets) //URL 인스턴스를 만들어 주는 단계
@@ -156,12 +160,14 @@ class DetailViewController: UIViewController {
         //canOpenURL(_:) 메소드를 통해서 URL 체계를 처리하는 데 앱을 사용할 수 있는지 여부를 확인('스프레드 시트'가 설치되어 있을 경우)
         if (UIApplication.shared.canOpenURL(googleSheetsURL! as URL)) {
             
-            guard let firstVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstExcuteViewController") as? FirstExcuteViewController else {return}
+            // FirstVC 재사용 (이미지와 설명만 바꿔 재사용)
+            guard let excutionGuideVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstExcuteViewController") as? FirstExcuteViewController else {return}
             
-            firstVC.viewModel.detectFirstExecution = false // excutionGuide에 대한 VC 설정
+            // excutionGuideVC로 호출 했다는 flag
+            excutionGuideVC.viewModel.detectFirstExecution = false
             
-            // excutionGuide dismiss 후 '전체 루틴 보기' 실행 위하여
-            firstVC.viewModel.fromExecutionGuide
+            // excutionGuide dismiss 후 '전체 루틴 보기' 실행 위하여 (excutionGuideVC의 '확인' 버튼 클릭 시 true가 내려옴)
+            excutionGuideVC.viewModel.fromExecutionGuide
                 .filter { $0 == true}
                 .bind { [weak self] _ in
                     let url = URL(string: "https://docs.google.com/uc?export=download&id=19CzZUj_n1mGfHFN82ioH_W8U91IbHtYO")
@@ -169,17 +175,19 @@ class DetailViewController: UIViewController {
                     self?.present(safariViewController, animated: true)
                 }.disposed(by: disposeBag)
             
-            firstVC.modalPresentationStyle = .custom
-            firstVC.transitioningDelegate = self
-            self.present(firstVC, animated: true)
+            excutionGuideVC.modalPresentationStyle = .custom
+            excutionGuideVC.transitioningDelegate = self
+            HalfModalPresentationController.fromExcutionGuideVC = true
+            self.present(excutionGuideVC, animated: true)
         }
 
-        //사용 불가능한 URLScheme일 때('스프레드 시트'가 설치되지 않았을 경우)
+        // 사용 불가능한 URLScheme일 때('스프레드 시트'가 설치되지 않았을 경우) 앱 스토어 연결
         else {
-            print("No installed.")
             let storeId =  "itms-apps://itunes.apple.com/app/id842849113"
             if let storeURL = URL(string: storeId), UIApplication.shared.canOpenURL(storeURL){
-                makeAlertAboutAppStore(title: "안내", message: "전체 루틴을 열기위해 '스프레드시트' 앱이 필요합니다. 앱 스토어로 이동 하시겠습니까 ?", storeURL: storeURL)
+                makeAlertAboutAppStore(title: "안내",
+                                       message: "전체 루틴을 열기위해 '스프레드시트' 앱이 필요합니다. 앱 스토어로 이동 하시겠습니까 ?",
+                                       storeURL: storeURL)
             }
         }
         func makeAlertAboutAppStore(title: String, message: String, storeURL: URL){
@@ -200,6 +208,8 @@ class DetailViewController: UIViewController {
             }
         }
     }
+    
+    // '루틴 등록' 버튼 액션
     @IBAction func addRoutineButtonAction(_ sender: UIButton) {
         viewModel.fromMyProgramVC // myProgramVC에서 호출한지 구독,
             .subscribe { [weak self] bool in
@@ -221,6 +231,8 @@ class DetailViewController: UIViewController {
                 }
             }.dispose()
     }
+    
+    // '보관함에 추가' 버튼 액션
     @IBAction func basketButtonAction(_ sender: UIButton) {
         
         //CoreData에 접근
@@ -371,6 +383,9 @@ extension DetailViewController{
             }.disposed(by: disposeBag)
     }
 }
+
+//MARK: - TransitioningDelegate 구현
+
 extension DetailViewController: UIViewControllerTransitioningDelegate{
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController?{
         return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)

@@ -89,10 +89,10 @@ class FirstExcuteViewController: UIViewController {
     @IBOutlet weak var pageControl: UIPageControl!{
         didSet{
             if viewModel.detectFirstExecution{
-                pageControl.numberOfPages = viewModel.firstExcuteMaxIndex + 1
+                pageControl.numberOfPages = viewModel.firstExcuteimageNamesArray.count + 1
             }
             else{
-                pageControl.numberOfPages = viewModel.executionGuideMaxIndex
+                pageControl.numberOfPages = viewModel.executionGuideImageNamesArray.count
             }
         }
     }
@@ -152,7 +152,7 @@ class FirstExcuteViewController: UIViewController {
             bindTextFieldData()
         }
         else{
-            goBackButton.isHidden = false
+            activateGoBackButton()
         }
         addGestureAfterSetDirection()
         self.hideKeyboard()
@@ -179,6 +179,7 @@ extension FirstExcuteViewController{
     //제스처 추가
     func addGestureEvent(sender: UISwipeGestureRecognizer){
         if sender.direction == .right{
+            
             if viewModel.currentIndex == 0{
                 return
             }
@@ -187,11 +188,13 @@ extension FirstExcuteViewController{
         else if sender.direction == .left{
             
             if viewModel.detectFirstExecution{
+                
                 if viewModel.currentIndex == viewModel.firstExcuteMaxIndex{
                     return
                 }
             }
             else{
+                
                 if viewModel.currentIndex == viewModel.executionGuideMaxIndex{
                     return
                 }
@@ -417,5 +420,17 @@ extension FirstExcuteViewController{
             .orEmpty
             .bind(to: viewModel.squatObservable)
             .disposed(by: disposeBag)
+    }
+}
+
+//MARK: - 취소 'X' 버튼 활성화
+
+extension FirstExcuteViewController{
+    func activateGoBackButton(){
+        goBackButton.isHidden = false
+        goBackButton.rx.tap
+            .bind { _ in
+                self.dismiss(animated: true)
+            }.disposed(by: disposeBag)
     }
 }
