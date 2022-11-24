@@ -22,7 +22,7 @@ class FirstExcuteViewModel {
     
     // 둘 다 공통으로 사용
     lazy var detectFirstExecution = true
-    var currentIndex = 0
+    lazy var currentIndex = 0
     var firstExcuteMaxIndex: Int{
         return firstExcuteimageNamesArray.count - 1 + 1 // index화 -> 새로운 UI를 위해 +1 적용
     }

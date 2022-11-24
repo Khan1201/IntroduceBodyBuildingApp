@@ -155,7 +155,7 @@ extension MainViewController {
                     dropDown.cornerRadius = 15
                     dropDown.backgroundColor = UIColor(named: "DropDownColor")!
                     dropDown.textColor = .black
-                    dropDown.dataSource = ["루틴","보관함"]
+                    dropDown.dataSource = ["설정","루틴","보관함"]
                     dropDown.topOffset = CGPoint(x: -60, y:-(dropDown.anchorView?.plainView.bounds.height)!)
                 }
                 
@@ -165,6 +165,9 @@ extension MainViewController {
                     dropDown.customCellConfiguration = { (index: Index, item: String, cell: DropDownCell) -> Void in
                         guard let cell = cell as? DropCell else { return }
                         if index == 0{
+                            cell.dropDownImage.image = UIImage(systemName: "gearshape")
+                        }
+                        else if index == 1{
                             cell.dropDownImage.image = UIImage(systemName: "square.and.pencil")
                         }
                         else{
@@ -176,15 +179,22 @@ extension MainViewController {
                 //DropDown 클릭 이벤트
                 func addClickEvent(){
                     dropDown.selectionAction = { [weak self] (index, item) in
-                        if index == 1{
+                     
+                        if index == 0{
+                            guard let settingVC = self?.storyboard?.instantiateViewController(withIdentifier: "SettingViewController") else {return}
+                            settingVC.modalPresentationStyle = .popover
+                            self?.present(settingVC, animated: true)
+                        }
+                        else if index == 1 {
+                            guard let routineVC = self?.storyboard?.instantiateViewController(withIdentifier: "RoutineViewController") else {return}
+                            self?.navigationController?.pushViewController(routineVC, animated: true)
+                        }
+                        else{
                             _ = MyProgramViewModel() //선언과 동시에 coreData 생성 됨
                             guard let basetVC = self?.storyboard?.instantiateViewController(withIdentifier: "MyProgramViewController") else {return}
                             self?.navigationController?.pushViewController(basetVC, animated: true)
                         }
-                        else{
-                            guard let routineVC = self?.storyboard?.instantiateViewController(withIdentifier: "RoutineViewController") else {return}
-                            self?.navigationController?.pushViewController(routineVC, animated: true)
-                        }
+                        
                     }
                 }
             }.disposed(by: disposeBag) // 구독해제 (메모리 정리)
@@ -276,7 +286,7 @@ extension MainViewController{
                         
                             let message =
                             """
-                            (+) 버튼 -> 1RM 탭에서
+                            (+) 버튼 -> 설정 탭에서
                             1RM 재설정 가능합니다.
                             """
                             self?.showToast(message: message)
@@ -287,7 +297,6 @@ extension MainViewController{
     
     //최초 실행 Toast 출력
     func showToast(font: UIFont = UIFont.systemFont(ofSize: 13, weight: .bold), message: String) {
-        //        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 84, y: self.view.frame.size.height-100, width: 170, height: 30))
         let toastLabel = UILabel()
         toastLabel.backgroundColor = .systemBlue
         toastLabel.textColor = UIColor.white

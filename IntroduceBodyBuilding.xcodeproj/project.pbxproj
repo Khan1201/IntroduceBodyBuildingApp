@@ -15,6 +15,7 @@
 		BC123C2B28F32786003AE914 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC123C2A28F32786003AE914 /* WebKit.framework */; };
 		BC1BDDD028E55A3000238C60 /* MyProgramViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */; };
 		BC1BDDD228E5A02C00238C60 /* MyProgramViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BDDD128E5A02C00238C60 /* MyProgramViewCell.swift */; };
+		BC308845292F7DAA0054DD31 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC308844292F7DAA0054DD31 /* SettingViewController.swift */; };
 		BC3B72AB28ED935E00C8F40E /* RoutineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B72AA28ED935E00C8F40E /* RoutineViewController.swift */; };
 		BC3B72AF28ED995400C8F40E /* RoutineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B72AE28ED995400C8F40E /* RoutineTableViewCell.swift */; };
 		BC3B72B128ED9BF400C8F40E /* RoutineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B72B028ED9BF400C8F40E /* RoutineViewModel.swift */; };
@@ -51,6 +52,7 @@
 		BC123C2A28F32786003AE914 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewModel.swift; sourceTree = "<group>"; };
 		BC1BDDD128E5A02C00238C60 /* MyProgramViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgramViewCell.swift; sourceTree = "<group>"; };
+		BC308844292F7DAA0054DD31 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		BC3B72AA28ED935E00C8F40E /* RoutineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineViewController.swift; sourceTree = "<group>"; };
 		BC3B72AE28ED995400C8F40E /* RoutineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineTableViewCell.swift; sourceTree = "<group>"; };
 		BC3B72B028ED9BF400C8F40E /* RoutineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineViewModel.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				BC855BFF28B7B754005C4870 /* MyProgramViewController.swift */,
 				BC3B72AA28ED935E00C8F40E /* RoutineViewController.swift */,
 				BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */,
+				BC308844292F7DAA0054DD31 /* SettingViewController.swift */,
 				BCC0C4B4291B9CD70084069A /* HalfModalPresentationController.swift */,
 			);
 			path = ViewControllers;
@@ -322,6 +325,7 @@
 				BC07ED5928F94C330064B82A /* RoutineVCModel.swift in Sources */,
 				BC123C2728F3269D003AE914 /* WebViewController.swift in Sources */,
 				BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */,
+				BC308845292F7DAA0054DD31 /* SettingViewController.swift in Sources */,
 				BCE9D80528DC0D0E00EA5A95 /* MainTableViewModel.swift in Sources */,
 				BCCDAC9928AB7DAC004C41BD /* MainViewController.swift in Sources */,
 				BC9FF497291FD21300426F31 /* FirstExcuteViewModel.swift in Sources */,

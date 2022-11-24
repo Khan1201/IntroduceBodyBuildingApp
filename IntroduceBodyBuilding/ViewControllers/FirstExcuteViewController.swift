@@ -11,7 +11,7 @@ class FirstExcuteViewController: UIViewController {
     lazy var lastPageAllEmbeddedView = UIView()
     lazy var benchPressTextField = UITextField().then {
         $0.layer.cornerRadius = 5
-        $0.layer.borderColor = UIColor.label.cgColor
+        $0.layer.borderColor = UIColor.systemGray.cgColor
         $0.layer.borderWidth = 1.5
         $0.font = .systemFont(ofSize: 11)
         $0.textAlignment = .center
@@ -21,7 +21,7 @@ class FirstExcuteViewController: UIViewController {
     }
     lazy var deadLiftTextField = UITextField().then {
         $0.layer.cornerRadius = 5
-        $0.layer.borderColor = UIColor.label.cgColor
+        $0.layer.borderColor = UIColor.systemGray.cgColor
         $0.layer.borderWidth = 1.5
         $0.font = .systemFont(ofSize: 11)
         $0.textAlignment = .center
@@ -31,7 +31,7 @@ class FirstExcuteViewController: UIViewController {
     }
     lazy var squatTextField = UITextField().then {
         $0.layer.cornerRadius = 5
-        $0.layer.borderColor = UIColor.label.cgColor
+        $0.layer.borderColor = UIColor.systemGray.cgColor
         $0.layer.borderWidth = 1.5
         $0.font = .systemFont(ofSize: 11)
         $0.textAlignment = .center
