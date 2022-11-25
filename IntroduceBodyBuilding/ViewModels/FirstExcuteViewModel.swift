@@ -20,11 +20,18 @@ class FirstExcuteViewModel {
             }
     }()
     
+    // 설정에서 '이용방법' 선택 시 -> FirstExcuteVC가 호출 되는데, 1RM 페이지는 제외
+    lazy var fromSettingVC: Bool = false
+    
     // 둘 다 공통으로 사용
     lazy var detectFirstExecution = true
     lazy var currentIndex = 0
     var firstExcuteMaxIndex: Int{
-        return firstExcuteimageNamesArray.count - 1 + 1 // index화 -> 새로운 UI를 위해 +1 적용
+        var maxIndex = firstExcuteimageNamesArray.count - 1 + 1 // 새로운 UI(1RM 페이지)를 위해 +1 적용
+        if fromSettingVC {
+            maxIndex = firstExcuteimageNamesArray.count - 1 // 설정에서 호출 시, 새로운 UI(1RM 페이지) 제외
+        }
+        return maxIndex
     }
     var executionGuideMaxIndex: Int{
         return executionGuideImageNamesArray.count - 1

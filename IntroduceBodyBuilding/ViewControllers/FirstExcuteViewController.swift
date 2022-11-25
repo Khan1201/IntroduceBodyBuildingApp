@@ -90,6 +90,9 @@ class FirstExcuteViewController: UIViewController {
         didSet{
             if viewModel.detectFirstExecution{
                 pageControl.numberOfPages = viewModel.firstExcuteimageNamesArray.count + 1
+                if viewModel.fromSettingVC{
+                    pageControl.numberOfPages = viewModel.firstExcuteimageNamesArray.count
+                }
             }
             else{
                 pageControl.numberOfPages = viewModel.executionGuideImageNamesArray.count
@@ -106,10 +109,15 @@ class FirstExcuteViewController: UIViewController {
     
     @IBAction func okButtonAction(_ sender: Any) {
         if viewModel.detectFirstExecution{
-            if viewModel.currentIndex <= viewModel.firstExcuteMaxIndex - 1{ // 해당 VC의 pageControl 최대 currentIndex = 3
+            if viewModel.currentIndex <= viewModel.firstExcuteMaxIndex - 1{ // 마지막 페이지 전까진 '다음'으로 이동
                 setGestureDirectionEvent("left")
             }
             else{
+                
+                // 설정에서 '이용방법'으로 호출 시 1RM 페이지가 없음.
+                if viewModel.fromSettingVC{
+                    self.dismiss(animated: true)
+                }
                 viewModel.isValid
                     .filter { $0 == true}
                     .bind { _ in
@@ -130,7 +138,7 @@ class FirstExcuteViewController: UIViewController {
         }
         
         else{
-            if viewModel.currentIndex <= viewModel.executionGuideMaxIndex - 1{ // 해당 VC의 pageControl 최대 currentIndex = 2
+            if viewModel.currentIndex <= viewModel.executionGuideMaxIndex - 1{ 
                 setGestureDirectionEvent("left")
             }
             else{
@@ -207,6 +215,7 @@ extension FirstExcuteViewController{
 
 extension FirstExcuteViewController{
     func setGestureDirectionEvent(_ direction: String){
+        
         // 제스처 방향에 따른 UI 수정
         if direction == "left"{
             viewModel.currentIndex += 1
@@ -254,7 +263,7 @@ extension FirstExcuteViewController{
                 return
             }
             
-            //currentIndex 0 ~ 2 (마지막이 아닐때) 기존 뷰 수정
+            //currentIndex 마지막이 아닐때 기존 뷰 수정
             func modifyUIData(_ imageString: String, _ notice: String){
                 imageView.image = UIImage(named: imageString)
                 noticeLabel.text = notice
@@ -268,6 +277,10 @@ extension FirstExcuteViewController{
             else{
                 lastPageAllEmbeddedView.isHidden = false
                 hideExistingUI()
+                if viewModel.fromSettingVC{
+                    lastPageAllEmbeddedView.isHidden = true
+                    makeVisibleExistingUI()
+                }
             }
             
             func makeVisibleExistingUI(){
@@ -289,7 +302,8 @@ extension FirstExcuteViewController{
             else{
                 okButton.setTitle("확인", for: .normal)
                 
-                if viewModel.detectFirstExecution{
+                // 최초실행시에만 1RM 페이지 제공 -> 1RM 텍스트필드 valid 체크 필요
+                if viewModel.detectFirstExecution && viewModel.fromSettingVC == false {
                     viewModel.isValid
                         .map { $0 ? 1 : 0.3}
                         .bind(to: okButton.rx.alpha)

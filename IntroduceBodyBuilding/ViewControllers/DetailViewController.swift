@@ -177,7 +177,7 @@ class DetailViewController: UIViewController {
             
             excutionGuideVC.modalPresentationStyle = .custom
             excutionGuideVC.transitioningDelegate = self
-            HalfModalPresentationController.fromExcutionGuideVC = true
+            HalfModalPresentationController.dismissGestureFlag = true
             self.present(excutionGuideVC, animated: true)
         }
 

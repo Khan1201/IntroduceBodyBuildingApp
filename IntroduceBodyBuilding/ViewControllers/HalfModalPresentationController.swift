@@ -5,7 +5,8 @@ class HalfModalPresentationController: UIPresentationController {
     let blurEffectView: UIVisualEffectView!
     
     // ExcutionGuideVC로 호출 시 true, true -> tapGesture 추가
-    static var fromExcutionGuideVC: Bool = false
+    static var dismissGestureFlag: Bool = false
+
     lazy var tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer()
     
     override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
@@ -15,11 +16,11 @@ class HalfModalPresentationController: UIPresentationController {
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         // ExcutionGuideVC로 호출 시 -> 주변 클릭으로 dismiss 가능, 최초실행VC로 호출 시 -> 주변 클릭으로 dismiss 불가
-        if HalfModalPresentationController.fromExcutionGuideVC{
+        if HalfModalPresentationController.dismissGestureFlag{
             tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissController))
             self.blurEffectView.isUserInteractionEnabled = true
             self.blurEffectView.addGestureRecognizer(tapGestureRecognizer)
-            HalfModalPresentationController.fromExcutionGuideVC = false
+            HalfModalPresentationController.dismissGestureFlag = false
         }
     }
     @objc func dismissController() {

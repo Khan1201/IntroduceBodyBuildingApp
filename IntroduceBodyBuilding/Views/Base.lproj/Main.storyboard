@@ -1298,7 +1298,7 @@
                                             <constraint firstItem="oe0-rM-Xpl" firstAttribute="leading" secondItem="z4o-S4-Nmp" secondAttribute="leading" id="lvx-EI-ndU"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JKs-PS-5C3">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JKs-PS-5C3" userLabel="DivisionLine">
                                         <rect key="frame" x="0.0" y="100" width="374" height="1"/>
                                         <color key="backgroundColor" systemColor="systemGray4Color"/>
                                         <constraints>
@@ -1317,10 +1317,13 @@
                                         <color key="textColor" systemColor="systemGrayColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ciS-Nj-VX7">
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ciS-Nj-VX7">
                                         <rect key="frame" x="325" y="126" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="darkModeSwitchAction:" destination="izj-d9-mAm" eventType="valueChanged" id="EUo-iK-RLP"/>
+                                        </connections>
                                     </switch>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HvA-vJ-Q2K">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HvA-vJ-Q2K" userLabel="DivisionLine">
                                         <rect key="frame" x="0.0" y="173" width="374" height="1"/>
                                         <color key="backgroundColor" systemColor="systemGray4Color"/>
                                         <constraints>
@@ -1353,33 +1356,6 @@
                                     <constraint firstItem="ciS-Nj-VX7" firstAttribute="top" secondItem="Wid-1V-j6u" secondAttribute="top" constant="10" id="yh3-YY-tXf"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WSe-lC-Uiq" userLabel="VersionView">
-                                <rect key="frame" x="102" y="721.5" width="210" height="21"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="최신 버전 :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waK-Bq-3XK">
-                                        <rect key="frame" x="137" y="0.0" width="73" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현재 버전 : " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GFQ-gn-NZd">
-                                        <rect key="frame" x="0.0" y="0.0" width="77" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstItem="waK-Bq-3XK" firstAttribute="leading" secondItem="GFQ-gn-NZd" secondAttribute="trailing" constant="60" id="4pR-QU-gzC"/>
-                                    <constraint firstAttribute="bottom" secondItem="GFQ-gn-NZd" secondAttribute="bottom" id="5Bz-TX-sTe"/>
-                                    <constraint firstAttribute="bottom" secondItem="waK-Bq-3XK" secondAttribute="bottom" id="KcZ-5Z-Y8d"/>
-                                    <constraint firstItem="waK-Bq-3XK" firstAttribute="top" secondItem="WSe-lC-Uiq" secondAttribute="top" id="Vdn-LF-UZC"/>
-                                    <constraint firstItem="GFQ-gn-NZd" firstAttribute="leading" secondItem="WSe-lC-Uiq" secondAttribute="leading" id="lbo-lU-8c0"/>
-                                    <constraint firstAttribute="trailing" secondItem="waK-Bq-3XK" secondAttribute="trailing" id="oPN-ie-nKo"/>
-                                    <constraint firstItem="GFQ-gn-NZd" firstAttribute="top" secondItem="WSe-lC-Uiq" secondAttribute="top" id="xJl-DN-QqD"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kTg-Y3-2g1" userLabel="HelpView">
                                 <rect key="frame" x="25" y="540" width="374" height="146.5"/>
                                 <subviews>
@@ -1407,7 +1383,7 @@
                                                 </constraints>
                                                 <imageReference key="image" image="chevron.right" catalog="system" symbolScale="small"/>
                                             </imageView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pq6-Qa-61Z">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pq6-Qa-61Z" userLabel="divisionLine">
                                                 <rect key="frame" x="0.0" y="41" width="374" height="1"/>
                                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 <constraints>
@@ -1446,7 +1422,7 @@
                                                 </constraints>
                                                 <imageReference key="image" image="chevron.right" catalog="system" symbolScale="small"/>
                                             </imageView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AOr-wi-Nx5">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AOr-wi-Nx5" userLabel="DivisionLine">
                                                 <rect key="frame" x="0.0" y="40.5" width="374" height="1"/>
                                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 <constraints>
@@ -1482,6 +1458,33 @@
                                     <constraint firstAttribute="bottom" secondItem="2PN-yG-wl8" secondAttribute="bottom" id="tta-bn-Z6t"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WSe-lC-Uiq" userLabel="VersionView">
+                                <rect key="frame" x="102" y="721.5" width="210" height="21"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="최신 버전 :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waK-Bq-3XK">
+                                        <rect key="frame" x="137" y="0.0" width="73" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현재 버전 : " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GFQ-gn-NZd">
+                                        <rect key="frame" x="0.0" y="0.0" width="77" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="waK-Bq-3XK" firstAttribute="leading" secondItem="GFQ-gn-NZd" secondAttribute="trailing" constant="60" id="4pR-QU-gzC"/>
+                                    <constraint firstAttribute="bottom" secondItem="GFQ-gn-NZd" secondAttribute="bottom" id="5Bz-TX-sTe"/>
+                                    <constraint firstAttribute="bottom" secondItem="waK-Bq-3XK" secondAttribute="bottom" id="KcZ-5Z-Y8d"/>
+                                    <constraint firstItem="waK-Bq-3XK" firstAttribute="top" secondItem="WSe-lC-Uiq" secondAttribute="top" id="Vdn-LF-UZC"/>
+                                    <constraint firstItem="GFQ-gn-NZd" firstAttribute="leading" secondItem="WSe-lC-Uiq" secondAttribute="leading" id="lbo-lU-8c0"/>
+                                    <constraint firstAttribute="trailing" secondItem="waK-Bq-3XK" secondAttribute="trailing" id="oPN-ie-nKo"/>
+                                    <constraint firstItem="GFQ-gn-NZd" firstAttribute="top" secondItem="WSe-lC-Uiq" secondAttribute="top" id="xJl-DN-QqD"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="5f8-w7-hok"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1508,7 +1511,13 @@
                     </view>
                     <connections>
                         <outlet property="benchPressTextField" destination="YfJ-P2-I3d" id="QSI-UP-8pu"/>
+                        <outlet property="currentVersionLabel" destination="GFQ-gn-NZd" id="u0V-TZ-ybs"/>
+                        <outlet property="darkModeSwitch" destination="ciS-Nj-VX7" id="9Zb-hE-dei"/>
                         <outlet property="deadLiftTextField" destination="pCI-um-vHO" id="BOi-lM-a5k"/>
+                        <outlet property="guideView" destination="2PN-yG-wl8" id="6Z7-FU-0Kl"/>
+                        <outlet property="keywordChangeView" destination="rxu-ST-cSV" id="WUS-jV-dib"/>
+                        <outlet property="latestVersionLabel" destination="waK-Bq-3XK" id="a49-dA-c3Y"/>
+                        <outlet property="requestView" destination="ii0-Py-tEg" id="whE-2e-lhF"/>
                         <outlet property="saveButton" destination="Ivb-ND-6tN" id="Iap-Jp-Ohu"/>
                         <outlet property="squatTextField" destination="eLV-Qa-5q5" id="zWk-rH-z36"/>
                     </connections>
@@ -1526,13 +1535,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출처 : LiftVault.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nh-hn-Wb3">
-                                <rect key="frame" x="131" y="53" width="152" height="21"/>
+                                <rect key="frame" x="131" y="53" width="152" height="20.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1WN-Jw-uCR">
-                                <rect key="frame" x="106" y="53.5" width="20" height="20"/>
+                                <rect key="frame" x="106" y="53.5" width="20" height="19.5"/>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <imageReference key="image" image="safari" catalog="system" symbolScale="medium"/>
                             </imageView>
@@ -1550,7 +1559,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QNd-js-60G">
-                                <rect key="frame" x="0.0" y="84" width="414" height="1.5"/>
+                                <rect key="frame" x="0.0" y="83.5" width="414" height="1.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1.5" id="LlO-Sf-g2e"/>
