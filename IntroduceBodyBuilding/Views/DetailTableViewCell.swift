@@ -37,16 +37,52 @@ extension UILabel{
         
         let fontSize = self.font.pointSize
         let font = UIFont.boldSystemFont(ofSize: fontSize)
-        
+        let fontColor = getColor()
         let fullText = self.text ?? ""
         
         let attributedString = NSMutableAttributedString(string: fullText)
         for highlightedWord in highlightedWords {
             let textRange = (fullText as NSString).range(of: highlightedWord)
-            attributedString.addAttribute(.foregroundColor, value: UIColor.systemIndigo, range: textRange)
+            attributedString.addAttribute(.foregroundColor, value: fontColor, range: textRange)
             attributedString.addAttribute(.font, value: font, range: textRange)
         }
         self.attributedText = attributedString
+        
+        func getColor() -> UIColor{
+            var colorCode: UIColor = .systemIndigo
+            
+            if let colorName = UserDefaults.standard.string(forKey: "color"){
+                switch colorName{
+                case "Indigo":
+                    colorCode = .systemIndigo
+                case "Blue":
+                    colorCode = .systemBlue
+                case "Brown":
+                    colorCode = .systemBrown
+                case "Gray":
+                    colorCode = .systemGray
+                case "Green":
+                    colorCode = .systemGreen
+                case "Orange":
+                    colorCode = .systemOrange
+                case "Pink":
+                    colorCode = .systemPink
+                case "Purple":
+                    colorCode = .systemPurple
+                case "Red":
+                    colorCode = .systemRed
+                case "Teal":
+                    colorCode = .systemTeal
+                case "Yellow":
+                    colorCode = .systemYellow
+                    
+                default:
+                    print("color 존재하지 않음")
+                }
+            }
+            
+          return colorCode
+        }
     }
     func lineColorAndLineSpacing(spacing: CGFloat) {
         //        let font = UIFont.boldSystemFont(ofSize: fontSize)
@@ -81,6 +117,7 @@ extension UILabel{
         }
         self.attributedText = attributedString
     }
+    
 }
 
 //MARK: - TableViewCell의 % 무게 -> 자신의 무게로 대치

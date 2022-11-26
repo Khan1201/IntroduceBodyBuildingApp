@@ -7,7 +7,7 @@ import Then
 class FirstExcuteViewController: UIViewController {
     let viewModel = FirstExcuteViewModel()
     var disposeBag = DisposeBag()
-    
+
     lazy var lastPageAllEmbeddedView = UIView()
     lazy var benchPressTextField = UITextField().then {
         $0.layer.cornerRadius = 5
@@ -124,6 +124,7 @@ class FirstExcuteViewController: UIViewController {
                         UserDefaults.standard.set(Int(self.benchPressTextField.text!)!, forKey: "benchPress")
                         UserDefaults.standard.set(Int(self.deadLiftTextField.text!)!, forKey: "deadLift")
                         UserDefaults.standard.set(Int(self.squatTextField.text!)!, forKey: "squat")
+                        UserDefaults.standard.set("Indigo", forKey: "color") // 초기 키워드 색깔 저장
                         
                         // 현재 버전 저장 (1RM 받지 못하면 항상 최초실행 VC 띄움)
                         let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String

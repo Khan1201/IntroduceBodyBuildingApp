@@ -72,14 +72,14 @@ class SettingViewController: UIViewController {
     @IBOutlet weak var requestView: UIView!
     @IBOutlet weak var guideView: UIView!
     
+    @IBOutlet weak var currentVersionLabelEmbeddedView: UIView!{
+        didSet{
+            currentVersionLabelEmbeddedView.layer.cornerRadius = 10
+        }
+    }
     @IBOutlet weak var currentVersionLabel: UILabel!{
         didSet{
             currentVersionLabel.text = "현재 버전 : \(getCurrentVersion())"
-        }
-    }
-    @IBOutlet weak var latestVersionLabel: UILabel!{
-        didSet{
-            latestVersionLabel.text = "최신 버전 :"
         }
     }
     
@@ -162,7 +162,13 @@ class SettingViewController: UIViewController {
     }
     
     @objc func changeKeywords(){
-        print("키워드 체인지 VC 호출")
+        let keywordVC = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "KeywordViewController")
+//        keywordVC.modalTransitionStyle = .
+        HalfModalPresentationController.dismissGestureFlag = true
+        keywordVC.modalPresentationStyle = .custom
+        keywordVC.transitioningDelegate = self
+        self.present(keywordVC, animated: true)
     }
     @objc func requestImprovements(){
         if MFMailComposeViewController.canSendMail() {
@@ -247,7 +253,7 @@ class SettingViewController: UIViewController {
             make.height.equalTo(25)
             make.width.equalTo(130)
             make.bottom.equalTo(benchPressTextField.snp.top).offset(-10)
-            make.centerX.equalToSuperview()
+            make.left.equalTo(benchPressTextField.snp.left)
         }
     }
     
@@ -332,5 +338,4 @@ extension SettingViewController {
         self.present(sendMailErrorAlert, animated: true, completion: nil)
     }
 }
-
 

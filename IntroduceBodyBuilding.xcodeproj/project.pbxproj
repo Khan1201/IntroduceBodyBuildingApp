@@ -40,6 +40,9 @@
 		BCDC21BC291B619D0002F90B /* FirstExcuteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDC21BB291B619D0002F90B /* FirstExcuteViewController.swift */; };
 		BCE0480B28EF26DB00F39CCC /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */; };
 		BCE9D80528DC0D0E00EA5A95 /* MainTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE9D80428DC0D0E00EA5A95 /* MainTableViewModel.swift */; };
+		BCFC53B029320B6E00DC40F3 /* KeywordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFC53AF29320B6E00DC40F3 /* KeywordTableViewCell.swift */; };
+		BCFC53B229320C3D00DC40F3 /* KeywordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFC53B129320C3D00DC40F3 /* KeywordViewController.swift */; };
+		BCFC53B429320F7D00DC40F3 /* KeywordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFC53B329320F7D00DC40F3 /* KeywordViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +82,9 @@
 		BCDC21BB291B619D0002F90B /* FirstExcuteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstExcuteViewController.swift; sourceTree = "<group>"; };
 		BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		BCE9D80428DC0D0E00EA5A95 /* MainTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewModel.swift; sourceTree = "<group>"; };
+		BCFC53AF29320B6E00DC40F3 /* KeywordTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordTableViewCell.swift; sourceTree = "<group>"; };
+		BCFC53B129320C3D00DC40F3 /* KeywordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordViewController.swift; sourceTree = "<group>"; };
+		BCFC53B329320F7D00DC40F3 /* KeywordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordViewModel.swift; sourceTree = "<group>"; };
 		C7A93F4028C84E0831FB752B /* Pods_IntroduceBodyBuilding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntroduceBodyBuilding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -124,6 +130,7 @@
 				BC3B72AA28ED935E00C8F40E /* RoutineViewController.swift */,
 				BC6A22B328F80AB200D12797 /* RoutineAddViewController.swift */,
 				BC308844292F7DAA0054DD31 /* SettingViewController.swift */,
+				BCFC53B129320C3D00DC40F3 /* KeywordViewController.swift */,
 				BCC0C4B4291B9CD70084069A /* HalfModalPresentationController.swift */,
 			);
 			path = ViewControllers;
@@ -174,6 +181,7 @@
 				BC1BDDCF28E55A3000238C60 /* MyProgramViewModel.swift */,
 				BC3B72B028ED9BF400C8F40E /* RoutineViewModel.swift */,
 				BC07ED5A28F94DCE0064B82A /* RoutineAddViewModel.swift */,
+				BCFC53B329320F7D00DC40F3 /* KeywordViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -185,6 +193,7 @@
 				BCE0480A28EF26DB00F39CCC /* DetailTableViewCell.swift */,
 				BC1BDDD128E5A02C00238C60 /* MyProgramViewCell.swift */,
 				BC3B72AE28ED995400C8F40E /* RoutineTableViewCell.swift */,
+				BCFC53AF29320B6E00DC40F3 /* KeywordTableViewCell.swift */,
 				BC68A58828EC57A100D4C02F /* DropCell.swift */,
 				BCCDAC9A28AB7DAC004C41BD /* Main.storyboard */,
 				BC68A58928EC57A100D4C02F /* DropCell.xib */,
@@ -327,6 +336,7 @@
 				BC855BFA28B79F63005C4870 /* CoreData.xcdatamodeld in Sources */,
 				BC308845292F7DAA0054DD31 /* SettingViewController.swift in Sources */,
 				BCE9D80528DC0D0E00EA5A95 /* MainTableViewModel.swift in Sources */,
+				BCFC53B029320B6E00DC40F3 /* KeywordTableViewCell.swift in Sources */,
 				BCCDAC9928AB7DAC004C41BD /* MainViewController.swift in Sources */,
 				BC9FF497291FD21300426F31 /* FirstExcuteViewModel.swift in Sources */,
 				BCCDACAC28AB7E35004C41BD /* MainTableViewCell.swift in Sources */,
@@ -343,8 +353,10 @@
 				BC07ED5B28F94DCE0064B82A /* RoutineAddViewModel.swift in Sources */,
 				BC1BDDD028E55A3000238C60 /* MyProgramViewModel.swift in Sources */,
 				BCC4E05828E2C0680061EAA9 /* DetailViewModel.swift in Sources */,
+				BCFC53B229320C3D00DC40F3 /* KeywordViewController.swift in Sources */,
 				BC3B72AF28ED995400C8F40E /* RoutineTableViewCell.swift in Sources */,
 				BCA5B9FB28AFB7AC00F04AFB /* DetailVCModel.swift in Sources */,
+				BCFC53B429320F7D00DC40F3 /* KeywordViewModel.swift in Sources */,
 				BCDC21BC291B619D0002F90B /* FirstExcuteViewController.swift in Sources */,
 				BC3B72B128ED9BF400C8F40E /* RoutineViewModel.swift in Sources */,
 				BC6A22B528F80AB200D12797 /* RoutineAddViewController.swift in Sources */,
