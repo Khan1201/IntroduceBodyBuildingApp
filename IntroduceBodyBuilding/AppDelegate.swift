@@ -1,13 +1,12 @@
-//
-//  AppDelegate.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/08/16.
-//
+
 
 import UIKit
-import FirebaseCore
 import CoreData
+
+
+import FirebaseCore
+import FirebaseFirestore
+
 import RxSwift
 
 @main

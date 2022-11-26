@@ -1,10 +1,3 @@
-//
-//  KeywordTableViewCell.swift
-//  IntroduceBodyBuilding
-//
-//  Created by 윤형석 on 2022/11/26.
-//
-
 import UIKit
 
 class KeywordTableViewCell: UITableViewCell {

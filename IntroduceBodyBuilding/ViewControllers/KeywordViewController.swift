@@ -1,5 +1,6 @@
 
 import UIKit
+
 import RxSwift
 import RxCocoa
 
@@ -9,7 +10,17 @@ class KeywordViewController: UIViewController {
     let disposeBag = DisposeBag()
     
     @IBOutlet weak var tableView: UITableView!
-    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        bindTableView()
+        addClickEvent()
+    }
+}
+
+//MARK: - 테이블 뷰 바인딩 및 클릭 이벤트
+
+extension KeywordViewController{
     func bindTableView(){
         
         viewModel.colorDataObservable
@@ -38,11 +49,4 @@ class KeywordViewController: UIViewController {
                 self?.tableView.reloadData()
             }.disposed(by: disposeBag)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        bindTableView()
-        addClickEvent()
-    }
-    
 }

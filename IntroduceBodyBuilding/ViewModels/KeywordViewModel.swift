@@ -8,14 +8,12 @@ class KeywordViewModel {
         let colorName: String
         let colorCode: UIColor
     }
-    
+
     let colorName: [String] = ["Indigo","Blue", "Brown", "Gray", "Green", "Orange", "Pink", "Purple", "Red",
                                "Teal", "Yellow"]
     
     let colorCode: [UIColor] = [.systemIndigo, .systemBlue, .systemBrown, .systemGray, .systemGreen,.systemOrange,
                                 .systemPink, .systemPurple, .systemRed, .systemTeal, .systemYellow]
-        
-    
     
     init(){
         var keywordArray: [Keyword] = []

@@ -7,46 +7,29 @@ import RxCocoa
 
 class SettingViewController: UIViewController {
     
-    let firstExcuteViewModel = FirstExcuteViewModel() // 최초실행 VC의 valid 로직 사용
+    let firstExcuteViewModel = FirstExcuteViewModel() // 최초실행 VC의 Observable, Valid 로직 사용
     let disposeBag = DisposeBag()
+    
+    // MARK: - @IBOutlet
     
     @IBOutlet weak var benchPressTextField: UITextField!{
         didSet{
-            benchPressTextField.layer.masksToBounds = true
-            benchPressTextField.layer.cornerRadius = 5
-            benchPressTextField.layer.borderColor = UIColor.systemGray.cgColor
-            benchPressTextField.layer.borderWidth = 1
-            
-            
-            let existingValue = UserDefaults.standard.string(forKey: "benchPress")
-            benchPressTextField.text = existingValue
-            firstExcuteViewModel.benchPressObservable.accept(existingValue ?? "")
+            setTextFieldInitialSetting(benchPressTextField, key: "benchPress",
+                                       validObservable: firstExcuteViewModel.benchPressObservable)
         }
     }
     
     @IBOutlet weak var deadLiftTextField: UITextField!{
         didSet{
-            deadLiftTextField.layer.masksToBounds = true
-            deadLiftTextField.layer.cornerRadius = 5
-            deadLiftTextField.layer.borderColor = UIColor.systemGray.cgColor
-            deadLiftTextField.layer.borderWidth = 1
-            
-            let existingValue = UserDefaults.standard.string(forKey: "deadLift")
-            deadLiftTextField.text = existingValue
-            firstExcuteViewModel.deadLiftObservable.accept(existingValue ?? "")
+            setTextFieldInitialSetting(deadLiftTextField, key: "deadLift",
+                                       validObservable: firstExcuteViewModel.deadLiftObservable)
         }
     }
     
     @IBOutlet weak var squatTextField: UITextField!{
         didSet{
-            squatTextField.layer.masksToBounds = true
-            squatTextField.layer.cornerRadius = 5
-            squatTextField.layer.borderColor = UIColor.systemGray.cgColor
-            squatTextField.layer.borderWidth = 1
-            
-            let existingValue = UserDefaults.standard.string(forKey: "squat")
-            squatTextField.text = existingValue
-            firstExcuteViewModel.squatObservable.accept(existingValue ?? "")
+            setTextFieldInitialSetting(squatTextField, key: "squat",
+                                       validObservable: firstExcuteViewModel.squatObservable)
         }
     }
     @IBOutlet weak var saveButton: UIButton!{
@@ -57,6 +40,7 @@ class SettingViewController: UIViewController {
     }
     @IBOutlet weak var darkModeSwitch: UISwitch!{
         didSet{
+            
             // 기존 시스템 다크모드 감지, 다크모드 -> 스위치 on
             if self.traitCollection.userInterfaceStyle == .dark{
                 darkModeSwitch.isOn = true
@@ -66,8 +50,7 @@ class SettingViewController: UIViewController {
             }
         }
     }
-    
-    
+
     @IBOutlet weak var keywordChangeView: UIView!
     @IBOutlet weak var requestView: UIView!
     @IBOutlet weak var guideView: UIView!
@@ -83,23 +66,27 @@ class SettingViewController: UIViewController {
         }
     }
     
+    // MARK: - @IBAction
+
     @IBAction func saveButtonAction(_ sender: Any) {
-        
-        let benchPressWeight = benchPressTextField.text ?? ""
-        let deadLiftWeight = deadLiftTextField.text ?? ""
-        let squatWeight = squatTextField.text ?? ""
-        
-        UserDefaults.standard.removeObject(forKey: "benchPress")
-        UserDefaults.standard.removeObject(forKey: "deadLift")
-        UserDefaults.standard.removeObject(forKey: "squat")
-        
-        UserDefaults.standard.set(Int(benchPressWeight) ?? 0, forKey: "benchPress")
-        UserDefaults.standard.set(Int(deadLiftWeight) ?? 0, forKey: "deadLift")
-        UserDefaults.standard.set(Int(squatWeight) ?? 0, forKey: "squat")
-        
+        saveValueAtUserDefaults()
         showToast(message: "저장 되었습니다.")
+
+        func saveValueAtUserDefaults(){
+            let benchPressWeight = benchPressTextField.text ?? ""
+            let deadLiftWeight = deadLiftTextField.text ?? ""
+            let squatWeight = squatTextField.text ?? ""
+            
+            UserDefaults.standard.removeObject(forKey: "benchPress")
+            UserDefaults.standard.removeObject(forKey: "deadLift")
+            UserDefaults.standard.removeObject(forKey: "squat")
+            
+            UserDefaults.standard.set(Int(benchPressWeight) ?? 0, forKey: "benchPress")
+            UserDefaults.standard.set(Int(deadLiftWeight) ?? 0, forKey: "deadLift")
+            UserDefaults.standard.set(Int(squatWeight) ?? 0, forKey: "squat")
+        }
+        
     }
-    
     
     @IBAction func goBackButtonAction(_ sender: Any) {
         self.dismiss(animated: true)
@@ -138,7 +125,125 @@ class SettingViewController: UIViewController {
         }
     }
     
-    func addViewsAction(){
+    //MARK: - viewDidLoad()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hideKeyboard()
+        bindTextFieldText()
+        checkValid()
+        addViewsTapAction()
+    }
+}
+
+//MARK: - TextField 초기 값 및 UI 설정
+
+extension SettingViewController{
+    
+    func setTextFieldInitialSetting(_ textField: UITextField, key: String, validObservable: BehaviorRelay<String>){
+        setIntialUI()
+        setInitialValue()
+        
+        func setIntialUI(){
+            textField.layer.masksToBounds = true
+            textField.layer.cornerRadius = 5
+            textField.layer.borderColor = UIColor.systemGray.cgColor
+            textField.layer.borderWidth = 1
+            
+        }
+        func setInitialValue(){
+            let existingValue = UserDefaults.standard.string(forKey: key)
+            textField.text = existingValue
+            validObservable.accept(existingValue ?? "")
+        }
+    }
+}
+
+//MARK: - TextField 텍스트 값 감지 -> Observable에 바인딩
+
+extension SettingViewController{
+    
+    func bindTextFieldText(){
+        benchPressTextField.rx.text
+            .orEmpty
+            .bind(to: firstExcuteViewModel.benchPressObservable)
+            .disposed(by: disposeBag)
+        
+        deadLiftTextField.rx.text
+            .orEmpty
+            .bind(to: firstExcuteViewModel.deadLiftObservable)
+            .disposed(by: disposeBag)
+        
+        squatTextField.rx.text
+            .orEmpty
+            .bind(to: firstExcuteViewModel.squatObservable)
+            .disposed(by: disposeBag)
+    }
+}
+
+//MARK: - 무게 값 Valid 체크 -> '저장' 버튼 활성화 결정
+
+extension SettingViewController{
+    
+    func checkValid() {
+        firstExcuteViewModel.isValid
+            .bind { [weak self] bool in
+                self?.saveButton.isEnabled = bool
+            }.disposed(by: disposeBag)
+    }
+}
+
+//MARK: - '저장 되었습니다' 토스트 제공
+
+extension SettingViewController{
+    
+    func showToast(font: UIFont = UIFont.systemFont(ofSize: 11, weight: .bold), message: String) {
+        let toastLabel = UILabel()
+        toastLabel.backgroundColor = .systemGray
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.numberOfLines = 2
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 6, delay: 0.5, options: .transitionCurlDown, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+        
+        toastLabel.snp.makeConstraints { make in
+            make.height.equalTo(25)
+            make.width.equalTo(130)
+            make.bottom.equalTo(benchPressTextField.snp.top).offset(-10)
+            make.left.equalTo(benchPressTextField.snp.left)
+        }
+    }
+}
+
+//MARK: - Delegate (TransitioningDelegate, MFMailComposeViewControllerDelegate)
+
+extension SettingViewController: UIViewControllerTransitioningDelegate{
+    
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+extension SettingViewController: MFMailComposeViewControllerDelegate{
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        self.dismiss(animated: true)
+    }
+}
+
+//MARK: - 각 행의 뷰 클릭 이벤트
+
+extension SettingViewController {
+    func addViewsTapAction(){
         keywordChangeViewAction()
         requestViewAction()
         guideViewAction()
@@ -157,14 +262,12 @@ class SettingViewController: UIViewController {
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(offerGuide))
             guideView.addGestureRecognizer(tapGestureRecognizer)
         }
-        
-        
     }
     
     @objc func changeKeywords(){
         let keywordVC = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "KeywordViewController")
-//        keywordVC.modalTransitionStyle = .
+                        .instantiateViewController(withIdentifier: "KeywordViewController")
+        
         HalfModalPresentationController.dismissGestureFlag = true
         keywordVC.modalPresentationStyle = .custom
         keywordVC.transitioningDelegate = self
@@ -212,82 +315,6 @@ class SettingViewController: UIViewController {
         firstVC.viewModel.fromSettingVC = true
         HalfModalPresentationController.dismissGestureFlag = true
         self.present(firstVC, animated: true)
-    }
-    
-    
-    func bindTextFieldData(){
-        benchPressTextField.rx.text
-            .orEmpty
-            .bind(to: firstExcuteViewModel.benchPressObservable)
-            .disposed(by: disposeBag)
-        
-        deadLiftTextField.rx.text
-            .orEmpty
-            .bind(to: firstExcuteViewModel.deadLiftObservable)
-            .disposed(by: disposeBag)
-        
-        squatTextField.rx.text
-            .orEmpty
-            .bind(to: firstExcuteViewModel.squatObservable)
-            .disposed(by: disposeBag)
-    }
-    func showToast(font: UIFont = UIFont.systemFont(ofSize: 11, weight: .bold), message: String) {
-        let toastLabel = UILabel()
-        toastLabel.backgroundColor = .systemGray
-        toastLabel.textColor = UIColor.white
-        toastLabel.font = font
-        toastLabel.numberOfLines = 2
-        toastLabel.textAlignment = .center;
-        toastLabel.text = message
-        toastLabel.alpha = 1.0
-        toastLabel.layer.cornerRadius = 10
-        toastLabel.clipsToBounds  =  true
-        self.view.addSubview(toastLabel)
-        UIView.animate(withDuration: 6, delay: 0.5, options: .transitionCurlDown, animations: {
-            toastLabel.alpha = 0.0
-        }, completion: {(isCompleted) in
-            toastLabel.removeFromSuperview()
-        })
-        
-        toastLabel.snp.makeConstraints { make in
-            make.height.equalTo(25)
-            make.width.equalTo(130)
-            make.bottom.equalTo(benchPressTextField.snp.top).offset(-10)
-            make.left.equalTo(benchPressTextField.snp.left)
-        }
-    }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        hideKeyboard()
-        bindTextFieldData()
-        
-        firstExcuteViewModel.isValid
-            .bind { [weak self] bool in
-                self?.saveButton.isEnabled = bool
-            }.disposed(by: disposeBag)
-        
-        addViewsAction()
-        
-    }
-    
-}
-//MARK: - Custom presentationController
-
-extension SettingViewController: UIViewControllerTransitioningDelegate{
-    
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
-    }
-}
-
-//MARK: - Mail 작성창 dismiss
-
-extension SettingViewController: MFMailComposeViewControllerDelegate{
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        self.dismiss(animated: true)
     }
 }
 
@@ -338,4 +365,3 @@ extension SettingViewController {
         self.present(sendMailErrorAlert, animated: true, completion: nil)
     }
 }
-

@@ -1,4 +1,5 @@
 import UIKit
+
 import CoreData
 import RxSwift
 import RxCocoa
@@ -8,28 +9,34 @@ import DropDown
 class MainViewController: UIViewController{
     
     @IBOutlet weak var mainTableView: UITableView!
+    private var refreshControl: UIRefreshControl = UIRefreshControl()
     
     let disposeBag = DisposeBag()
-    let mainViewModel = MainTableViewModel()
-    let detailViewModel = DetailViewModel()
+    var clickEventDisposeBag = DisposeBag() // 셀 클릭 이벤트 DisposeBag
+    
+    var mainViewModel = MainTableViewModel()
+    var detailViewModel = DetailViewModel()
     
     //MARK: - viewDidLoad()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        receivedNotification()
+        requestNotificationAuthorization()
         detectFirstExecution()
         makeNavigationBar()
-        addCellCilckEvent()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
             self.bindTableView(isFilterd: false)
+            self.addCellCilckEvent()
+            self.addTableViewRefresh()
         }
+        
         makePlusButton()
         self.hideKeyboard()
     }
 }
 
-//MARK: - //테이블 뷰 셀 바인딩, 테이뷸 뷰 옵션 설정
+//MARK: - 테이블 뷰 셀 바인딩, 테이뷸 뷰 옵션 설정
 
 extension MainViewController {
     private func bindTableView(isFilterd: Bool) { //isFiltered -> true : 검색 활성화 시, false: 검색 비활성화 시
@@ -59,7 +66,58 @@ extension MainViewController {
         }
     }
 }
-//MARK: - 검색 활성화 후 필러링된 TableView 제공
+
+//MARK: - 셀 클릭 이벤트 (한번만 선언위해 바깥으로 빼놓음)
+
+extension MainViewController {
+    private func addCellCilckEvent(){
+        
+        //itemSelectd -> IndexPath 추출, modelSelected -> .title 추출
+        Observable.zip(mainTableView.rx.itemSelected, mainTableView.rx.modelSelected(MainTVCellModel.Fields.self))
+            .observe(on: MainScheduler.instance)
+            .withLatestFrom(detailViewModel.detailViewObservable){ [weak self] (zipData, detailVCDatas) in
+                //zipData -> (indexPath, modelData)
+                                
+                self?.mainTableView.deselectRow(at: zipData.0, animated: true) //셀 선택시 선택 효과 고정 제거
+                guard let detailVC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
+                
+                for detailVCData in detailVCDatas{ //Array인 detailViewModel의 Data에 접근
+                    if zipData.1.title == detailVCData.title{
+                        detailVC.viewModel.detailVCIndexObservable
+                            .onNext(detailVCData)
+                    }
+                }
+                self?.navigationController?.pushViewController(detailVC, animated: true)
+            }
+            .subscribe(onDisposed:  {
+            }).disposed(by: clickEventDisposeBag)
+    }
+}
+
+//MARK: - 네비게이션 바 및 서치바 생성
+
+extension MainViewController {
+    private func makeNavigationBar(){ //네비게이션 바 생성
+        let searchController = UISearchController(searchResultsController: nil) //서치바 컨트롤러 생성
+        searchControllerSet(searchController: searchController)
+        navigationSet(searchController: searchController)
+        
+        func navigationSet(searchController: UISearchController){
+            self.navigationItem.title = "운동 프로그램"
+            self.navigationController?.navigationBar.prefersLargeTitles = true
+            self.navigationItem.hidesSearchBarWhenScrolling = true //스크롤 내릴 시 검색창 숨김
+            self.navigationItem.searchController = searchController //서치바 활성화
+            self.navigationItem.backButtonTitle = "Back"
+            
+        }
+        func searchControllerSet(searchController: UISearchController){
+            searchController.obscuresBackgroundDuringPresentation = false //false -> 검색창 활성화 시 주변 화면 흐림 X
+            searchController.searchResultsUpdater = self //SearchBar에 데이터 입력 시 실시간으로 결과 반영
+        }
+    }
+}
+
+//MARK: - 서치바 활성화 후 필러링된 TableView 제공
 
 extension MainViewController: UISearchResultsUpdating{
     
@@ -86,31 +144,30 @@ extension MainViewController: UISearchResultsUpdating{
     }
 }
 
-//MARK: - 셀 클릭 이벤트 (한번만 선언위해 바깥으로 빼놓음)
+//MARK: - 테이블뷰 Refresh 기능{
 
-extension MainViewController {
-    private func addCellCilckEvent(){
+extension MainViewController{
+    
+    func addTableViewRefresh(){
+       mainTableView.refreshControl = refreshControl
+       refreshControl.addTarget(self, action: #selector(self.pullToRefresh), for: .valueChanged)
+    }
+    
+    @objc func pullToRefresh(_ sender: Any) {
+        mainViewModel = MainTableViewModel()
+        detailViewModel = DetailViewModel()
         
-        //itemSelectd -> IndexPath 추출, modelSelected -> .title 추출
-        Observable.zip(mainTableView.rx.itemSelected, mainTableView.rx.modelSelected(MainTVCellModel.Fields.self))
-            .observe(on: MainScheduler.instance)
-            .withLatestFrom(detailViewModel.detailViewObservable){ [weak self] (zipData, detailVCDatas) in
-                //zipData -> (indexPath, modelData)
-                self?.mainTableView.deselectRow(at: zipData.0, animated: true) //셀 선택시 선택 효과 고정 제거
-                guard let detailVC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else {return}
-                
-                for detailVCData in detailVCDatas{ //Array인 detailViewModel의 Data에 접근
-                    if zipData.1.title == detailVCData.title{
-                        detailVC.viewModel.detailVCIndexObservable
-                            .onNext(detailVCData)
-                    }
-                }
-                self?.navigationController?.pushViewController(detailVC, animated: true)
-            }
-            .subscribe(onDisposed:  {
-            }).disposed(by: disposeBag)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.bindTableView(isFilterd: false)
+            
+            self.clickEventDisposeBag = DisposeBag()
+            self.addCellCilckEvent()
+            
+            self.refreshControl.endRefreshing()
+        }
     }
 }
+
 //MARK: - (+) 버튼 생성
 
 extension MainViewController {
@@ -201,28 +258,7 @@ extension MainViewController {
         }
     }
 }
-//MARK: - 네비게이션 바 및 서치바 생성
 
-extension MainViewController {
-    private func makeNavigationBar(){ //네비게이션 바 생성
-        let searchController = UISearchController(searchResultsController: nil) //서치바 컨트롤러 생성
-        searchControllerSet(searchController: searchController)
-        navigationSet(searchController: searchController)
-        
-        func navigationSet(searchController: UISearchController){
-            self.navigationItem.title = "운동 프로그램"
-            self.navigationController?.navigationBar.prefersLargeTitles = true
-            self.navigationItem.hidesSearchBarWhenScrolling = true //스크롤 내릴 시 검색창 숨김
-            self.navigationItem.searchController = searchController //서치바 활성화
-            self.navigationItem.backButtonTitle = "Back"
-            
-        }
-        func searchControllerSet(searchController: UISearchController){
-            searchController.obscuresBackgroundDuringPresentation = false //false -> 검색창 활성화 시 주변 화면 흐림 X
-            searchController.searchResultsUpdater = self //SearchBar에 데이터 입력 시 실시간으로 결과 반영
-        }
-    }
-}
 //MARK: - 로컬 푸쉬 알림 권한 요청
 
 extension MainViewController {
@@ -241,7 +277,7 @@ extension MainViewController {
 
 extension MainViewController{
     
-    func receivedNotification(){
+    func requestdNotificationAuthorization(){
         
         // 알림 클릭 구독
         mainViewModel.receivedNotification
@@ -322,6 +358,8 @@ extension MainViewController{
         }
     }
 }
+
+//MARK: - Modal Transitioning Delegate
 extension MainViewController: UIViewControllerTransitioningDelegate{
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController?{
         return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)

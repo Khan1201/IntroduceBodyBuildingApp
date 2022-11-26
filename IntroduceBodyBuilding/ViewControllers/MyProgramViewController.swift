@@ -9,6 +9,8 @@ class MyProgramViewController: UIViewController {
     let myProgramViewModel = MyProgramViewModel()
     let detailViewModel = DetailViewModel()
     
+    //MARK: - @IBOutlet
+
     @IBOutlet weak var bodyBuildingDivisionView: UIView!
     @IBOutlet weak var powerBuildingDivisionView: UIView!
     @IBOutlet weak var powerLiftingDivisionView: UIView!

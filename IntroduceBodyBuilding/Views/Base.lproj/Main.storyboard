@@ -1459,11 +1459,11 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WSe-lC-Uiq" userLabel="VersionView">
-                                <rect key="frame" x="158" y="721.5" width="98.5" height="38"/>
+                                <rect key="frame" x="162" y="721.5" width="90" height="36"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현재 버전 : " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GFQ-gn-NZd">
-                                        <rect key="frame" x="15" y="10" width="68.5" height="18"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <rect key="frame" x="15" y="10" width="60" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1593,70 +1593,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3pN-KV-a8X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1001" y="2242"/>
-        </scene>
-        <!--Web View Controller-->
-        <scene sceneID="2Ph-kp-gJq">
-            <objects>
-                <viewController storyboardIdentifier="WebViewController" id="YSe-bL-Hr6" customClass="WebViewController" customModule="IntroduceBodyBuilding" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="tf5-KG-c2J">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출처 : LiftVault.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nh-hn-Wb3">
-                                <rect key="frame" x="131" y="53" width="152" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1WN-Jw-uCR">
-                                <rect key="frame" x="106" y="53.5" width="20" height="20"/>
-                                <color key="tintColor" systemColor="labelColor"/>
-                                <imageReference key="image" image="safari" catalog="system" symbolScale="medium"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Un6-DK-wof">
-                                <rect key="frame" x="0.0" y="40" width="54" height="46"/>
-                                <color key="tintColor" systemColor="systemRedColor"/>
-                                <inset key="contentEdgeInsets" minX="13" minY="10" maxX="15" maxY="10"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal">
-                                    <imageReference key="image" image="xmark.circle.fill" catalog="system" symbolScale="large"/>
-                                </state>
-                                <connections>
-                                    <action selector="closeButtonAction:" destination="YSe-bL-Hr6" eventType="touchUpInside" id="6ia-nM-tjH"/>
-                                    <action selector="goBackButtonAction:" destination="bUa-WK-1qE" eventType="touchUpInside" id="M7f-fQ-CXR"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QNd-js-60G">
-                                <rect key="frame" x="0.0" y="84" width="414" height="1.5"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1.5" id="LlO-Sf-g2e"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="8Tj-Z0-jRY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="7nh-hn-Wb3" firstAttribute="leading" secondItem="1WN-Jw-uCR" secondAttribute="trailing" constant="5" id="Orn-1t-8v3"/>
-                            <constraint firstItem="7nh-hn-Wb3" firstAttribute="top" secondItem="1WN-Jw-uCR" secondAttribute="top" id="Qwp-8X-nTW"/>
-                            <constraint firstItem="7nh-hn-Wb3" firstAttribute="centerX" secondItem="tf5-KG-c2J" secondAttribute="centerX" id="Sxf-i0-hVH"/>
-                            <constraint firstItem="Un6-DK-wof" firstAttribute="leading" secondItem="8Tj-Z0-jRY" secondAttribute="leading" id="TVZ-Cn-8ta"/>
-                            <constraint firstItem="7nh-hn-Wb3" firstAttribute="top" secondItem="8Tj-Z0-jRY" secondAttribute="top" constant="5" id="Yhf-Tw-d4a"/>
-                            <constraint firstItem="QNd-js-60G" firstAttribute="leading" secondItem="tf5-KG-c2J" secondAttribute="leading" id="ZM6-G1-USX"/>
-                            <constraint firstItem="Un6-DK-wof" firstAttribute="top" secondItem="8Tj-Z0-jRY" secondAttribute="top" constant="-8" id="cKS-qM-Oxg"/>
-                            <constraint firstAttribute="trailing" secondItem="QNd-js-60G" secondAttribute="trailing" id="gLZ-4t-5pb"/>
-                            <constraint firstItem="7nh-hn-Wb3" firstAttribute="bottom" secondItem="1WN-Jw-uCR" secondAttribute="bottom" id="m5g-iB-Avu"/>
-                            <constraint firstItem="QNd-js-60G" firstAttribute="top" secondItem="7nh-hn-Wb3" secondAttribute="bottom" constant="10" id="sJa-yd-YUX"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="vzZ-IA-O1E"/>
-                    <connections>
-                        <outlet property="sourceLabel" destination="7nh-hn-Wb3" id="nsW-Th-Oo5"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="AhR-4L-mNm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1908.6956521739132" y="124.55357142857142"/>
         </scene>
         <!--Routine Add View Controller-->
         <scene sceneID="5iK-2F-OxK">
@@ -2014,7 +1950,6 @@
         <image name="exclamationmark.bubble.fill" catalog="system" width="128" height="110"/>
         <image name="firstExecution1" width="1080" height="2340"/>
         <image name="pencil.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="safari" catalog="system" width="128" height="123"/>
         <image name="xmark.circle.fill" catalog="system" width="128" height="123"/>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -7,6 +7,7 @@ class RoutineViewController: UIViewController {
     var viewModel = RoutineViewModel()
     var disposeBag = DisposeBag()
     
+    // 루틴 데이터가 비었을 시 제공할 UI
     var emptyImageVIew: UIImageView {
         let emptyImageView = UIImageView()
         emptyImageView.image = UIImage(named: "empty")
@@ -311,7 +312,7 @@ extension RoutineViewController{
                                                              days: cell.getSelectedDaysStringArray(),
                                                              time: self.convertTimeToAmPm(title: title))
         
-                        self.showToast(message: "07:00 에 알림이 발생합니다.")
+                        self.showToast(message: "오전 07:00 에 알림이 발생합니다.")
                     }
                 }
                 

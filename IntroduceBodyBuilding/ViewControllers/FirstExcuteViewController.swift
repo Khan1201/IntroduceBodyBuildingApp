@@ -10,35 +10,16 @@ class FirstExcuteViewController: UIViewController {
 
     lazy var lastPageAllEmbeddedView = UIView()
     lazy var benchPressTextField = UITextField().then {
-        $0.layer.cornerRadius = 5
-        $0.layer.borderColor = UIColor.systemGray.cgColor
-        $0.layer.borderWidth = 1.5
-        $0.font = .systemFont(ofSize: 11)
-        $0.textAlignment = .center
-        $0.placeholder = "ex) 100"
-        $0.keyboardType = .numberPad
-        $0.returnKeyType = .done
+        setInitialTextFieldUI($0, placeHolder: "ex) 80")
     }
+    
     lazy var deadLiftTextField = UITextField().then {
-        $0.layer.cornerRadius = 5
-        $0.layer.borderColor = UIColor.systemGray.cgColor
-        $0.layer.borderWidth = 1.5
-        $0.font = .systemFont(ofSize: 11)
-        $0.textAlignment = .center
-        $0.placeholder = "ex) 160"
-        $0.keyboardType = .numberPad
-        $0.returnKeyType = .done
+        setInitialTextFieldUI($0, placeHolder: "ex) 160")
     }
     lazy var squatTextField = UITextField().then {
-        $0.layer.cornerRadius = 5
-        $0.layer.borderColor = UIColor.systemGray.cgColor
-        $0.layer.borderWidth = 1.5
-        $0.font = .systemFont(ofSize: 11)
-        $0.textAlignment = .center
-        $0.placeholder = "ex) 150"
-        $0.keyboardType = .numberPad
-        $0.returnKeyType = .done
+        setInitialTextFieldUI($0, placeHolder: "ex) 150")
     }
+   
     
     //MARK: - IBOutlet
     
@@ -66,12 +47,8 @@ class FirstExcuteViewController: UIViewController {
     @IBOutlet weak var noticeLabelEmbeddedView: UIView!{
         didSet{
             noticeLabelEmbeddedView.layer.cornerRadius = 10
-            if viewModel.detectFirstExecution{
-                noticeLabel.text = viewModel.firstExcuteNotice1
-            }
-            else{
-                noticeLabel.text = viewModel.executionGuideNotice1
-            }
+            
+            noticeLabel.text = viewModel.detectFirstExecution ? viewModel.firstExcuteNotice1 :                                                                        viewModel.executionGuideNotice1
         }
     }
     
@@ -88,13 +65,15 @@ class FirstExcuteViewController: UIViewController {
     }
     @IBOutlet weak var pageControl: UIPageControl!{
         didSet{
-            if viewModel.detectFirstExecution{
+            if viewModel.detectFirstExecution{ // 앱 최초 실행으로 호출 시
                 pageControl.numberOfPages = viewModel.firstExcuteimageNamesArray.count + 1
-                if viewModel.fromSettingVC{
+                
+                if viewModel.fromSettingVC{ // 세팅의 '이용방법'으로 호출 시 (1RM 입력 페이지 제외하고 나머지 재사용)
                     pageControl.numberOfPages = viewModel.firstExcuteimageNamesArray.count
                 }
             }
-            else{
+            
+            else{ // '루틴 전체보기'로 호출 시
                 pageControl.numberOfPages = viewModel.executionGuideImageNamesArray.count
             }
         }
@@ -109,11 +88,11 @@ class FirstExcuteViewController: UIViewController {
     
     @IBAction func okButtonAction(_ sender: Any) {
         if viewModel.detectFirstExecution{
+            
             if viewModel.currentIndex <= viewModel.firstExcuteMaxIndex - 1{ // 마지막 페이지 전까진 '다음'으로 이동
                 setGestureDirectionEvent("left")
             }
             else{
-                
                 // 설정에서 '이용방법'으로 호출 시 1RM 페이지가 없음.
                 if viewModel.fromSettingVC{
                     self.dismiss(animated: true)
@@ -166,6 +145,18 @@ class FirstExcuteViewController: UIViewController {
         addGestureAfterSetDirection()
         self.hideKeyboard()
     }
+}
+
+//MARK: - 텍스트 필드 UI 초기 설정
+
+func setInitialTextFieldUI(_ textField: UITextField, placeHolder: String){
+    textField.layer.cornerRadius = 5
+    textField.layer.borderColor = UIColor.systemGray.cgColor
+    textField.layer.borderWidth = 1.5
+    textField.font = .systemFont(ofSize: 11)
+    textField.textAlignment = .center
+    textField.placeholder = placeHolder
+    textField.keyboardType = .numberPad
 }
 
 //MARK: - 제스처 생성 및 View에 제스처 추가

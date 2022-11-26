@@ -5,9 +5,12 @@ import RxSwift
 class MainTableViewModel {
     
     let tableViewObservable: BehaviorSubject<[MainTVCellModel.Fields]> = BehaviorSubject(value: [])//메인 테이블 뷰 데이터
-    lazy var filteredObservable: BehaviorSubject<[MainTVCellModel.Fields]> = BehaviorSubject(value: [])// 검색 활성화 시 출력되는 테이블 뷰 데이터
+    
+    // 검색 활성화 시 출력되는 테이블 뷰 데이터
+    lazy var filteredObservable: BehaviorSubject<[MainTVCellModel.Fields]> = BehaviorSubject(value: [])
+    
     lazy var receivedNotification: BehaviorSubject<String> = BehaviorSubject(value: "") // 알림 클릭 데이터
-    lazy var firstExecution: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+    lazy var firstExecution: BehaviorSubject<Bool> = BehaviorSubject(value: false) // 앱 최초 실행 감지
     
     init() {
         makeCellData()
