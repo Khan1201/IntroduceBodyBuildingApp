@@ -2,23 +2,23 @@
 
 import UIKit
 import CoreData
-
+import Network
 
 import FirebaseCore
 import FirebaseFirestore
-
-import RxSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
         sleep(UInt32(1.5))
         FirebaseApp.configure()
         UNUserNotificationCenter.current().delegate = self
+        
         return true
     }
     

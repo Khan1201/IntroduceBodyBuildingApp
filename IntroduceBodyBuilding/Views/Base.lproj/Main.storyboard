@@ -1530,28 +1530,28 @@
                                 <rect key="frame" x="0.0" y="68" width="414" height="794"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="KeywordTableViewCell" rowHeight="50" id="eEi-Vu-hMg" customClass="KeywordTableViewCell" customModule="IntroduceBodyBuilding" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="50"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="KeywordTableViewCell" rowHeight="45" id="eEi-Vu-hMg" customClass="KeywordTableViewCell" customModule="IntroduceBodyBuilding" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="414" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eEi-Vu-hMg" id="qdD-4F-fFN">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="색깔" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x9y-lm-Aes">
-                                                    <rect key="frame" x="82.5" y="14.5" width="29.5" height="21"/>
+                                                    <rect key="frame" x="82.5" y="12" width="29.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Irs-yt-eM9">
-                                                    <rect key="frame" x="147" y="14.5" width="60" height="21"/>
+                                                    <rect key="frame" x="147" y="12" width="60" height="21"/>
                                                     <color key="backgroundColor" systemColor="systemBlueColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="pgo-E6-yVY"/>
                                                     </constraints>
                                                 </view>
                                                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="6gb-7Y-M5I">
-                                                    <rect key="frame" x="307" y="14.5" width="25" height="21.5"/>
+                                                    <rect key="frame" x="307" y="12" width="25" height="21.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="LtT-sQ-LGm"/>
                                                         <constraint firstAttribute="width" constant="25" id="PCx-rR-Kv1"/>

@@ -1,6 +1,6 @@
 import Foundation
 
-struct MainTVCellModel: Codable {
+struct MainTVCellModel: Codable{
         
     var documents: [Fields] = [] //observable로 보내줄 파싱 데이터
 

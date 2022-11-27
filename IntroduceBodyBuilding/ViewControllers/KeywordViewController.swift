@@ -9,7 +9,11 @@ class KeywordViewController: UIViewController {
     let viewModel = KeywordViewModel()
     let disposeBag = DisposeBag()
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!{
+        didSet{
+            tableView.rowHeight = 45
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

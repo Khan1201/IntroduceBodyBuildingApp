@@ -22,8 +22,8 @@ class MainTableViewModel {
 extension MainTableViewModel{
     func getIsFiltering(_ vc: MainViewController) -> Bool{
         let searchController = vc.navigationItem.searchController
-        let isActive = searchController?.isActive ?? false
-        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false //서치바에 텍스트가 존재 시 true
+        let isActive: Bool = searchController?.isActive ?? false
+        let isSearchBarHasText: Bool = searchController?.searchBar.text?.isEmpty == false //서치바에 텍스트가 존재 시 true
         return isActive && isSearchBarHasText
     }
 }

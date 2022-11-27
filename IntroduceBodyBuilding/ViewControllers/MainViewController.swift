@@ -1,15 +1,44 @@
 import UIKit
+import Network
 
 import CoreData
 import RxSwift
 import RxCocoa
 import SnapKit
 import DropDown
+import Then
+
+struct NetWorkUI{
+    
+    let wifiImage: UIImageView = UIImageView().then {
+        $0.image = UIImage(systemName: "wifi.slash")
+        $0.tintColor = .systemBlue
+        $0.contentMode = .scaleAspectFit
+    }
+    let networkLabelOne: UILabel = UILabel().then {
+        $0.text =
+                """
+                네트워크 문제로 연결이
+                지연되고 있습니다.
+                """
+        $0.numberOfLines = 0
+        $0.textAlignment = .center
+        $0.font = .systemFont(ofSize: 17, weight: .semibold)
+    }
+    let networkLabelTwo: UILabel = UILabel().then {
+        $0.text = "네트워크 연결을 확인한 후, 새로고침 해주세요"
+        $0.textColor = .systemGray
+        $0.font = .systemFont(ofSize: 13, weight: .regular)
+    }
+    let refreshButton: UIButton = UIButton().then {
+        $0.setTitle("새로 고침", for: .normal)
+        $0.tintColor = .systemBackground
+        $0.backgroundColor = .systemRed
+        $0.layer.cornerRadius = 10
+    }
+}
 
 class MainViewController: UIViewController{
-    
-    @IBOutlet weak var mainTableView: UITableView!
-    private var refreshControl: UIRefreshControl = UIRefreshControl()
     
     let disposeBag = DisposeBag()
     var clickEventDisposeBag = DisposeBag() // 셀 클릭 이벤트 DisposeBag
@@ -17,22 +46,99 @@ class MainViewController: UIViewController{
     var mainViewModel = MainTableViewModel()
     var detailViewModel = DetailViewModel()
     
+    private var refreshControl: UIRefreshControl = UIRefreshControl()
+    
+    var monitor = NWPathMonitor()
+    let networkFalseUI = NetWorkUI()
+    
+    @IBOutlet weak var mainTableView: UITableView!{
+        didSet{
+            mainTableView.layer.cornerRadius = 20
+        }
+    }
+
     //MARK: - viewDidLoad()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        requestNotificationAuthorization()
+        requestNotificationAuthorization() // 알림 접근권한 요청 Alert 제공
         detectFirstExecution()
         makeNavigationBar()
+        makePlusButton()
+        self.hideKeyboard()
+        self.makeNetworkUIConstraint() // 미리 네트워크 연결 X UI 생성 후, 네트워크 상태에 따라 Hidden 설정
+        
+        monitor.start(queue: .global()) // 네트워크 상태 감지 시작
+        
+        monitor.pathUpdateHandler = { path in
+            
+            // 네트워크 연결 O
+            if path.status == .satisfied{
+                DispatchQueue.main.async{
+                    self.hideNetworkUI()
+                }
+            }
+            
+            // 네트워크 연결 X
+            else {
+                DispatchQueue.main.async{
+                    self.exposeNetworkUI()
+                }
+            }
+        }
+        monitor.cancel()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
             self.bindTableView(isFilterd: false)
             self.addCellCilckEvent()
             self.addTableViewRefresh()
         }
+    }
+}
+
+//MARK: - 네트워크 연결상태 X UI
+extension MainViewController {
+    
+    // 네트워크 연결상태 X UI 숨김 (네트워크가 연결되어 있을때)
+    func hideNetworkUI(){
+        networkFalseUI.wifiImage.isHidden = true
+        networkFalseUI.networkLabelOne.isHidden = true
+        networkFalseUI.networkLabelTwo.isHidden = true
+        networkFalseUI.refreshButton.isHidden = true
+    }
+    
+    // 네트워크 연결상태 X UI 보이게 (네트워크가 연결되어 있지 않을때)
+    func exposeNetworkUI(){
+        networkFalseUI.wifiImage.isHidden = false
+        networkFalseUI.networkLabelOne.isHidden = false
+        networkFalseUI.networkLabelTwo.isHidden = false
+        networkFalseUI.refreshButton.isHidden = false
+    }
+    
+    // 네트워크 연결상태 X UI의 constraint 조정
+    func makeNetworkUIConstraint(){
+        view.addSubview(networkFalseUI.wifiImage)
+        view.addSubview(networkFalseUI.networkLabelOne)
+        view.addSubview(networkFalseUI.networkLabelTwo)
+        view.addSubview(networkFalseUI.refreshButton)
         
-        makePlusButton()
-        self.hideKeyboard()
+        networkFalseUI.wifiImage.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-60)
+            make.width.height.equalTo(100)
+        }
+        networkFalseUI.networkLabelOne.snp.makeConstraints { make in
+            make.top.equalTo(networkFalseUI.wifiImage.snp.bottom).offset(30)
+            make.centerX.equalToSuperview()
+        }
+        networkFalseUI.networkLabelTwo.snp.makeConstraints { make in
+            make.top.equalTo(networkFalseUI.networkLabelOne.snp.bottom).offset(15)
+            make.centerX.equalToSuperview()
+        }
+        networkFalseUI.refreshButton.snp.makeConstraints { make in
+            make.top.equalTo(networkFalseUI.networkLabelTwo.snp.bottom).offset(25)
+            make.centerX.equalToSuperview()
+        }
     }
 }
 
@@ -54,6 +160,7 @@ extension MainViewController {
         
         // 메인 테이블 뷰에 cell 바인딩
         func bindCell(data: BehaviorSubject<[MainTVCellModel.Fields]>){
+            
             data.bind(to: self.mainTableView.rx.items(cellIdentifier: "MainTableViewCell", cellType: MainTableViewCell.self)) { (index, element, cell) in
                 
                 cell.titleLabel.text = element.title
@@ -153,18 +260,37 @@ extension MainViewController{
        refreshControl.addTarget(self, action: #selector(self.pullToRefresh), for: .valueChanged)
     }
     
+    // Refresh 동작 시
     @objc func pullToRefresh(_ sender: Any) {
-        mainViewModel = MainTableViewModel()
-        detailViewModel = DetailViewModel()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.bindTableView(isFilterd: false)
-            
-            self.clickEventDisposeBag = DisposeBag()
-            self.addCellCilckEvent()
-            
-            self.refreshControl.endRefreshing()
+        monitor = NWPathMonitor()
+        monitor.start(queue: .global())
+        monitor.pathUpdateHandler = {path in
+            if path.status == .satisfied{
+                DispatchQueue.main.async {
+                    self.hideNetworkUI()
+                    self.mainViewModel = MainTableViewModel()
+                    self.detailViewModel = DetailViewModel()
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.bindTableView(isFilterd: false)
+                    
+                    self.clickEventDisposeBag = DisposeBag() // 클릭 이벤트 구독 해제 (중첩 막기위해)
+                    self.addCellCilckEvent()
+                    self.refreshControl.endRefreshing()
+                }
+            }
+            else{
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0){
+                        self.showToast(message: "네트워크 상태를 확인해주세요. ")
+                        self.refreshControl.endRefreshing()
+                    }
+                    
+                }
+            }
         }
+        monitor.cancel()
     }
 }
 
@@ -251,7 +377,6 @@ extension MainViewController {
                             guard let basetVC = self?.storyboard?.instantiateViewController(withIdentifier: "MyProgramViewController") else {return}
                             self?.navigationController?.pushViewController(basetVC, animated: true)
                         }
-                        
                     }
                 }
             }.disposed(by: disposeBag) // 구독해제 (메모리 정리)
