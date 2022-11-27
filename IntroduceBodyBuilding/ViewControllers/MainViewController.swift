@@ -26,15 +26,9 @@ struct NetWorkUI{
         $0.font = .systemFont(ofSize: 17, weight: .semibold)
     }
     let networkLabelTwo: UILabel = UILabel().then {
-        $0.text = "네트워크 연결을 확인한 후, 새로고침 해주세요"
+        $0.text = "네트워크 연결을 확인한 후, ↑ 스와이프 해주세요"
         $0.textColor = .systemGray
         $0.font = .systemFont(ofSize: 13, weight: .regular)
-    }
-    let refreshButton: UIButton = UIButton().then {
-        $0.setTitle("새로 고침", for: .normal)
-        $0.tintColor = .systemBackground
-        $0.backgroundColor = .systemRed
-        $0.layer.cornerRadius = 10
     }
 }
 
@@ -104,7 +98,6 @@ extension MainViewController {
         networkFalseUI.wifiImage.isHidden = true
         networkFalseUI.networkLabelOne.isHidden = true
         networkFalseUI.networkLabelTwo.isHidden = true
-        networkFalseUI.refreshButton.isHidden = true
     }
     
     // 네트워크 연결상태 X UI 보이게 (네트워크가 연결되어 있지 않을때)
@@ -112,7 +105,6 @@ extension MainViewController {
         networkFalseUI.wifiImage.isHidden = false
         networkFalseUI.networkLabelOne.isHidden = false
         networkFalseUI.networkLabelTwo.isHidden = false
-        networkFalseUI.refreshButton.isHidden = false
     }
     
     // 네트워크 연결상태 X UI의 constraint 조정
@@ -120,7 +112,6 @@ extension MainViewController {
         view.addSubview(networkFalseUI.wifiImage)
         view.addSubview(networkFalseUI.networkLabelOne)
         view.addSubview(networkFalseUI.networkLabelTwo)
-        view.addSubview(networkFalseUI.refreshButton)
         
         networkFalseUI.wifiImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -128,15 +119,11 @@ extension MainViewController {
             make.width.height.equalTo(100)
         }
         networkFalseUI.networkLabelOne.snp.makeConstraints { make in
-            make.top.equalTo(networkFalseUI.wifiImage.snp.bottom).offset(30)
+            make.top.equalTo(networkFalseUI.wifiImage.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
         }
         networkFalseUI.networkLabelTwo.snp.makeConstraints { make in
             make.top.equalTo(networkFalseUI.networkLabelOne.snp.bottom).offset(15)
-            make.centerX.equalToSuperview()
-        }
-        networkFalseUI.refreshButton.snp.makeConstraints { make in
-            make.top.equalTo(networkFalseUI.networkLabelTwo.snp.bottom).offset(25)
             make.centerX.equalToSuperview()
         }
     }
