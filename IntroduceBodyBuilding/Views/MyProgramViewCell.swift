@@ -7,6 +7,7 @@ import UIKit
         {
             didSet{
                 BBimageView.layer.cornerRadius = 10
+                reactDevice()
             }
         }
         @IBOutlet weak var BBTitleLabel: UILabel!
@@ -18,6 +19,7 @@ import UIKit
         {
             didSet{
                 PBimageView.layer.cornerRadius = 10
+                reactDevice()
             }
         }
         @IBOutlet weak var PBTitleLabel: UILabel!
@@ -30,8 +32,11 @@ import UIKit
         {
             didSet{
                 PLimageView.layer.cornerRadius = 10
+                reactDevice()
             }
         }
         @IBOutlet weak var PLTitleLabel: UILabel!
     }
+
+
 

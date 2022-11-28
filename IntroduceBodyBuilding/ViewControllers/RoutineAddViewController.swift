@@ -17,13 +17,28 @@ class RoutineAddViewController: UIViewController {
             VCNameLabel.text = viewModel.uiData.viewControllerName
         }
     }
+    
     @IBOutlet weak var pickerView: UIPickerView!
+    
     @IBOutlet weak var embeddedView: UIView!{
         didSet{
             setCornerRadius(embeddedView, radius: 10)
         }
     }
+    
+    @IBOutlet weak var programLabel: UILabel!
+    @IBOutlet weak var divisionLabel: UILabel!
+    @IBOutlet weak var targetLabel: UILabel!
+    @IBOutlet weak var totalPeriodLabel: UILabel!
+    @IBOutlet weak var routineLabel: UILabel!
+    @IBOutlet weak var alarmLabel: UILabel!
+    @IBOutlet weak var weekNoticeLabel: UILabel!
+
     @IBOutlet weak var programTextField: UITextField!
+    @IBOutlet weak var divisionTextField: UITextField!
+    @IBOutlet weak var targetTextField: UITextField!
+    @IBOutlet weak var totalPeriodTextField: UITextField!
+    
     @IBOutlet var dayButtons: [UIButton]!{
         didSet{
             for dayButton in dayButtons{
@@ -31,10 +46,6 @@ class RoutineAddViewController: UIViewController {
             }
         }
     }
-    @IBOutlet weak var divisionTextField: UITextField!
-    @IBOutlet weak var targetTextField: UITextField!
-    @IBOutlet weak var totalPeriodTextField: UITextField!
-    @IBOutlet weak var weekNoticeLabel: UILabel!
     @IBOutlet weak var noticeSwitch: UISwitch!
     @IBOutlet weak var datePicker: UIDatePicker!
     
@@ -177,6 +188,7 @@ class RoutineAddViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        reactDevice()
         bindPickerView()
         bindUIFromTableCellSelection()
         checkAuthorizationAtSwitch()
@@ -391,6 +403,7 @@ extension RoutineAddViewController{
                 // 루틴 페이지에서 호출 시 크기 조정
                 self?.pickerView.translatesAutoresizingMaskIntoConstraints = false
                 self?.pickerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+                self?.reactDevice(fromRoutineVC: true)
                 self?.routineDeleteButton.layer.isHidden = false // 루틴 페이지에서 편집 시 버튼 보임
             }.disposed(by: disposeBag)
     }

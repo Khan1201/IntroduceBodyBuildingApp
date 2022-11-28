@@ -7,6 +7,12 @@ import RxCocoa
 import SnapKit
 import DropDown
 import Then
+import DeviceKit
+
+
+
+
+
 
 struct NetWorkUI{
     
@@ -31,6 +37,8 @@ struct NetWorkUI{
         $0.font = .systemFont(ofSize: 13, weight: .regular)
     }
 }
+
+
 
 class MainViewController: UIViewController{
     
@@ -91,6 +99,7 @@ class MainViewController: UIViewController{
 }
 
 //MARK: - 네트워크 연결상태 X UI
+
 extension MainViewController {
     
     // 네트워크 연결상태 X UI 숨김 (네트워크가 연결되어 있을때)
@@ -179,6 +188,7 @@ extension MainViewController {
                     if zipData.1.title == detailVCData.title{
                         detailVC.viewModel.detailVCIndexObservable
                             .onNext(detailVCData)
+                        detailVC.test = detailVCData.notice
                     }
                 }
                 self?.navigationController?.pushViewController(detailVC, animated: true)

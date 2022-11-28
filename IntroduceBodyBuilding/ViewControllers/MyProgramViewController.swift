@@ -15,6 +15,12 @@ class MyProgramViewController: UIViewController {
     @IBOutlet weak var powerBuildingDivisionView: UIView!
     @IBOutlet weak var powerLiftingDivisionView: UIView!
     
+    
+//    @IBOutlet weak var bodyBuildingImageView: UIImageView!
+//    @IBOutlet weak var powerBuildingImageView: UIImageView!
+//    @IBOutlet weak var powerLiftingImageView: UIImageView!
+    
+    
     @IBOutlet weak var bodyBuildingLabel: UILabel!
     @IBOutlet weak var powerBuildingLabel: UILabel!
     @IBOutlet weak var powerLiftingLabel: UILabel!
@@ -34,6 +40,7 @@ class MyProgramViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        reactDevice()
     }
 }
 
@@ -297,4 +304,6 @@ extension MyProgramViewController{
         }
     }
 }
+
+
 

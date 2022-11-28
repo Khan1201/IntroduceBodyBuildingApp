@@ -135,6 +135,7 @@ class FirstExcuteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        reactDevice()
         if viewModel.detectFirstExecution{
             drawInputUI()
             bindTextFieldData()

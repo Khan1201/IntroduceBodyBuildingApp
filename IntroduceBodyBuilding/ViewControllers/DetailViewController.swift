@@ -10,6 +10,7 @@ class DetailViewController: UIViewController {
     
     let viewModel = DetailViewModel()
     let disposeBag = DisposeBag()
+    var test = ""
     
     //MARK: - @IBOutlet
     
@@ -72,8 +73,16 @@ class DetailViewController: UIViewController {
             AMRAP = 최대 수행 가능한 반복 횟수
             -----------------------------------
             메모는 모든 프로그램에 공유됩니다.
+            -----------------------------------
+            OHP, 바벨로우 등 1RM 추가 및 적용 예정
             """
-            
+            +
+            "\n"
+            +
+            """
+            \(test)
+            """
+            noticeLabel.numberOfLines = 0
             noticeLabel.lineColorAndLineSpacing(spacing: 5)
         }
     }
@@ -170,7 +179,7 @@ class DetailViewController: UIViewController {
             excutionGuideVC.viewModel.fromExecutionGuide
                 .filter { $0 == true}
                 .bind { [weak self] _ in
-                    let url = URL(string: "https://docs.google.com/uc?export=download&id=19CzZUj_n1mGfHFN82ioH_W8U91IbHtYO")
+                    let url = URL(string: self?.viewModel.url ?? "")
                     let safariViewController = SFSafariViewController(url: url!)
                     self?.present(safariViewController, animated: true)
                 }.disposed(by: disposeBag)

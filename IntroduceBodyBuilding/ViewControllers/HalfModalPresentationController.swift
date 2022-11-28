@@ -6,7 +6,8 @@ class HalfModalPresentationController: UIPresentationController {
     
     // ExcutionGuideVC로 호출 시 true, true -> tapGesture 추가
     static var dismissGestureFlag: Bool = false
-
+    static var firstExcuteVCHeight: CGFloat = 550
+    
     lazy var tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer()
     
     override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
@@ -30,16 +31,26 @@ class HalfModalPresentationController: UIPresentationController {
 
     
     override var frameOfPresentedViewInContainerView: CGRect {
+//        CGRect(origin: CGPoint(x: 0,
+//                               y: self.containerView!.frame.height - self.containerView!.frame.height / 1.5),
+//               size: CGSize(width: self.containerView!.frame.width,
+//                            height: self.presentedView!.frame.height))
         CGRect(origin: CGPoint(x: 0,
-                               y: self.containerView!.frame.height - self.containerView!.frame.height / 1.5),
+                               y: self.containerView!.frame.height - HalfModalPresentationController.firstExcuteVCHeight),
                size: CGSize(width: self.containerView!.frame.width,
-                            height: self.presentedView!.frame.height))
+                            height: HalfModalPresentationController.firstExcuteVCHeight))
+        
     }
     
     override func presentationTransitionWillBegin() {
         self.blurEffectView.alpha = 0
         self.containerView!.addSubview(blurEffectView)
         self.presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in self.blurEffectView.alpha = 0.7}, completion: nil)
+        print( self.containerView!.frame.height - self.containerView!.frame.height / 1.5)
+        print(self.containerView!.frame.height - 281)
+        print(self.containerView!.frame.height)
+        print(self.presentedView!.frame.height)
+
     }
     override func dismissalTransitionWillBegin() {
         self.presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in self.blurEffectView.alpha = 0}, completion: { _ in self.blurEffectView.removeFromSuperview()})
