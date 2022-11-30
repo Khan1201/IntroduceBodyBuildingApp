@@ -101,16 +101,3 @@
 - 프로그램별 변동성이 매우 커 데이터 구조화에 많은 힘이 들었습니다. 각 프로그램 저자별로 개인적인 부분이 많이 들어가므로, 많은 알고리즘이 요구되었습니다. (예를 들면, A 프로그램은 10주 계획에 주차 별로 + 10% 중량이 증가하고, B 프로그램은 7주 계획에 주차 별로 중량 증가 없이 횟수가 증가합니다.)
 
 <br>
-
-## 앱 화면 💻
-> |   홈    |  상세화면 1  |  상세화면 2  |
-> | :-----: | :------:  | :------:   |
-> |  <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204705846-0ae29908-edbc-4d8b-93e6-3f8d1785bd44.png"/>  | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204706801-fe8b5553-3c2a-41ed-9e94-74686eaa904d.png"/> | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204707910-20dc2fb2-ca3a-4a12-b5e6-5dfd85699a91.png"/> |
-
-<br>
-
-> |  루틴   |  보관함  |  설정  |
-> | :----: | :----:  | :----: |
-> | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204707106-f8018b02-b102-40fe-ba3d-52056ccc50d0.png"/> | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204707485-a8313ad2-da71-4232-bf32-0e0865face90.png"/> | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204708211-cb104d15-d92b-4e88-9416-85e5d493747f.png"/> |
-
-<br>
