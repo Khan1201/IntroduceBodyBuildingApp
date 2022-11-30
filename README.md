@@ -1,6 +1,17 @@
 ![waving](https://capsule-render.vercel.app/api?type=waving&height=150&text=루틴모아&fontSize=60&fontAlign=15&fontAlignY=40&color=gradient)
  <img width="20%" src="https://user-images.githubusercontent.com/87113698/204698245-7deb66fc-1086-47b9-8135-112435214140.png"/> 
  ### :heavy_exclamation_mark: 현재 앱스토어 심사중 :heavy_exclamation_mark:
+ 
+ <br>
+
+<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741235-6956fcd0-ae35-4009-a21f-636ad3f9c8ad.png"/>&nbsp;&nbsp;&nbsp;<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741673-adee8c32-cfd4-4725-9ad6-edf89bb9faba.png"/>&nbsp;&nbsp;&nbsp;
+<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741691-696ee3a7-3733-40df-9c61-e10466c8c22e.png"/>&nbsp;&nbsp;&nbsp;<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741698-471dc4e9-1a4e-4acc-a8b2-f70e633815e6.png"/>
+
+<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741704-d2f5feca-308e-45dd-b8ab-473a70fd6543.png"/>&nbsp;&nbsp;&nbsp;<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741709-a6387d76-08a6-4ecb-8570-6827e59df512.png"/>&nbsp;&nbsp;&nbsp;<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741713-001be086-787b-4fbd-af08-d3bee2114795.png"/>&nbsp;&nbsp;&nbsp;<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741724-716c3cfb-2f9f-497d-91a4-ca2a1138e42c.png"/>
+
+
+
+
 
 <br>
 
