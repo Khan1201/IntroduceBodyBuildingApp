@@ -51,7 +51,7 @@
 <br>
 
 > ### String 문자열 다루기
-- API를 통해 받아오는 루틴 데이터에 사용자의 무게를 적용해야 했습니다. API 데이터의 줄바꿈(\n)의 Index를 구하여 한 라인별로 접근하고, 해당 라인에 조건 값을 넣어 문자열을 대치하였습니다.
+- String 문자열을 치환해 보았습니다. API를 통해 받아오는 루틴 데이터에 사용자의 무게를 적용해야 했습니다. API 데이터의 줄바꿈(\n)의 Index를 구하여 한 라인별로 접근하고, 해당 라인에 조건 값을 넣어 문자열을 대치하였습니다.
 
 <br>
 
@@ -92,20 +92,14 @@
 <br>
 
 ## 앱 화면 💻
-> |   홈    |  상세화면 1  |
-> | :-----: | :------: |
-> |  <img width="250" height="600" src="https://user-images.githubusercontent.com/87113698/204705846-0ae29908-edbc-4d8b-93e6-3f8d1785bd44.png"/>  | <img width="250" height="600" src="https://user-images.githubusercontent.com/87113698/204706801-fe8b5553-3c2a-41ed-9e94-74686eaa904d.png"/> |
+> |   홈    |  상세화면 1  |  상세화면 2  |
+> | :-----: | :------:  | :------:   |
+> |  <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204705846-0ae29908-edbc-4d8b-93e6-3f8d1785bd44.png"/>  | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204706801-fe8b5553-3c2a-41ed-9e94-74686eaa904d.png"/> | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204707910-20dc2fb2-ca3a-4a12-b5e6-5dfd85699a91.png"/> |
 
 <br>
 
-> |  상세화면 2   |  루틴  |
-> | :----: | :----: |
-> | <img width="250" height="600" src="https://user-images.githubusercontent.com/87113698/204707910-20dc2fb2-ca3a-4a12-b5e6-5dfd85699a91.png"/> | <img width="250" height="600" src="https://user-images.githubusercontent.com/87113698/204707106-f8018b02-b102-40fe-ba3d-52056ccc50d0.png"/> |
-
-<br>
-
-> |  보관함   |  설정  |
-> | :----: | :----: |
-> | <img width="250" height="600" src="https://user-images.githubusercontent.com/87113698/204707485-a8313ad2-da71-4232-bf32-0e0865face90.png"/> | <img width="250" height="600" src="https://user-images.githubusercontent.com/87113698/204708211-cb104d15-d92b-4e88-9416-85e5d493747f.png"/> |
+> |  루틴   |  보관함  |  설정  |
+> | :----: | :----:  | :----: |
+> | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204707106-f8018b02-b102-40fe-ba3d-52056ccc50d0.png"/> | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204707485-a8313ad2-da71-4232-bf32-0e0865face90.png"/> | <img width="200" height="350" src="https://user-images.githubusercontent.com/87113698/204708211-cb104d15-d92b-4e88-9416-85e5d493747f.png"/> |
 
 <br>
