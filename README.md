@@ -1,9 +1,11 @@
 ![waving](https://capsule-render.vercel.app/api?type=waving&height=150&text=루틴모아&fontSize=60&fontAlign=15&fontAlignY=40&color=gradient)
- <img width="20%" src="https://user-images.githubusercontent.com/87113698/204698245-7deb66fc-1086-47b9-8135-112435214140.png"/> 
- ### :heavy_exclamation_mark: 현재 앱스토어 심사중 :heavy_exclamation_mark:
+
+[![Get it from iTunes](https://lisk.com/sites/default/files/pictures/2020-01/download_on_the_app_store_badge.svg)](https://itunes.apple.com/us/app/lisk/id6444793972?mt=8)
+
+<img width="20%" src="https://user-images.githubusercontent.com/87113698/204698245-7deb66fc-1086-47b9-8135-112435214140.png"/> 
  
  <br>
-
+ 
 <img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741235-6956fcd0-ae35-4009-a21f-636ad3f9c8ad.png"/>&nbsp;&nbsp;&nbsp;<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741673-adee8c32-cfd4-4725-9ad6-edf89bb9faba.png"/>&nbsp;&nbsp;&nbsp;
 <img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741691-696ee3a7-3733-40df-9c61-e10466c8c22e.png"/>&nbsp;&nbsp;&nbsp;<img width=20% height=30% src="https://user-images.githubusercontent.com/87113698/204741698-471dc4e9-1a4e-4acc-a8b2-f70e633815e6.png"/>
 
